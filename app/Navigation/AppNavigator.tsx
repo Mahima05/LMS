@@ -104,15 +104,16 @@ import DashboardScreen from "../Screens/Dashboard/DashboardScreen";
 import CourseDetailsScreen from "../Screens/ELearning/CourseDetailsScreen";
 import SCORMPlayerScreen from "../Screens/ELearning/ScormPlayerScreen";
 
-import LearningJourneyMap from "../Screens/Dashboard/LearningJourneyMap";
+
+import LjmapScreen from "../Screens/Dashboard/Ljmap";
 import MicroLearningScreen from "../Screens/Dashboard/MicroLearningScreen";
 import EAssessmentScreen from "../Screens/ELearning/ELearningAssessment";
 import EFeedbackScreen from "../Screens/ELearning/ELearningFeedback";
 import ELearningScreen from "../Screens/ELearning/ELearningScreen";
 import Exploremore from "../Screens/LearningHub/Exploremore";
 import LearningHubScreen from "../Screens/LearningHub/LearningHubScreen";
-import LjmapScreen from "../Screens/Ljmap";
 import LoginScreen from "../Screens/Login/LoginScreen";
+import SplashScreen from "../Screens/Splash";
 import AssessmentScreen from "../Screens/TrainingSession/AssessmentScreen";
 import FeedbackScreen from "../Screens/TrainingSession/Feedback";
 import TrainingDetailsScreen from "../Screens/TrainingSession/TrainingDetailsScreen";
@@ -120,7 +121,6 @@ import TrainingSession from "../Screens/TrainingSession/TrainingSessionScreen";
 import VirtualTraining from "../Screens/TrainingSession/VirtualTrainingScreen";
 import PDFViewer from "../Screens/UserManual/PDFViewer";
 import UserManualScreen from "../Screens/UserManual/UserManualScreen";
-import SplashScreen from "../Screens/Splash";
 
 const Stack = createNativeStackNavigator();
 
@@ -167,10 +167,11 @@ export default function AppNavigator() {
     <Stack.Navigator
       initialRouteName={initialRoute}
       screenOptions={{ headerShown: false }}
+      
     >
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
-      <Stack.Screen name="LearningJourneyMap" component={LearningJourneyMap} />
+
       <Stack.Screen name="MicroLearning" component={MicroLearningScreen} />
       <Stack.Screen name="LearningHub" component={LearningHubScreen} />
       <Stack.Screen name="Courses" component={CoursesScreen} />

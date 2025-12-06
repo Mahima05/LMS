@@ -1,5 +1,6 @@
 import { Animated, FlatList, Modal, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { useNotification } from "../Components/NotificationContext";
+import { useNavigation } from "@react-navigation/native";
 
 const formatTime = (dateString) => {
   const date = new Date(dateString);
@@ -11,8 +12,39 @@ const formatTime = (dateString) => {
   return date.toLocaleString("en-GB", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).replace(",", "");
 };
 
+
+
 export default function NotificationModal() {
+  const navigation = useNavigation();
   const { visible, closeNotification, notifications, scaleAnim } = useNotification();
+
+  const handleNotificationClick = (item) => {
+  closeNotification();
+
+  if (!item.redirectUrl) return;
+
+  const parts = item.redirectUrl.split("/");
+  const type = parts[1];
+  const id = parts[2];
+
+  if (type === "training-details") {
+    navigation.navigate("TrainingDetails", {
+      trainingSessionId: id,
+      employeeID: item.employeeId,
+      from: "notification"
+    });
+  }
+
+  if (type === "course-details") {
+    navigation.navigate("CourseDetails", {
+      courseId: id,
+      employeeID: item.employeeId,
+      from: "notification"
+    });
+  }
+};
+
+
 
   return (
     <Modal transparent visible={visible} animationType="fade">
@@ -28,12 +60,15 @@ export default function NotificationModal() {
           keyExtractor={(item) => String(item.id)}
           contentContainerStyle={{ paddingVertical: 10 }}
           renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Text style={styles.module}>{item.module}</Text>
-              <Text style={styles.text}>{item.text}</Text>
-              <Text style={styles.time}>{formatTime(item.createdOn)}</Text>
-            </View>
+            <TouchableOpacity onPress={() => handleNotificationClick(item)}>
+              <View style={styles.card}>
+                <Text style={styles.module}>{item.module}</Text>
+                <Text style={styles.text}>{item.text}</Text>
+                <Text style={styles.time}>{formatTime(item.createdOn)}</Text>
+              </View>
+            </TouchableOpacity>
           )}
+
         />
 
         <TouchableOpacity onPress={closeNotification} style={styles.closeBtn}>

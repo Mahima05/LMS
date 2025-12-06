@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     Animated,
     BackHandler,
@@ -19,13 +19,13 @@ import {
     TouchableWithoutFeedback,
     View
 } from 'react-native';
+import TextTicker from 'react-native-text-ticker';
 import BottomNavigation from '../../Components/BottomNavigation';
 import CustomDrawer from '../../Components/CustomDrawer';
 import Header from '../../Components/Header';
 import { useBottomNav } from '../../Components/useBottomNav';
 import { useDrawer } from '../../Components/useDrawer';
-import Ljmap from '../Ljmap';
-import TextTicker from 'react-native-text-ticker';
+import Ljmap from './Ljmap';
 
 const { width, height } = Dimensions.get('window');
 
@@ -436,6 +436,7 @@ const DashboardScreen = ({ navigation }) => {
 
     // Journey Map Functions
     const startPulseAnimation = (anim) => {
+        if (!anim) return;
         Animated.loop(
             Animated.sequence([
                 Animated.timing(anim, {
@@ -455,6 +456,10 @@ const DashboardScreen = ({ navigation }) => {
     };
 
     const startRotationAnimation = (anim) => {
+         if (!anim) {
+    console.warn('Animation value is undefined, skipping rotation animation');
+    return;
+  }
         Animated.loop(
             Animated.timing(anim, {
                 toValue: 1,
@@ -466,6 +471,7 @@ const DashboardScreen = ({ navigation }) => {
     };
 
     const startGlowAnimation = (anim) => {
+        if (!anim) return;
         Animated.loop(
             Animated.sequence([
                 Animated.timing(anim, {
@@ -1564,7 +1570,12 @@ const DashboardScreen = ({ navigation }) => {
                             >
                                 <View style={styles.bannerTextContainer}>
                                     <Text style={styles.bannerTitle}>{ad.title}</Text>
-                                    <Text style={styles.bannerSubtitle}>{ad.subtitle}</Text>
+                                    <Text style={styles.bannerSubtitle} numberOfLines={1} ellipsizeMode="tail">
+                                        {ad.subtitle}
+                                    </Text>
+
+                                    <Text style={styles.readMoreText}>Read more ...</Text>
+
                                 </View>
                                 <Ionicons name="arrow-forward-circle" size={32} color="#fff" />
                             </LinearGradient>
@@ -2960,6 +2971,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 20,
         elevation: 12,
+    },
+    readMoreText: {
+        color: '#fff',
+        fontSize: 12,
+        marginTop: -3
     },
     flagGradient: {
         paddingHorizontal: 8,
