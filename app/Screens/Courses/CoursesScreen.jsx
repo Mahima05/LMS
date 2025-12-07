@@ -4,20 +4,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
-  Animated,
-  BackHandler,
-  Dimensions,
-  Modal,
-  Platform,
-  RefreshControl,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    Animated,
+    BackHandler,
+    Dimensions,
+    Modal,
+    Platform,
+    RefreshControl,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 // ✅ Import universal components
 import { useNotification } from '@/app/Components/NotificationContext';
@@ -420,7 +420,7 @@ const CoursesScreen = ({ navigation }) => {
       <Animated.View style={[styles.mainContent, { opacity: fadeAnim }]}>
 
         {/* ✅ Universal Header Component */}
-        <Header title="Courses" onMenuPress={toggleDrawer} onNotificationPress={openNotification} />
+        <Header title="Offline Courses" onMenuPress={toggleDrawer} onNotificationPress={openNotification} />
 
         <ScrollView
           style={styles.scrollContent}

@@ -637,7 +637,7 @@ import { FontAwesome5, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Modal, Easing } from 'react-native';
+import { Animated, Dimensions, Easing, ImageBackground, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -1000,12 +1000,12 @@ const CustomDrawer = ({
     }, [selectedMenuItem]);
 
     const menuItems = [
-        { name: 'Dashboard', icon: 'view-dashboard', type: 'MaterialCommunityIcons' },
+        { name: 'Dashboard', icon: 'widgets', type: 'MaterialIcons' },
         { name: 'Learning Hub', icon: 'graduation-cap', type: 'FontAwesome5' },
-        { name: 'Courses', icon: 'book', type: 'FontAwesome5' },
+        { name: 'Offline Courses', icon: 'book', type: 'FontAwesome5' },
         { name: 'Training Session', icon: 'chalkboard-teacher', type: 'FontAwesome5' },
         { name: 'Calendar', icon: 'calendar', type: 'FontAwesome5' },
-        { name: 'E-Learning', icon: 'laptop', type: 'FontAwesome5' },
+        { name: 'E-Learning Courses', icon: 'laptop', type: 'FontAwesome5' },
         { name: 'Certificates', icon: 'certificate', type: 'FontAwesome5' },
         { name: 'User Manual', icon: 'book-reader', type: 'FontAwesome5' },
     ];

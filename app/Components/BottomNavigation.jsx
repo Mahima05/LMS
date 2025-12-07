@@ -62,9 +62,9 @@ const BottomNavigation = ({
                 style={[
                   styles.tabIconContainer,
                   {
-                 transform: [
-  { scale: tabScaleAnims[index] },
-],
+                    transform: [
+                      { scale: tabScaleAnims[index] },
+                    ],
 
                   },
                 ]}

@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "I-Learn",
+    "name": "ABIS i~Learn",
     "slug": "MyFirstApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/mm1.png",
+    "icon": "./assets/images/mm.png",
     "scheme": "myfirstapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -28,7 +28,7 @@
       "favicon": "./assets/images/mm1.png"
     },
 
-    "plugins": [
+  "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
@@ -46,12 +46,11 @@
     ],
 
     "experiments": {
-      "typedRoutes": true,
+      "typedRoutes": false,
       "reactCompiler": true
     },
 
     "extra": {
-      "router": {},
       "eas": {
         "projectId": "050a387a-21c5-4a77-aea1-3b90bcde3c84"
       }

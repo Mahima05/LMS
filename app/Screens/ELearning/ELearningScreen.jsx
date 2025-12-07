@@ -4,25 +4,26 @@ import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
-  Animated,
-  BackHandler,
-  Dimensions,
-  Modal,
-  Platform,
-  RefreshControl,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    Animated,
+    BackHandler,
+    Dimensions,
+    Modal,
+    Platform,
+    RefreshControl,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 // ✅ Import the universal drawer components
 import { useNotification } from '@/app/Components/NotificationContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Dropdown } from 'react-native-element-dropdown';
+import BottomNavigation from '../../Components/BottomNavigation';
 import CustomDrawer from '../../Components/CustomDrawer';
 import Header from '../../Components/Header';
 import { useDrawer } from '../../Components/useDrawer';
@@ -182,7 +183,7 @@ const ELearningScreen = ({ navigation }) => {
 
   // Reset filters to defaults and reload original non-filtered list
   const resetFilters = async () => {
-   
+
     setSelectedCreatedBy(null);
     setCriteria('');
     setStartDate('');
@@ -191,7 +192,7 @@ const ELearningScreen = ({ navigation }) => {
     setSelectedFilter('ALL');
     setRowsPerPage(200);
     setPage(1);
-      setFilterModalVisible(false);
+    setFilterModalVisible(false);
     // restore animations values used elsewhere (reset to 0 then re-run entry animations)
     // Reset rowAnims values to 0 so that useEffect animates them again when data arrives
     rowAnims.forEach(a => a.setValue(0));
@@ -571,13 +572,6 @@ const ELearningScreen = ({ navigation }) => {
   };
 
 
-  // Bottom tabs
-  const bottomTabs = [
-    { name: 'Sessions', icon: 'calendar', type: 'FontAwesome5' },
-    { name: 'Dashboard', icon: 'view-dashboard', type: 'MaterialCommunityIcons' },
-    { name: 'Calendar', icon: 'calendar-alt', type: 'FontAwesome5' },
-  ];
-
   const handleTabPress = (index, tabName) => {
     setSelectedTab(tabName);
 
@@ -640,55 +634,7 @@ const ELearningScreen = ({ navigation }) => {
   };
 
 
-  // Bottom Navigation Component
-  const BottomNavigation = () => {
-    return (
-      <View style={styles.bottomNavContainer}>
-        <LinearGradient
-          colors={['#2D1B69', '#1a1a2e']}
-          style={styles.bottomNavBar}
-        >
-          {bottomTabs.map((tab, index) => {
-            const isActive = tab.name === selectedTab;
-            const rotation = rotateAnims[index].interpolate({
-              inputRange: [0, 1],
-              outputRange: ['0deg', '360deg'],
-            });
 
-            return (
-              <TouchableOpacity
-                key={index}
-                onPress={() => handleTabPress(index, tab.name)}
-                activeOpacity={0.8}
-                style={[styles.tab, index === 1 && styles.centerTab]}
-              >
-                <Animated.View
-                  style={[
-                    styles.tabIconContainer,
-                    {
-                      transform: [
-                        { scale: tabScaleAnims[index] },
-                      ]
-                    },
-                  ]}
-                >
-                  {isActive && (
-                    <LinearGradient
-                      colors={['#7B68EE', '#9D7FEA']}
-                      style={styles.centerTabBg}
-                    />
-                  )}
-                  <Animated.View style={{ transform: [{ rotate: rotation }] }}>
-                    {renderIcon(tab, isActive, index === 1 ? 28 : 24)}
-                  </Animated.View>
-                </Animated.View>
-              </TouchableOpacity>
-            );
-          })}
-        </LinearGradient>
-      </View>
-    );
-  };
 
   return (
     <View style={styles.container}>
@@ -696,7 +642,7 @@ const ELearningScreen = ({ navigation }) => {
 
       <View style={styles.mainContent}>
         {/* Header */}
-        <Header title="E-learning" onMenuPress={toggleDrawer} onNotificationPress={openNotification} />
+        <Header title="E-learning Courses" onMenuPress={toggleDrawer} onNotificationPress={openNotification} />
 
         {/* Main Content */}
         <ScrollView
@@ -992,129 +938,135 @@ const ELearningScreen = ({ navigation }) => {
         </View>
       )}
 
-   <Modal
-  visible={filterModalVisible}
-  transparent
-  animationType="slide"
-  onRequestClose={() => setFilterModalVisible(false)}
->
-  <View style={styles.modalOverlay}>
-    <View style={styles.filterModal}>
-      <Text style={styles.modalTitle}>Filters</Text>
+      <Modal
+        visible={filterModalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setFilterModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.filterModal}>
+            <Text style={styles.modalTitle}>Filters</Text>
 
-      {/* SAME 2×5 GRID LIKE COURSE SCREEN */}
-      <View style={styles.filterGrid}>
+            {/* SAME 2×5 GRID LIKE COURSE SCREEN */}
+            <View style={styles.filterGrid}>
 
-        {/* Completion Criteria */}
-        <View style={styles.filterCell}>
-          <Text style={styles.filterLabel}>Completion Criteria</Text>
-          <View style={styles.pickerWrap}>
-            <Dropdown
-              data={[
-                { label: "Completion Percentage", value: "percentage" },
-                { label: "Quiz", value: "quiz" },
-              ]}
-              labelField="label"
-              valueField="value"
-              placeholder="Select Criteria"
-              value={criteria}
-              onChange={(item) => setCriteria(item.value)}
-              style={styles.dropdown}
-              selectedTextStyle={styles.dropdownText}
-            />
+              {/* Completion Criteria */}
+              <View style={styles.filterCell}>
+                <Text style={styles.filterLabel}>Completion Criteria</Text>
+                <View style={styles.pickerWrap}>
+                  <Dropdown
+                    data={[
+                      { label: "Completion Percentage", value: "percentage" },
+                      { label: "Quiz", value: "quiz" },
+                    ]}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select Criteria"
+                    value={criteria}
+                    onChange={(item) => setCriteria(item.value)}
+                    style={styles.dropdown}
+                    selectedTextStyle={styles.dropdownText}
+                  />
+                </View>
+              </View>
+
+              {/* Created By */}
+              <View style={styles.filterCell}>
+                <Text style={styles.filterLabel}>Created By</Text>
+                <View style={styles.pickerWrap}>
+                  <Dropdown
+                    data={createdByList}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select Trainer"
+                    value={selectedCreatedBy}
+                    onChange={(item) => setSelectedCreatedBy(item.value)}
+                    style={styles.dropdown}
+                    selectedTextStyle={styles.dropdownText}
+                  />
+                </View>
+              </View>
+
+              {/* Start Date */}
+              <View style={styles.filterCell}>
+                <Text style={styles.filterLabel}>Start Date</Text>
+                <TouchableOpacity
+                  style={styles.dateInput}
+                  onPress={() => setShowStartPicker(true)}
+                >
+                  <Text style={{ color: startDate ? "#000" : "#888" }}>
+                    {startDate || "Select Start Date"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* End Date */}
+              <View style={styles.filterCell}>
+                <Text style={styles.filterLabel}>End Date</Text>
+                <TouchableOpacity
+                  style={styles.dateInput}
+                  onPress={() => setShowEndPicker(true)}
+                >
+                  <Text style={{ color: endDate ? "#000" : "#888" }}>
+                    {endDate || "Select End Date"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+            </View>
+
+            {/* BUTTONS ROW EXACT SAME */}
+            <View style={styles.filterButtonsRow}>
+              <TouchableOpacity style={styles.resetButton} onPress={resetFilters}>
+                <Text style={{ color: "#7B68EE", fontWeight: "600" }}>Reset</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
+                <Text style={{ color: "#fff", fontWeight: "600" }}>Apply Filters</Text>
+              </TouchableOpacity>
+            </View>
+
           </View>
         </View>
+      </Modal>
 
-        {/* Created By */}
-        <View style={styles.filterCell}>
-          <Text style={styles.filterLabel}>Created By</Text>
-          <View style={styles.pickerWrap}>
-            <Dropdown
-              data={createdByList}
-              labelField="label"
-              valueField="value"
-              placeholder="Select Trainer"
-              value={selectedCreatedBy}
-              onChange={(item) => setSelectedCreatedBy(item.value)}
-              style={styles.dropdown}
-              selectedTextStyle={styles.dropdownText}
-            />
-          </View>
-        </View>
+      {/* DATE PICKERS */}
+      {showStartPicker && (
+        <DateTimePicker
+          value={startDate ? new Date(startDate) : new Date()}
+          mode="date"
+          display={Platform.OS === "ios" ? "spinner" : "default"}
+          onChange={(e, selected) => {
+            setShowStartPicker(Platform.OS === "ios");
+            if (selected) setStartDate(formatDate(selected));
+          }}
+        />
+      )}
 
-        {/* Start Date */}
-        <View style={styles.filterCell}>
-          <Text style={styles.filterLabel}>Start Date</Text>
-          <TouchableOpacity
-            style={styles.dateInput}
-            onPress={() => setShowStartPicker(true)}
-          >
-            <Text style={{ color: startDate ? "#000" : "#888" }}>
-              {startDate || "Select Start Date"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* End Date */}
-        <View style={styles.filterCell}>
-          <Text style={styles.filterLabel}>End Date</Text>
-          <TouchableOpacity
-            style={styles.dateInput}
-            onPress={() => setShowEndPicker(true)}
-          >
-            <Text style={{ color: endDate ? "#000" : "#888" }}>
-              {endDate || "Select End Date"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-      </View>
-
-      {/* BUTTONS ROW EXACT SAME */}
-      <View style={styles.filterButtonsRow}>
-        <TouchableOpacity style={styles.resetButton} onPress={resetFilters}>
-          <Text style={{ color: "#7B68EE", fontWeight: "600" }}>Reset</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
-          <Text style={{ color: "#fff", fontWeight: "600" }}>Apply Filters</Text>
-        </TouchableOpacity>
-      </View>
-
-    </View>
-  </View>
-</Modal>
-
-{/* DATE PICKERS */}
-{showStartPicker && (
-  <DateTimePicker
-    value={startDate ? new Date(startDate) : new Date()}
-    mode="date"
-    display={Platform.OS === "ios" ? "spinner" : "default"}
-    onChange={(e, selected) => {
-      setShowStartPicker(Platform.OS === "ios");
-      if (selected) setStartDate(formatDate(selected));
-    }}
-  />
-)}
-
-{showEndPicker && (
-  <DateTimePicker
-    value={endDate ? new Date(endDate) : new Date()}
-    mode="date"
-    display={Platform.OS === "ios" ? "spinner" : "default"}
-    onChange={(e, selected) => {
-      setShowEndPicker(Platform.OS === "ios");
-      if (selected) setEndDate(formatDate(selected));
-    }}
-  />
-)}
+      {showEndPicker && (
+        <DateTimePicker
+          value={endDate ? new Date(endDate) : new Date()}
+          mode="date"
+          display={Platform.OS === "ios" ? "spinner" : "default"}
+          onChange={(e, selected) => {
+            setShowEndPicker(Platform.OS === "ios");
+            if (selected) setEndDate(formatDate(selected));
+          }}
+        />
+      )}
 
 
 
 
 
-      {/* Bottom Navigation */}
-      <BottomNavigation />
+         {/* Bottom nav and drawer - unchanged */}
+      <BottomNavigation
+        selectedTab={selectedTab}
+        tabScaleAnims={tabScaleAnims}
+        rotateAnims={rotateAnims}
+        handleTabPress={handleTabPress}
+        navigation={navigation}
+      />
 
       {/* ✅ Universal Drawer Component */}
       <CustomDrawer
@@ -1404,92 +1356,92 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     elevation: 5,
   },
- modalOverlay: {
-  flex: 1,
-  backgroundColor: 'rgba(15,15,20,0.6)',
-  justifyContent: 'center',
-  alignItems: 'center'
-},
-filterModal: {
-  width: '92%',
-  backgroundColor: '#fff',
-  borderRadius: 12,
-  padding: 14,
-  maxHeight: '90%'
-},
-modalTitle: {
-  fontSize: 18,
-  fontWeight: '700',
-  color: '#111',
-  marginBottom: 10
-},
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(15,15,20,0.6)',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  filterModal: {
+    width: '92%',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 14,
+    maxHeight: '90%'
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#111',
+    marginBottom: 10
+  },
 
-filterGrid: {
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  justifyContent: 'space-between'
-},
-filterCell: {
-  width: '48%',
-  marginBottom: 12
-},
-filterLabel: {
-  fontSize: 12,
-  color: '#444',
-  marginBottom: 6
-},
+  filterGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between'
+  },
+  filterCell: {
+    width: '48%',
+    marginBottom: 12
+  },
+  filterLabel: {
+    fontSize: 12,
+    color: '#444',
+    marginBottom: 6
+  },
 
-pickerWrap: {
-  borderWidth: 1,
-  borderColor: '#EEE',
-  borderRadius: 8,
-  position: 'relative',
-  overflow: 'visible',
-  paddingRight: 36,
-  backgroundColor: '#fff'
-},
-dropdown: {
-  height: 36,
-  width: '100%',
-  backgroundColor: '#fff'
-},
-dropdownText: {
-  color: '#000'
-},
+  pickerWrap: {
+    borderWidth: 1,
+    borderColor: '#EEE',
+    borderRadius: 8,
+    position: 'relative',
+    overflow: 'visible',
+    paddingRight: 36,
+    backgroundColor: '#fff'
+  },
+  dropdown: {
+    height: 36,
+    width: '100%',
+    backgroundColor: '#fff'
+  },
+  dropdownText: {
+    color: '#000'
+  },
 
-dateInput: {
-  height: 36,
-  borderWidth: 1,
-  borderColor: '#EEE',
-  borderRadius: 8,
-  justifyContent: 'center',
-  paddingHorizontal: 8,
-  backgroundColor: '#fff'
-},
+  dateInput: {
+    height: 36,
+    borderWidth: 1,
+    borderColor: '#EEE',
+    borderRadius: 8,
+    justifyContent: 'center',
+    paddingHorizontal: 8,
+    backgroundColor: '#fff'
+  },
 
-filterButtonsRow: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  marginTop: 10
-},
-resetButton: {
-  backgroundColor: '#fff',
-  borderWidth: 1,
-  borderColor: '#7B68EE',
-  paddingVertical: 10,
-  paddingHorizontal: 18,
-  borderRadius: 8,
-  alignItems: 'center',
-  justifyContent: 'center'
-},
-applyButton: {
-  backgroundColor: '#7B68EE',
-  paddingVertical: 10,
-  paddingHorizontal: 18,
-  borderRadius: 8,
-  alignItems: 'center',
-  justifyContent: 'center'
-},
+  filterButtonsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10
+  },
+  resetButton: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#7B68EE',
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  applyButton: {
+    backgroundColor: '#7B68EE',
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
 
 });
 

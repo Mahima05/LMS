@@ -1,32 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-
 export default function Ljmap({ containerBackgroundColor = '#fff' }) {
   const ELEMENTS_VERTICAL_OFFSET = -155;
   const ELEMENTS_HORIZONTAL_OFFSET = 18;
-
-
   const [totalAssigned, setTotalAssigned] = useState(0);
   const [completed, setCompleted] = useState(0);
   const [loading, setLoading] = useState(true);
-
-
   // ⭐ NEW: journey info state
   const [journeyName, setJourneyName] = useState(null);
   const [journeyStartDate, setJourneyStartDate] = useState(null);
   const [journeyEndDate, setJourneyEndDate] = useState(null);
-
-
   const bounceAnims = useRef([
     new Animated.Value(0),
     new Animated.Value(0),
     new Animated.Value(0),
     new Animated.Value(0),
   ]).current;
-
-
   const allButtons = [
     { id: 1, level: 1, x: 270, y: 220, size: 24, color: '#050000ff', glow: '#0c0101ff' },
     { id: 2, level: 2, x: 210, y: 240, size: 24, color: '#040404ff', glow: '#0d0e0eff' },
@@ -49,8 +39,6 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
     { id: 19, level: 19, x: 270, y: 560, size: 24, color: '#000000ff', glow: '#000000ff' },
     { id: 20, level: 20, x: 210, y: 570, size: 24, color: '#000000ff', glow: '#000000ff' },
   ];
-
-
   const milestoneImages = [
     {
       x: 10,
@@ -81,13 +69,9 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
       source: require('../../Images/hat.png')
     },
   ];
-
-
   useEffect(() => {
     fetchUserProgress();
   }, []);
-
-
   useEffect(() => {
     const animations = bounceAnims.map((anim, index) => {
       return Animated.loop(
@@ -108,20 +92,14 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
     });
     animations.forEach(animation => animation.start());
   }, []);
-
-
   const fetchUserProgress = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-
-
       if (!token) {
         console.error('No token found');
         setLoading(false);
         return;
       }
-
-
       const response = await fetch('https://lms-api-qa.abisaio.com/api/v1/Journey/user-progress', {
         method: 'GET',
         headers: {
@@ -129,16 +107,10 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
           'Content-Type': 'application/json',
         },
       });
-
-
       const data = await response.json();
-
-
       if (data.succeeded) {
         setTotalAssigned(data.totalAssigned);
         setCompleted(data.completed);
-
-
         // ⭐ NEW: adjust keys based on your real API shape
         // Example if API returns: data.journey = { name, startDate, endDate }
         if (data.journey) {
@@ -153,23 +125,15 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
       setLoading(false);
     }
   };
-
-
   const getDisplayButtons = () => {
     if (totalAssigned === 0) {
       return allButtons;
     }
-
-
     const dynamicButtons = [];
     const totalButtons = totalAssigned + 1;
-
-
     for (let i = 0; i <= totalAssigned; i++) {
       const positionIndex = Math.round((i * 19) / totalAssigned);
       const originalButton = allButtons[positionIndex];
-
-
       dynamicButtons.push({
         ...originalButton,
         level: i,
@@ -177,37 +141,23 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
         isCurrent: i === completed,
       });
     }
-
-
     return dynamicButtons;
   };
-
-
   const buttons = getDisplayButtons();
-
-
   const getStellaPosition = () => {
     const currentButton = buttons.find(btn => btn.level === completed);
     return currentButton;
   };
-
-
   const stellaPosition = getStellaPosition();
   const lastButton = buttons[buttons.length - 1]; // ⭐ Get last button for end date
-
-
   const handleButtonPress = (level) => {
     console.log(`Level ${level} button pressed!`);
   };
-
-
   const isTransparent = containerBackgroundColor === 'transparent';
   const containerStyle = [
     isTransparent ? styles.containerEmbedded : styles.container,
     { backgroundColor: containerBackgroundColor },
   ];
-
-
   if (loading) {
     return (
       <View style={[containerStyle, { justifyContent: 'center' }]}>
@@ -215,19 +165,14 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
       </View>
     );
   }
+if (!journeyName && totalAssigned === 0) {
+  return (
+    <View style={styles.noJourneyFullBox}>
+      <Text style={styles.noJourneyText}>No journey allotted</Text>
+    </View>
+  );
+}
 
-
-
-  // ⭐ Replace the "No journey allotted" return statement:
-  if (!journeyName && totalAssigned === 0) {
-    return (
-      <View style={[containerStyle, { justifyContent: 'center', alignItems: 'center' }]}>
-        <View style={styles.noJourneyBox}>
-          <Text style={styles.noJourneyText}>No journey allotted</Text>
-        </View>
-      </View>
-    );
-  }
 
   // ⭐ Helper function to format date (remove time)
   const formatDate = (dateString) => {
@@ -236,17 +181,8 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
     return date.toLocaleDateString('en-GB'); // Format: DD/MM/YYYY
     // Or use 'en-US' for MM/DD/YYYY format
   };
-
-
-
-
-
   return (
     <View style={containerStyle}>
- 
-     
-
-
       {/* ⭐ Image container wrapper */}
       <View style={styles.imageContainer}>
         {/* Background Image */}
@@ -254,11 +190,11 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
 
         {/* Rest of your code stays same - milestones, buttons, stella, etc. */}
         {milestoneImages.map((milestone, index) => {
-        const anim = bounceAnims[index % bounceAnims.length]; // ✅ wrap around
-  const bounceTranslate = anim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -15],
-  });
+          const anim = bounceAnims[index % bounceAnims.length]; // ✅ wrap around
+          const bounceTranslate = anim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, -15],
+          });
 
           return (
             <Animated.Image
@@ -326,21 +262,19 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
           />
         )}
 
-      {journeyStartDate && buttons.length > 0 && (
-  <View
-    style={[
-      styles.dateBadge,
-      {
-        bottom: buttons[0].y + 10 + ELEMENTS_VERTICAL_OFFSET,       // Always stick to first button
-        right: buttons[0].x - 100 - ELEMENTS_HORIZONTAL_OFFSET,
-      },
-    ]}
-  >
-    <Text style={styles.dateBadgeText}>{formatDate(journeyStartDate)}</Text>
-  </View>
-)}
-
-
+        {journeyStartDate && buttons.length > 0 && (
+          <View
+            style={[
+              styles.dateBadge,
+              {
+                bottom: buttons[0].y + 10 + ELEMENTS_VERTICAL_OFFSET,       // Always stick to first button
+                right: buttons[0].x - 100 - ELEMENTS_HORIZONTAL_OFFSET,
+              },
+            ]}
+          >
+            <Text style={styles.dateBadgeText}>{formatDate(journeyStartDate)}</Text>
+          </View>
+        )}
         {lastButton && journeyEndDate && (
           <View
             style={[
@@ -372,18 +306,13 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
   );
 
 }
-
-
-
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    padding: 30,
+    padding: 0,
     position: 'relative',
   },
   containerEmbedded: {
@@ -497,26 +426,22 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     zIndex: 10,
   },
-  noJourneyBox: {
-    backgroundColor: '#2C2E4A',
-    borderRadius: 16,
-    paddingVertical: 40,
-    paddingHorizontal: 60,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    minWidth: 280,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  noJourneyText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#9CA3AF',
-    textAlign: 'center',
-  },
+noJourneyFullBox: {
+  flex: 1,
+  width: '100%',
+  backgroundColor: '#2C2E4A',
+  alignItems: 'center',
+  justifyContent: 'center',
+  // Remove borderRadius, padding, shadow, and minWidth
+  // so it takes the entire container space
+},
+noJourneyText: {
+  fontSize: 16,
+  fontWeight: '500',
+  color: '#9CA3AF',
+  textAlign: 'center',
+},
+
   dateBadge: {
     position: 'absolute',
     paddingHorizontal: 4,
