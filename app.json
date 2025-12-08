@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ABIS I-Learn",
+    "name": "ABIS I~Learn",
     "slug": "MyFirstApp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -10,6 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
+    },
+      "androidNavigationBar": {
+      "visible": "immersive",
+      "backgroundColor": "#000000"
     },
     "android": {
       "package": "com.mahima05.ABISiLearn",

@@ -14,6 +14,7 @@ import {
   View,
 } from 'react-native';
 import Svg, { Circle, G, Path, Text as SvgText } from 'react-native-svg';
+import { useNotification } from './NotificationContext';
 
 const { width, height } = Dimensions.get('window');
 
@@ -28,6 +29,7 @@ const Header = ({
   showBackButton = false,
   showSpinner = true,
 }) => {
+  const { unreadCount } = useNotification();
   // API based spinner points
   const [spinnerPoints, setSpinnerPoints] = useState([]);
   const [isSpinnerActive, setIsSpinnerActive] = useState(false);
@@ -342,6 +344,7 @@ const Header = ({
     });
   };
 
+
   useEffect(() => {
     if (showSpinner) {
       spinnerRotation.setValue(0);
@@ -401,12 +404,21 @@ const Header = ({
               </Animated.View>
             </TouchableOpacity>
           )}
-          {showNotification && (
-            <TouchableOpacity style={styles.iconButton} onPress={onNotificationPress}>
-              <Ionicons name="notifications-outline" size={24} color="#fff" />
-              <View style={styles.notificationDot} />
-            </TouchableOpacity>
-          )}
+         {showNotification && (
+  <TouchableOpacity 
+    style={styles.iconButton} 
+    onPress={onNotificationPress}
+  >
+    <Ionicons name="notifications-outline" size={24} color="#fff" />
+    {unreadCount > 0 && (
+      <View style={styles.notificationBadge}>
+        <Text style={styles.notificationBadgeText}>
+          {unreadCount > 99 ? '99+' : unreadCount}
+        </Text>
+      </View>
+    )}
+  </TouchableOpacity>
+)}
         </View>
       </View>
 
@@ -609,6 +621,28 @@ const Header = ({
 };
 
 const styles = StyleSheet.create({
+
+  // Remove or replace notificationDot with:
+notificationBadge: {
+  position: 'absolute',
+  top: 4,
+  right: 4,
+  backgroundColor: '#ff4757',
+  borderRadius: 10,
+  minWidth: 18,
+  height: 18,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingHorizontal: 5,
+  borderWidth: 2,
+  borderColor: '#1a1a2e',
+},
+notificationBadgeText: {
+  color: '#fff',
+  fontSize: 11,
+  fontWeight: 'bold',
+},
+
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',

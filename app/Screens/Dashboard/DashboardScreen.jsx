@@ -22,6 +22,7 @@ import {
 import TextTicker from 'react-native-text-ticker';
 import BottomNavigation from '../../Components/BottomNavigation';
 import CustomDrawer from '../../Components/CustomDrawer';
+import { RFValue } from "../../Components/fontSize";
 import Header from '../../Components/Header';
 import NotificationModal from "../../Components/NotificationModal";
 import { useBottomNav } from '../../Components/useBottomNav';
@@ -491,45 +492,88 @@ const DashboardScreen = ({ navigation }) => {
     };
 
     const fetchJourneyData = async () => {
-        try {
-            //console.log("fetchJourneyData called");
-            setLoadingJourney(true);
-            setErrorJourney(null);
-            const token = await AsyncStorage.getItem("token");
-            //console.log("Token retrieved:", token ? "Yes" : "No");
-            if (!token) {
-                throw new Error("Token not found");
-            }
-            //console.log("Making API call to journey endpoint");
-            const response = await axios.get('https://lms-api-qa.abisaio.com/api/v1/Journey/user-progress', {
+    try {
+        setLoadingJourney(true);
+        setErrorJourney(null);
+        
+        const token = await AsyncStorage.getItem("token");
+        if (!token) {
+            console.log("Token not found in storage");
+            setErrorJourney("Authentication token not found");
+            setLoadingJourney(false);
+            return;
+        }
+
+        const response = await axios.get(
+            'https://lms-api-qa.abisaio.com/api/v1/Journey/user-progress',
+            {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
+                },
+                validateStatus: function (status) {
+                    // Accept both success and 404 as valid responses
+                    return (status >= 200 && status < 300) || status === 404;
                 }
-            });
-            //console.log("API response received:", response.status, response.data);
-            if (response.data.succeeded) {
-                //console.log("Journey data succeeded, setting data");
-                setJourneyData(response.data);
-                const total = response.data.totalAssigned;
-                //console.log("Total assigned steps:", total);
-                setFadeAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
-                setPulseAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
-                setJourneyRotateAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
-                setBounceAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
-                setGlowAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
-            } else {
-                console.log("Journey data failed:", response.data.message);
-                setErrorJourney('Failed to load journey data');
             }
-        } catch (err) {
-            console.error('API Error:', err);
-            console.log("Error details:", err.message, err.response?.status, err.response?.data);
-            setErrorJourney(err.message || 'Failed to fetch journey data');
-        } finally {
+        );
+
+        // Handle 404 - No journey assigned
+        if (response.status === 404 || !response.data.succeeded) {
+            console.log("No journey assigned:", response.data.message || "User has no journey");
+            // Reset to empty state
+            setJourneyData(null);
+            setFadeAnims([]);
+            setPulseAnims([]);
+            setJourneyRotateAnims([]);
+            setBounceAnims([]);
+            setGlowAnims([]);
+            setErrorJourney(null); // Not an error, just no journey
             setLoadingJourney(false);
+            return;
         }
-    };
+
+        // Success case - Journey data found
+        if (response.data.succeeded) {
+            console.log("Journey data loaded successfully");
+            setJourneyData(response.data);
+            
+            const total = response.data.totalAssigned || 0;
+            console.log("Total assigned steps:", total);
+            
+            // Initialize animation arrays
+            setFadeAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
+            setPulseAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
+            setJourneyRotateAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
+            setBounceAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
+            setGlowAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
+            
+            setErrorJourney(null);
+        }
+
+    } catch (err) {
+        // Only network errors or unexpected errors reach here
+        console.log("Network/Unexpected error:", err.message);
+        
+        // Check if it's a network error
+        if (err.code === 'ERR_NETWORK' || !err.response) {
+            setErrorJourney('Network error. Please check your connection.');
+        } else {
+            setErrorJourney('Failed to fetch journey data. Please try again.');
+        }
+        
+        // Reset data on error
+        setJourneyData(null);
+        setFadeAnims([]);
+        setPulseAnims([]);
+        setJourneyRotateAnims([]);
+        setBounceAnims([]);
+        setGlowAnims([]);
+        
+    } finally {
+        setLoadingJourney(false);
+    }
+};
 
     const onRefresh = async () => {
         setRefreshingJourney(true);
@@ -1547,6 +1591,7 @@ const DashboardScreen = ({ navigation }) => {
                     ref={bannerScrollRef}
                     horizontal
                     showsHorizontalScrollIndicator={false}
+                     scrollEnabled={false} 
                     onScrollBeginDrag={handleBannerScrollBeginDrag}
                     onScrollEndDrag={handleBannerScrollEndDrag}
                     onMomentumScrollEnd={handleBannerMomentumEnd}    // use the corrected function above
@@ -1769,7 +1814,7 @@ const DashboardScreen = ({ navigation }) => {
                         {dashboardData?.userRank && dashboardData.userRank > 10 && (
                             <>
                                 <View style={{ paddingHorizontal: 15, marginVertical: 15, alignItems: 'center' }}>
-                                    <Text style={{ color: '#a8b2d1', fontSize: 12 }}>• • •</Text>
+                                    <Text style={{ color: '#a8b2d1', fontSize: RFValue(12) }}>• • •</Text>
                                 </View>
                                 <View
                                     style={[
@@ -1836,7 +1881,7 @@ const DashboardScreen = ({ navigation }) => {
             {dashboardData?.pendingActions && dashboardData.pendingActions.length > 0 ? (
                 dashboardData.pendingActions.map((p) => (
                     <View key={p.id} style={styles.modalListItem}>
-                        <Text style={styles.modalItemTitle}>{p.title}  <Text style={{ fontSize: 12, color: '#a8b2d1' }}>({p.type})</Text></Text>
+                        <Text style={styles.modalItemTitle}>{p.title}  <Text style={{ fontSize: RFValue(12), color: '#a8b2d1' }}>({p.type})</Text></Text>
                         <Text style={styles.modalItemSub}>Training: {new Date(p.trainingDate).toLocaleString()}</Text>
                         <Text style={styles.modalItemSub}>Due: {new Date(p.dueDate).toLocaleString()}</Text>
                     </View>
@@ -1853,6 +1898,7 @@ const DashboardScreen = ({ navigation }) => {
         outputRange: ['0deg', '360deg'],
     });
     return (
+        
         <>
             <View style={styles.container}>
                 <StatusBar barStyle="light-content" backgroundColor="#1a1a2e" />
@@ -1862,7 +1908,7 @@ const DashboardScreen = ({ navigation }) => {
                         <Text style={styles.welcomeText}>Hello {userName ? userName : 'User'}</Text>
 
                         <TextTicker
-                            style={{ fontSize: 13, color: '#a8b2d1' }}
+                            style={{ fontSize: RFValue(13), color: '#a8b2d1' }}
                             duration={15000}
                             loop
                             bounce={false}
@@ -1882,39 +1928,7 @@ const DashboardScreen = ({ navigation }) => {
                                 refreshing={isLoading}
                                 onRefresh={() => {
                                     const currentDate = new Date();
-                                    const fetchJourneyData = async () => {
-                                        try {
-                                            setLoadingJourney(true);
-                                            setErrorJourney(null);
-
-                                            const token = await AsyncStorage.getItem("token");
-                                            if (!token) {
-                                                throw new Error("Token not found");
-                                            }
-
-                                            const response = await axios.get(
-                                                'https://lms-api-qa.abisaio.com/api/v1/Journey/user-progress',
-                                                {
-                                                    headers: {
-                                                        'Authorization': `Bearer ${token}`,
-                                                        'Content-Type': 'application/json',
-                                                    },
-                                                }
-                                            );
-
-                                            if (response.data.succeeded) {
-                                                setJourneyData(response.data);
-                                                const total = response.data.totalAssigned;
-                                                // ... your existing animation state setup
-                                            } else {
-                                                setErrorJourney('Failed to load journey data');
-                                            }
-                                        } catch (err) {
-                                            setErrorJourney(err.message || 'Failed to fetch journey data');
-                                        } finally {
-                                            setLoadingJourney(false);
-                                        }
-                                    };
+                                    
 
 
 
@@ -2168,13 +2182,13 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     welcomeText: {
-        fontSize: 26,
+        fontSize: RFValue(26),
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 5,
     },
     subText: {
-        fontSize: 14,
+        fontSize: RFValue(14),
         color: '#a8b2d1',
         fontStyle: 'italic',
     },
@@ -2211,14 +2225,14 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     statsValue: {
-        fontSize: 16,
+        fontSize: RFValue(16),
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 4,
         textAlign: 'center',
     },
     statsLabel: {
-        fontSize: 11,
+        fontSize: RFValue(11),
         color: 'rgba(255,255,255,0.9)',
         textAlign: 'center',
         lineHeight: 13,
@@ -2250,7 +2264,7 @@ const styles = StyleSheet.create({
     },
     navTabText: {
         color: '#fff',
-        fontSize: 13,
+        fontSize: RFValue(13),
         fontWeight: '600',
         textAlign: 'center',
         paddingHorizontal: 12,
@@ -2282,13 +2296,13 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     journeyNameTop: {
-        fontSize: 16,
+        fontSize: RFValue(16),
         fontWeight: '700',
         color: '#222',
         marginBottom: 4,
     },
     journeyDatesTop: {
-        fontSize: 12,
+        fontSize: RFValue(12),
         color: '#555',
     },
     ljmapContainer: {
@@ -2309,7 +2323,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     sectionTitle: {
-        fontSize: 18,
+        fontSize: RFValue(18),
         fontWeight: '700',
         color: '#fff',
         marginBottom: 15,
@@ -2347,13 +2361,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
     },
     bannerTitle: {
-        fontSize: 20,
+        fontSize: RFValue(20),
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 5,
     },
     bannerSubtitle: {
-        fontSize: 14,
+        fontSize: RFValue(14),
         color: 'rgba(255, 255, 255, 0.9)',
     },
     paginationContainer: {
@@ -2399,12 +2413,12 @@ const styles = StyleSheet.create({
     },
     periodText: {
         color: '#a8b2d1',
-        fontSize: 13,
+        fontSize: RFValue(13),
         fontWeight: '600',
     },
     periodTextActive: {
         color: '#fff',
-        fontSize: 13,
+        fontSize: RFValue(13),
         fontWeight: '700',
     },
     podiumContainer: {
@@ -2431,21 +2445,21 @@ const styles = StyleSheet.create({
     },
     rankNumber: {
         color: '#fff',
-        fontSize: 12,
+        fontSize: RFValue(12),
         fontWeight: 'bold',
     },
     podiumName: {
-        fontSize: 14,
+        fontSize: RFValue(14),
         fontWeight: '700',
         color: '#fff',
         marginBottom: 4,
         textAlign: "center"
     },
     firstPlaceName: {
-        fontSize: 16,
+        fontSize: RFValue(16),
     },
     podiumPoints: {
-        fontSize: 12,
+        fontSize: RFValue(12),
         color: '#a8b2d1',
         marginBottom: 10,
     },
@@ -2458,7 +2472,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     podiumMedal: {
-        fontSize: 32,
+        fontSize: RFValue(32),
     },
     leaderboardList: {
         paddingHorizontal: 0,
@@ -2501,18 +2515,18 @@ const styles = StyleSheet.create({
     },
     rankCircleText: {
         color: '#fff',
-        fontSize: 14,
+        fontSize: RFValue(14),
         fontWeight: 'bold',
     },
     leaderboardName: {
-        fontSize: 16,
+        fontSize: RFValue(16),
         fontWeight: '600',
         color: '#fff',
         flex: 1,
         flexShrink: 1,
     },
     leaderboardPoints: {
-        fontSize: 15,
+        fontSize: RFValue(15),
         fontWeight: '700',
         color: '#7B68EE',
         flexShrink: 0,
@@ -2525,7 +2539,7 @@ const styles = StyleSheet.create({
     },
     loadingText: {
         color: '#a8b2d1',
-        fontSize: 14,
+        fontSize: RFValue(14),
         textAlign: 'center',
     },
     emptyContainer: {
@@ -2537,7 +2551,7 @@ const styles = StyleSheet.create({
     },
     emptyText: {
         color: '#a8b2d1',
-        fontSize: 14,
+        fontSize: RFValue(14),
         textAlign: 'center',
     },
     modalListItem: {
@@ -2549,12 +2563,12 @@ const styles = StyleSheet.create({
     },
     modalItemTitle: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: RFValue(16),
         fontWeight: '700',
     },
     modalItemSub: {
         color: '#a8b2d1',
-        fontSize: 13,
+        fontSize: RFValue(13),
         marginTop: 6,
     },
     alertOverlay: {
@@ -2614,14 +2628,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     alertTitle: {
-        fontSize: 24,
+        fontSize: RFValue(24),
         fontWeight: '700',
         color: '#333',
         marginBottom: 12,
         textAlign: 'center',
     },
     alertMessage: {
-        fontSize: 16,
+        fontSize: RFValue(16),
         color: '#666',
         textAlign: 'center',
         lineHeight: 24,
@@ -2643,7 +2657,7 @@ const styles = StyleSheet.create({
     },
     alertCancelButtonText: {
         color: '#666',
-        fontSize: 16,
+        fontSize: RFValue(16),
         fontWeight: '600',
     },
     alertConfirmButtonWrapper: {
@@ -2656,7 +2670,7 @@ const styles = StyleSheet.create({
     },
     alertConfirmButtonText: {
         color: '#FFFFFF',
-        fontSize: 16,
+        fontSize: RFValue(16),
         fontWeight: '600',
     },
     // Journey Map Styles
@@ -2668,18 +2682,18 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     errorIcon: {
-        fontSize: 64,
+        fontSize: RFValue(64),
         marginBottom: 16,
     },
     errorText: {
-        fontSize: 20,
+        fontSize: RFValue(20),
         color: '#fff',
         fontWeight: 'bold',
         marginBottom: 8,
         textAlign: 'center',
     },
     errorSubtext: {
-        fontSize: 14,
+        fontSize: RFValue(14),
         color: '#a0a0a0',
         textAlign: 'center',
         marginBottom: 24,
@@ -2692,17 +2706,17 @@ const styles = StyleSheet.create({
     },
     retryButtonText: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: RFValue(16),
         fontWeight: '600',
     },
     journeyTitle: {
-        fontSize: 28,
+        fontSize: RFValue(28),
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 8,
     },
     dateText: {
-        fontSize: 13,
+        fontSize: RFValue(13),
         color: '#7a7a8e',
     },
     startContainer: {
@@ -2803,7 +2817,7 @@ const styles = StyleSheet.create({
     },
     sparkle: {
         position: 'absolute',
-        fontSize: 16,
+        fontSize: RFValue(16),
     },
     pulseRing: {
         position: 'absolute',
@@ -2833,17 +2847,17 @@ const styles = StyleSheet.create({
         borderStyle: 'dashed',
     },
     checkmark: {
-        fontSize: 32,
+        fontSize: RFValue(32),
         color: '#fff',
         fontWeight: 'bold',
     },
     stepNumber: {
-        fontSize: 24,
+        fontSize: RFValue(24),
         color: '#fff',
         fontWeight: 'bold',
     },
     stepNumberInactive: {
-        fontSize: 22,
+        fontSize: RFValue(22),
         color: '#5a5a6e',
         fontWeight: '600',
     },
@@ -2856,7 +2870,7 @@ const styles = StyleSheet.create({
         padding: 2,
     },
     lockIcon: {
-        fontSize: 16,
+        fontSize: RFValue(16),
     },
     stepInfo: {
         flex: 1,
@@ -2887,7 +2901,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     stepTitle: {
-        fontSize: 18,
+        fontSize: RFValue(18),
         color: '#fff',
         fontWeight: '700',
     },
@@ -2907,12 +2921,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(108, 92, 231, 0.2)',
     },
     statusText: {
-        fontSize: 11,
+        fontSize: RFValue(11),
         color: '#a0a0a0',
         fontWeight: '600',
     },
     stepDescription: {
-        fontSize: 13,
+        fontSize: RFValue(13),
         color: '#7a7a8e',
         marginBottom: 12,
         lineHeight: 18,
@@ -2968,7 +2982,7 @@ const styles = StyleSheet.create({
     },
     readMoreText: {
         color: '#fff',
-        fontSize: 12,
+        fontSize: RFValue(12),
         marginTop: -3
     },
     flagGradient: {
@@ -2979,12 +2993,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     flagText: {
-        fontSize: 20,
+        fontSize: RFValue(20),
         fontWeight: 'bold',
         color: '#0f0f23',
     },
     flagTextInactive: {
-        fontSize: 18,
+        fontSize: RFValue(18),
         fontWeight: '600',
         color: '#7a7a8e',
     },
@@ -2995,7 +3009,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     starburstText: {
-        fontSize: 80,
+        fontSize: RFValue(80),
     },
     confettiContainer: {
         position: 'absolute',
@@ -3005,7 +3019,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     confetti: {
-        fontSize: 24,
+        fontSize: RFValue(24),
         position: 'absolute',
     },
     celebration: {
@@ -3013,11 +3027,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     celebrationText: {
-        fontSize: 28,
+        fontSize: RFValue(28),
         marginBottom: 12,
     },
     congratsText: {
-        fontSize: 28,
+        fontSize: RFValue(28),
         fontWeight: 'bold',
         color: '#ffd700',
         marginBottom: 8,
@@ -3026,12 +3040,12 @@ const styles = StyleSheet.create({
         textShadowRadius: 10,
     },
     congratsSubtext: {
-        fontSize: 16,
+        fontSize: RFValue(16),
         color: '#a0a0a0',
         marginBottom: 4,
     },
     congratsSubtext2: {
-        fontSize: 14,
+        fontSize: RFValue(14),
         color: '#7a7a8e',
         fontStyle: 'italic',
     },

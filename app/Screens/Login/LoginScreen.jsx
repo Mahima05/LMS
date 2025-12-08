@@ -229,7 +229,7 @@ export default function LoginScreen() {
         }
 
         // Direct navigation without success popup
-        navigation.navigate("Dashboard");
+        navigation.replace("Dashboard");
 
       } catch (e) {
         showCustomAlert('error', 'Storage Error', 'Failed to save login data. Please try again.');

@@ -21,10 +21,7 @@ const BottomNavigation = ({
 }) => {
   const insets = useSafeAreaInsets();
 
-  // Dynamic bottom padding: only applies if navigation bar exists (buttons mode)
-  // If insets.bottom is 0, user has gesture navigation - no padding needed
-  // If insets.bottom > 0, user has button navigation - apply padding
-  const dynamicBottomPadding = insets.bottom > 0 ? insets.bottom : 0;
+ 
 
   const renderIcon = (item, isSelected, iconSize = 22) => {
     const iconColor = isSelected ? '#fff' : '#8B7AA3';
@@ -39,7 +36,7 @@ const BottomNavigation = ({
   };
 
   return (
-    <View style={[styles.bottomNavContainer, { paddingBottom: dynamicBottomPadding }]}>
+    <View style={styles.bottomNavContainer}>
       <LinearGradient
         colors={['#2D1B69', '#1a1a2e']}
         style={styles.bottomNavBar}

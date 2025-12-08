@@ -39,7 +39,7 @@ const emojiOptions = [
 
 const FeedbackScreen = ({ navigation, route }) => {
   const { details } = route.params;
-  const [ratings, setRatings] = useState(Array(12).fill(null));
+  const [ratings, setRatings] = useState(Array(11).fill(null));
   const [likedAspects, setLikedAspects] = useState("");
   const [improvementSuggestions, setImprovementSuggestions] = useState("");
   const [loading, setLoading] = useState(false);
@@ -71,41 +71,52 @@ const FeedbackScreen = ({ navigation, route }) => {
   };
 
   const onSubmit = async () => {
- 
-    const token = await AsyncStorage.getItem("token");
+  // validate 11 questions
+  const firstUnansweredIndex = ratings.findIndex(r => r === null);
+  if (firstUnansweredIndex !== -1) {
+    Alert.alert(
+      "Incomplete feedback",
+      `Please rate question ${firstUnansweredIndex + 1} before submitting.`
+    );
+    return;
+  }
 
-    const payload = {
-      id: 0,
-      empID: Number(userInfo.empID),
-      sessionId: details.id,
-      date: new Date().toISOString(),
-      createdOn: new Date().toISOString(),
-      likedAspects,
-      improvementSuggestions,
-    ...Object.fromEntries(ratings.map((v, i) => [`q${i + 1}Rating`, v ?? 3]))
+  const token = await AsyncStorage.getItem("token");
 
-    };
- 
-
-    setLoading(true);
-    try {
-      const resp = await fetch(API_SUBMIT_FEEDBACK, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const json = await resp.json();
-      Alert.alert("Success", json.message || "Feedback submitted!");
-      navigation.goBack();
-    } catch (e) {
-      Alert.alert("Error", "Failed to submit.");
-    }
-    setLoading(false);
+  const payload = {
+    id: 0,
+    empID: Number(userInfo.empID),
+    sessionId: details.id,
+    date: new Date().toISOString(),
+    createdOn: new Date().toISOString(),
+    likedAspects,
+    improvementSuggestions,
+    // q1–q11 from user
+    ...Object.fromEntries(ratings.map((v, i) => [`q${i + 1}Rating`, v])),
+    // q12 default 3 (not on UI)
+    q12Rating: 3,
   };
+
+  setLoading(true);
+  try {
+    const resp = await fetch(API_SUBMIT_FEEDBACK, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const json = await resp.json();
+    Alert.alert("Success", json.message || "Feedback submitted!");
+    navigation.goBack();
+  } catch (e) {
+    Alert.alert("Error", "Failed to submit.");
+  }
+  setLoading(false);
+};
+
 
   return (
     <LinearGradient colors={['#4A3B7C', '#2D1B69', '#1a1a2e']} style={{ flex: 1 }}>

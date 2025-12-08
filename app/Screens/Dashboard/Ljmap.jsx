@@ -93,38 +93,64 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
     animations.forEach(animation => animation.start());
   }, []);
   const fetchUserProgress = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      if (!token) {
-        console.error('No token found');
-        setLoading(false);
-        return;
-      }
-      const response = await fetch('https://lms-api-qa.abisaio.com/api/v1/Journey/user-progress', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
-      if (data.succeeded) {
-        setTotalAssigned(data.totalAssigned);
-        setCompleted(data.completed);
-        // ⭐ NEW: adjust keys based on your real API shape
-        // Example if API returns: data.journey = { name, startDate, endDate }
-        if (data.journey) {
-          setJourneyName(data.journey.name || null);
-          setJourneyStartDate(data.journey.startDate || null);
-          setJourneyEndDate(data.journey.endDate || null);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching user progress:', error);
-    } finally {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      console.log('No token found');
       setLoading(false);
+      return;
     }
-  };
+
+    const response = await fetch('https://lms-api-qa.abisaio.com/api/v1/Journey/user-progress', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+
+    // Handle 404 or failed response gracefully
+    if (!response.ok || !data.succeeded) {
+      console.log('No journey found:', data.message || 'User has no journey assigned');
+      // Reset all state to default values
+      setTotalAssigned(0);
+      setCompleted(0);
+      setJourneyName(null);
+      setJourneyStartDate(null);
+      setJourneyEndDate(null);
+      setLoading(false);
+      return;
+    }
+
+    // Success case - user has journey data
+    if (data.succeeded) {
+      setTotalAssigned(data.totalAssigned || 0);
+      setCompleted(data.completed || 0);
+
+      // Set journey info if available
+      if (data.journey) {
+        setJourneyName(data.journey.name || null);
+        setJourneyStartDate(data.journey.startDate || null);
+        setJourneyEndDate(data.journey.endDate || null);
+      }
+    }
+
+  } catch (error) {
+    // Only log actual network/parsing errors
+    console.log('Network error fetching journey:', error.message);
+    // Set default values on network error
+    setTotalAssigned(0);
+    setCompleted(0);
+    setJourneyName(null);
+    setJourneyStartDate(null);
+    setJourneyEndDate(null);
+  } finally {
+    setLoading(false);
+  }
+};
+
   const getDisplayButtons = () => {
     if (totalAssigned === 0) {
       return allButtons;
