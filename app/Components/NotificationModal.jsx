@@ -68,16 +68,16 @@ export default function NotificationModal() {
       </TouchableWithoutFeedback>
 
       <Animated.View style={[styles.modalBox, { transform: [{ scale: scaleAnim }] }]}>
-        <Text style={styles.modalTitle}>Notifications</Text>
+        <Text allowFontScaling={false} style={styles.modalTitle}>Notifications</Text>
 
         {loading ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#00acee" />
-            <Text style={styles.loadingText}>Loading notifications...</Text>
+            <Text allowFontScaling={false} style={styles.loadingText}>Loading notifications...</Text>
           </View>
         ) : notifications.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No new notifications</Text>
+            <Text allowFontScaling={false} style={styles.emptyText}>No new notifications</Text>
           </View>
         ) : (
           <FlatList
@@ -87,9 +87,9 @@ export default function NotificationModal() {
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => handleNotificationClick(item)}>
                 <View style={styles.card}>
-                  <Text style={styles.module}>{item.module}</Text>
-                  <Text style={styles.text}>{item.text}</Text>
-                  <Text style={styles.time}>{formatTime(item.createdOn)}</Text>
+                  <Text allowFontScaling={false} style={styles.module}>{item.module}</Text>
+                  <Text allowFontScaling={false} style={styles.text}>{item.text}</Text>
+                  <Text allowFontScaling={false} style={styles.time}>{formatTime(item.createdOn)}</Text>
                 </View>
               </TouchableOpacity>
             )}
@@ -97,7 +97,7 @@ export default function NotificationModal() {
         )}
 
         <TouchableOpacity onPress={closeNotification} style={styles.closeBtn}>
-          <Text style={{ color: "#fff", fontWeight: "bold" }}>Close</Text>
+          <Text allowFontScaling={false} style={{ color: "#fff", fontWeight: "bold" }}>Close</Text>
         </TouchableOpacity>
       </Animated.View>
     </Modal>

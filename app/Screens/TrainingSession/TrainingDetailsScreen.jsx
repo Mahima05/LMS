@@ -240,7 +240,7 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
         activeOpacity={0.8}
         onPress={() => setAnswersMap(prev => ({ ...prev, [qId]: optionText }))}
       >
-        <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{optionText}</Text>
+        <Text allowFontScaling={false} style={[styles.optionText, selected && styles.optionTextSelected]}>{optionText}</Text>
       </TouchableOpacity>
     );
   };
@@ -302,68 +302,68 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
 
               <Animated.View style={[styles.detailsCard, { opacity: cardAnim, transform: [{ translateY: cardAnim.interpolate({ inputRange: [0, 1], outputRange: [30, 0] }) }] }]}>
                 {loadingDetails && <ActivityIndicator size="small" />}
-                {error && <Text style={{ color: '#000' }}>{error}</Text>}
+                {error && <Text allowFontScaling={false} style={{ color: '#000' }}>{error}</Text>}
 
                 {details && (
                   <>
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Training Name:</Text>
-                      <Text style={styles.detailValue}>{details.title ?? 'N/A'}</Text>
+                      <Text allowFontScaling={false} style={styles.detailLabel}>Training Name:</Text>
+                      <Text allowFontScaling={false} style={styles.detailValue}>{details.title ?? 'N/A'}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Course Name:</Text>
-                      <Text style={styles.detailValue}>{Array.isArray(details.courseName) ? details.courseName.join(', ') : details.courseName}</Text>
+                      <Text allowFontScaling={false} style={styles.detailLabel}>Course Name:</Text>
+                      <Text allowFontScaling={false} style={styles.detailValue}>{Array.isArray(details.courseName) ? details.courseName.join(', ') : details.courseName}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Created Date:</Text>
-                      <Text style={styles.detailValue}>{details.createdOn ? new Date(details.createdOn).toLocaleString() : 'N/A'}</Text>
+                      <Text allowFontScaling={false} style={styles.detailLabel}>Created Date:</Text>
+                      <Text allowFontScaling={false} style={styles.detailValue}>{details.createdOn ? new Date(details.createdOn).toLocaleString() : 'N/A'}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Training Date:</Text>
-                      <Text style={styles.detailValue}>
+                      <Text allowFontScaling={false} style={styles.detailLabel}>Training Date:</Text>
+                      <Text allowFontScaling={false} style={styles.detailValue}>
                         {details.trainingBatches?.trainingDate ? new Date(details.trainingBatches.trainingDate).toLocaleDateString() : 'N/A'}
                       </Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Training Mode:</Text>
-                      <Text style={styles.detailValue}>{details.type ?? ''}</Text>
+                      <Text allowFontScaling={false} style={styles.detailLabel}>Training Mode:</Text>
+                      <Text allowFontScaling={false} style={styles.detailValue}>{details.type ?? ''}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Venue:</Text>
-                      <Text style={styles.detailValueBlue}>{details.trainingBatches?.venueName ?? 'N/A'}</Text>
+                      <Text allowFontScaling={false} style={styles.detailLabel}>Venue:</Text>
+                      <Text allowFontScaling={false} style={styles.detailValueBlue}>{details.trainingBatches?.venueName ?? 'N/A'}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Trainer Name:</Text>
-                      <Text style={styles.detailValue}>{details.trainingBatches?.trainerName ?? 'N/A'}</Text>
+                      <Text allowFontScaling={false} style={styles.detailLabel}>Trainer Name:</Text>
+                      <Text allowFontScaling={false} style={styles.detailValue}>{details.trainingBatches?.trainerName ?? 'N/A'}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Pre-Assessment Status:</Text>
-                      <Text style={styles.detailValue}>{getAssessmentForType('pre')?.assessmentStatus ?? 'N/A'}</Text>
+                      <Text allowFontScaling={false} style={styles.detailLabel}>Pre-Assessment Status:</Text>
+                      <Text allowFontScaling={false} style={styles.detailValue}>{getAssessmentForType('pre')?.assessmentStatus ?? 'N/A'}</Text>
                     </View>
 
                     {getAssessmentForType('post') && (
                       <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Post-Assessment Status:</Text>
-                        <Text style={styles.detailValue}>{getAssessmentForType('post')?.assessmentStatus ?? 'N/A'}</Text>
+                        <Text allowFontScaling={false} style={styles.detailLabel}>Post-Assessment Status:</Text>
+                        <Text allowFontScaling={false} style={styles.detailValue}>{getAssessmentForType('post')?.assessmentStatus ?? 'N/A'}</Text>
                       </View>
                     )}
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Feedback Status:</Text>
-                      <Text style={styles.detailValue}>{details.feedbackStatus ?? 'N/A'}</Text>
+                      <Text allowFontScaling={false} style={styles.detailLabel}>Feedback Status:</Text>
+                      <Text allowFontScaling={false} style={styles.detailValue}>{details.feedbackStatus ?? 'N/A'}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Certificate Status:</Text>
+                      <Text allowFontScaling={false} style={styles.detailLabel}>Certificate Status:</Text>
                       <View style={styles.inactiveTag}>
-                        <Text style={styles.inactiveText}>{details.certificateStatus ?? 'Inactive'}</Text>
+                        <Text allowFontScaling={false} style={styles.inactiveText}>{details.certificateStatus ?? 'Inactive'}</Text>
                       </View>
                     </View>
 
@@ -376,7 +376,7 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
                         disabled={preDisabled}
                       >
                         <LinearGradient colors={['#6B7FD7', '#5A4D8F']} style={styles.buttonGradient}>
-                          <Text style={styles.buttonText}>{preAss && Number(preAss.remainingAttempts ?? 0) <= 0 ? 'No Attempts' : 'Pre-Assessment'}</Text>
+                          <Text allowFontScaling={false} style={styles.buttonText}>{preAss && Number(preAss.remainingAttempts ?? 0) <= 0 ? 'No Attempts' : 'Pre-Assessment'}</Text>
                         </LinearGradient>
                       </TouchableOpacity>
 
@@ -388,7 +388,7 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
                           disabled={postDisabled}
                         >
                           <LinearGradient colors={['#6B7FD7', '#5A4D8F']} style={styles.buttonGradient}>
-                            <Text style={styles.buttonText}>{postAss && Number(postAss.remainingAttempts ?? 0) <= 0 ? 'No Attempts' : 'Post-Assessment'}</Text>
+                            <Text allowFontScaling={false} style={styles.buttonText}>{postAss && Number(postAss.remainingAttempts ?? 0) <= 0 ? 'No Attempts' : 'Post-Assessment'}</Text>
                           </LinearGradient>
                         </TouchableOpacity>
                       )}
@@ -401,7 +401,7 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
                       disabled={!isFeedbackActive()}
                     >
                       <LinearGradient colors={['#6B7FD7', '#5A4D8F']} style={styles.feedbackGradient}>
-                        <Text style={styles.feedbackText}>Fill Feedback</Text>
+                        <Text allowFontScaling={false} style={styles.feedbackText}>Fill Feedback</Text>
                       </LinearGradient>
                     </TouchableOpacity>
 {details.certificateStatus?.toLowerCase() === "active" && (
@@ -410,7 +410,7 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
     onPress={downloadCertificate}
   >
     <LinearGradient colors={['#00BFA6', '#00796B']} style={styles.feedbackGradient}>
-      <Text style={styles.feedbackText}>Download Certificate</Text>
+      <Text allowFontScaling={false} style={styles.feedbackText}>Download Certificate</Text>
     </LinearGradient>
   </TouchableOpacity>
 )}
@@ -421,8 +421,8 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
 
                     {showFeedbackWindow && (
                       <View style={styles.assessmentWindow}>
-                        <Text style={styles.assessmentTitle}>Feedback</Text>
-                        <Text style={{ marginTop: 8, color: '#666' }}>Feedback functionality will be added later.</Text>
+                        <Text allowFontScaling={false} style={styles.assessmentTitle}>Feedback</Text>
+                        <Text allowFontScaling={false} style={{ marginTop: 8, color: '#666' }}>Feedback functionality will be added later.</Text>
                       </View>
                     )}
                   </>

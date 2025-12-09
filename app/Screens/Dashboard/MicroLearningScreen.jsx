@@ -4,16 +4,16 @@ import { useRoute } from '@react-navigation/native';
 import * as FileSystem from 'expo-file-system/legacy';
 import { useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    Animated,
-    BackHandler,
-    Dimensions,
-    Image,
-    StatusBar,
-    StyleSheet,
-    Text,
-    View
+  ActivityIndicator,
+  Alert,
+  Animated,
+  BackHandler,
+  Dimensions,
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import CustomDrawer from '../../Components/CustomDrawer';
@@ -319,7 +319,7 @@ const MicroLearningScreen = ({ navigation }) => {
       <View style={styles.container}>
         <Header title="Micro Learning" showBackButton onBackPress={() => navigation.goBack()} />
         <View style={styles.centerContainer}>
-          <Text style={styles.errorText}>No microlearning data available</Text>
+          <Text allowFontScaling={false} style={styles.errorText}>No microlearning data available</Text>
         </View>
       </View>
     );
@@ -354,11 +354,11 @@ const MicroLearningScreen = ({ navigation }) => {
               }
             ]}
           >
-            <Text style={styles.categoryTitle}>{microlearning.title}</Text>
-            <Text style={styles.categorySubtitle}>{microlearning.description}</Text>
+            <Text allowFontScaling={false} style={styles.categoryTitle}>{microlearning.title}</Text>
+            <Text allowFontScaling={false} style={styles.categorySubtitle}>{microlearning.description}</Text>
             <View style={styles.timeContainer}>
-              <Text style={styles.timeText}>Time Spent: {timeSpent}s</Text>
-              <Text style={styles.durationText}>Duration: {microlearning.durationInSeconds}s</Text>
+              <Text allowFontScaling={false} style={styles.timeText}>Time Spent: {timeSpent}s</Text>
+              <Text allowFontScaling={false} style={styles.durationText}>Duration: {microlearning.durationInSeconds}s</Text>
             </View>
           </Animated.View>
         </View>
@@ -369,13 +369,13 @@ const MicroLearningScreen = ({ navigation }) => {
             {loading && (
               <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#9370DB" />
-                <Text style={styles.loadingText}>Loading content...</Text>
+                <Text allowFontScaling={false} style={styles.loadingText}>Loading content...</Text>
               </View>
             )}
 
             {loadError && (
               <View style={{ padding: 10 }}>
-                <Text style={{ color: '#fff' }}>Failed to load content.</Text>
+                <Text allowFontScaling={false} style={{ color: '#fff' }}>Failed to load content.</Text>
               </View>
             )}
 
@@ -459,7 +459,7 @@ const MicroLearningScreen = ({ navigation }) => {
 
             {isCompleted && (
               <View style={styles.completionBadge}>
-                <Text style={styles.completionText}>✓ Completed</Text>
+                <Text allowFontScaling={false} style={styles.completionText}>✓ Completed</Text>
               </View>
             )}
           </View>

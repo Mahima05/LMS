@@ -77,10 +77,10 @@ const MarqueeText = ({ text, speed = 50 }) => {
                     },
                 ]}
             >
-                <Text style={styles.marqueeText} onLayout={onTextLayout}>
+                <Text allowFontScaling={false} style={styles.marqueeText} onLayout={onTextLayout}>
                     {text}
                 </Text>
-                <Text style={styles.marqueeText}>
+                <Text allowFontScaling={false} style={styles.marqueeText}>
                     {text}
                 </Text>
             </Animated.View>
@@ -492,88 +492,88 @@ const DashboardScreen = ({ navigation }) => {
     };
 
     const fetchJourneyData = async () => {
-    try {
-        setLoadingJourney(true);
-        setErrorJourney(null);
-        
-        const token = await AsyncStorage.getItem("token");
-        if (!token) {
-            console.log("Token not found in storage");
-            setErrorJourney("Authentication token not found");
-            setLoadingJourney(false);
-            return;
-        }
+        try {
+            setLoadingJourney(true);
+            setErrorJourney(null);
 
-        const response = await axios.get(
-            'https://lms-api-qa.abisaio.com/api/v1/Journey/user-progress',
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                validateStatus: function (status) {
-                    // Accept both success and 404 as valid responses
-                    return (status >= 200 && status < 300) || status === 404;
-                }
+            const token = await AsyncStorage.getItem("token");
+            if (!token) {
+                console.log("Token not found in storage");
+                setErrorJourney("Authentication token not found");
+                setLoadingJourney(false);
+                return;
             }
-        );
 
-        // Handle 404 - No journey assigned
-        if (response.status === 404 || !response.data.succeeded) {
-            console.log("No journey assigned:", response.data.message || "User has no journey");
-            // Reset to empty state
+            const response = await axios.get(
+                'https://lms-api-qa.abisaio.com/api/v1/Journey/user-progress',
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    validateStatus: function (status) {
+                        // Accept both success and 404 as valid responses
+                        return (status >= 200 && status < 300) || status === 404;
+                    }
+                }
+            );
+
+            // Handle 404 - No journey assigned
+            if (response.status === 404 || !response.data.succeeded) {
+                console.log("No journey assigned:", response.data.message || "User has no journey");
+                // Reset to empty state
+                setJourneyData(null);
+                setFadeAnims([]);
+                setPulseAnims([]);
+                setJourneyRotateAnims([]);
+                setBounceAnims([]);
+                setGlowAnims([]);
+                setErrorJourney(null); // Not an error, just no journey
+                setLoadingJourney(false);
+                return;
+            }
+
+            // Success case - Journey data found
+            if (response.data.succeeded) {
+                console.log("Journey data loaded successfully");
+                setJourneyData(response.data);
+
+                const total = response.data.totalAssigned || 0;
+                console.log("Total assigned steps:", total);
+
+                // Initialize animation arrays
+                setFadeAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
+                setPulseAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
+                setJourneyRotateAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
+                setBounceAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
+                setGlowAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
+
+                setErrorJourney(null);
+            }
+
+        } catch (err) {
+            // Only network errors or unexpected errors reach here
+            console.log("Network/Unexpected error:", err.message);
+
+            // Check if it's a network error
+            if (err.code === 'ERR_NETWORK' || !err.response) {
+                setErrorJourney('Network error. Please check your connection.');
+            } else {
+                setErrorJourney('Failed to fetch journey data. Please try again.');
+            }
+
+            // Reset data on error
             setJourneyData(null);
             setFadeAnims([]);
             setPulseAnims([]);
             setJourneyRotateAnims([]);
             setBounceAnims([]);
             setGlowAnims([]);
-            setErrorJourney(null); // Not an error, just no journey
+
+        } finally {
             setLoadingJourney(false);
-            return;
         }
-
-        // Success case - Journey data found
-        if (response.data.succeeded) {
-            console.log("Journey data loaded successfully");
-            setJourneyData(response.data);
-            
-            const total = response.data.totalAssigned || 0;
-            console.log("Total assigned steps:", total);
-            
-            // Initialize animation arrays
-            setFadeAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
-            setPulseAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
-            setJourneyRotateAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
-            setBounceAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
-            setGlowAnims(Array(total).fill(0).map(() => new Animated.Value(0)));
-            
-            setErrorJourney(null);
-        }
-
-    } catch (err) {
-        // Only network errors or unexpected errors reach here
-        console.log("Network/Unexpected error:", err.message);
-        
-        // Check if it's a network error
-        if (err.code === 'ERR_NETWORK' || !err.response) {
-            setErrorJourney('Network error. Please check your connection.');
-        } else {
-            setErrorJourney('Failed to fetch journey data. Please try again.');
-        }
-        
-        // Reset data on error
-        setJourneyData(null);
-        setFadeAnims([]);
-        setPulseAnims([]);
-        setJourneyRotateAnims([]);
-        setBounceAnims([]);
-        setGlowAnims([]);
-        
-    } finally {
-        setLoadingJourney(false);
-    }
-};
+    };
 
     const onRefresh = async () => {
         setRefreshingJourney(true);
@@ -615,19 +615,19 @@ const DashboardScreen = ({ navigation }) => {
                         { opacity: glowOpacity }
                     ]} />
                     <View style={styles.sparkleContainer}>
-                        <Animated.Text style={[
+                        <Animated.Text allowFontScaling={false} style={[
                             styles.sparkle,
                             { opacity: glowOpacity, transform: [{ rotate: '0deg' }] }
                         ]}>✨</Animated.Text>
-                        <Animated.Text style={[
+                        <Animated.Text allowFontScaling={false} style={[
                             styles.sparkle,
                             { opacity: glowOpacity, transform: [{ rotate: '90deg' }] }
                         ]}>✨</Animated.Text>
-                        <Animated.Text style={[
+                        <Animated.Text allowFontScaling={false} style={[
                             styles.sparkle,
                             { opacity: glowOpacity, transform: [{ rotate: '180deg' }] }
                         ]}>✨</Animated.Text>
-                        <Animated.Text style={[
+                        <Animated.Text allowFontScaling={false} style={[
                             styles.sparkle,
                             { opacity: glowOpacity, transform: [{ rotate: '270deg' }] }
                         ]}>✨</Animated.Text>
@@ -636,7 +636,7 @@ const DashboardScreen = ({ navigation }) => {
                         colors={['#00d4aa', '#00a884', '#00d4aa']}
                         style={styles.gradientCircle}
                     >
-                        <Animated.Text style={[
+                        <Animated.Text allowFontScaling={false} style={[
                             styles.checkmark,
                             { transform: [{ scale: bounceAnims[index] || 1 }] }
                         ]}>✓</Animated.Text>
@@ -687,7 +687,7 @@ const DashboardScreen = ({ navigation }) => {
                         colors={['#6c5ce7', '#5448c8', '#a44aff']}
                         style={styles.gradientCircle}
                     >
-                        <Animated.Text style={[
+                        <Animated.Text allowFontScaling={false} style={[
                             styles.stepNumber,
                             { transform: [{ scale: pulseScale }] }
                         ]}>{stepNumber + 1}</Animated.Text>
@@ -711,9 +711,9 @@ const DashboardScreen = ({ navigation }) => {
                 styles.inactiveCircle,
                 { transform: [{ scale: bounceAnims[index] || 1 }] }
             ]}>
-                <Text style={styles.stepNumberInactive}>{stepNumber + 1}</Text>
+                <Text allowFontScaling={false} style={styles.stepNumberInactive}>{stepNumber + 1}</Text>
                 <View style={styles.lockOverlay}>
-                    <Text style={styles.lockIcon}>🔒</Text>
+                    <Text allowFontScaling={false} style={styles.lockIcon}>🔒</Text>
                 </View>
             </Animated.View>
         );
@@ -812,7 +812,7 @@ const DashboardScreen = ({ navigation }) => {
                                     }
                                 ]}>
                                     <View style={styles.stepHeader}>
-                                        <Text style={[
+                                        <Text allowFontScaling={false} style={[
                                             styles.stepTitle,
                                             isCompleted && styles.completedText
                                         ]}>
@@ -823,12 +823,12 @@ const DashboardScreen = ({ navigation }) => {
                                             isCompleted && styles.statusBadgeCompleted,
                                             isActive && styles.statusBadgeActive
                                         ]}>
-                                            <Text style={styles.statusText}>
+                                            <Text allowFontScaling={false} style={styles.statusText}>
                                                 {isCompleted ? '✓ Done' : isActive ? '⚡ Active' : '🔒 Locked'}
                                             </Text>
                                         </View>
                                     </View>
-                                    <Text style={styles.stepDescription}>
+                                    <Text allowFontScaling={false} style={styles.stepDescription}>
                                         {isCompleted
                                             ? 'Successfully completed! Great work!'
                                             : isActive
@@ -851,7 +851,7 @@ const DashboardScreen = ({ navigation }) => {
                                     }
                                 ]}>
                                     <View style={styles.stepHeader}>
-                                        <Text style={[
+                                        <Text allowFontScaling={false} style={[
                                             styles.stepTitle,
                                             isCompleted && styles.completedText
                                         ]}>
@@ -862,12 +862,12 @@ const DashboardScreen = ({ navigation }) => {
                                             isCompleted && styles.statusBadgeCompleted,
                                             isActive && styles.statusBadgeActive
                                         ]}>
-                                            <Text style={styles.statusText}>
+                                            <Text allowFontScaling={false} style={styles.statusText}>
                                                 {isCompleted ? '✓ Done' : isActive ? '⚡ Active' : '🔒 Locked'}
                                             </Text>
                                         </View>
                                     </View>
-                                    <Text style={styles.stepDescription}>
+                                    <Text allowFontScaling={false} style={styles.stepDescription}>
                                         {isCompleted
                                             ? 'Successfully completed! Great work!'
                                             : isActive
@@ -935,10 +935,10 @@ const DashboardScreen = ({ navigation }) => {
                             colors={['#ffd700', '#ffed4e', '#ffd700']}
                             style={styles.flagGradient}
                         >
-                            <Text style={styles.flagText}>🏆 Journey Complete! 🏆</Text>
+                            <Text allowFontScaling={false} style={styles.flagText}>🏆 Journey Complete! 🏆</Text>
                         </LinearGradient>
                     ) : (
-                        <Text style={styles.flagTextInactive}>🏁 Finish Line</Text>
+                        <Text allowFontScaling={false} style={styles.flagTextInactive}>🏁 Finish Line</Text>
                     )}
                 </Animated.View>
 
@@ -951,29 +951,29 @@ const DashboardScreen = ({ navigation }) => {
                                 opacity: starburstOpacity,
                             }
                         ]}>
-                            <Text style={styles.starburstText}>⭐</Text>
+                            <Text allowFontScaling={false} style={styles.starburstText}>⭐</Text>
                         </Animated.View>
                         <Animated.View style={[
                             styles.confettiContainer,
                             { transform: [{ translateY: confettiY }] }
                         ]}>
-                            <Text style={styles.confetti}>🎉</Text>
-                            <Text style={[styles.confetti, { left: 30 }]}>🎊</Text>
-                            <Text style={[styles.confetti, { left: 60 }]}>✨</Text>
-                            <Text style={[styles.confetti, { left: 90 }]}>🎉</Text>
-                            <Text style={[styles.confetti, { left: 120 }]}>🎊</Text>
-                            <Text style={[styles.confetti, { left: 150 }]}>✨</Text>
+                            <Text allowFontScaling={false} style={styles.confetti}>🎉</Text>
+                            <Text allowFontScaling={false} style={[styles.confetti, { left: 30 }]}>🎊</Text>
+                            <Text allowFontScaling={false} style={[styles.confetti, { left: 60 }]}>✨</Text>
+                            <Text allowFontScaling={false} style={[styles.confetti, { left: 90 }]}>🎉</Text>
+                            <Text allowFontScaling={false} style={[styles.confetti, { left: 120 }]}>🎊</Text>
+                            <Text allowFontScaling={false} style={[styles.confetti, { left: 150 }]}>✨</Text>
                         </Animated.View>
                         <Animated.View style={[
                             styles.celebration,
                             { transform: [{ scale: celebrationScale }] }
                         ]}>
-                            <Text style={styles.celebrationText}>✨ 🎊 ✨ 🎉 ✨ 🎊 ✨</Text>
-                            <Text style={styles.congratsText}>🎉 Congratulations! 🎉</Text>
-                            <Text style={styles.congratsSubtext}>
+                            <Text allowFontScaling={false} style={styles.celebrationText}>✨ 🎊 ✨ 🎉 ✨ 🎊 ✨</Text>
+                            <Text allowFontScaling={false} style={styles.congratsText}>🎉 Congratulations! 🎉</Text>
+                            <Text allowFontScaling={false} style={styles.congratsSubtext}>
                                 You've completed all {journeyData.totalAssigned} tasks
                             </Text>
-                            <Text style={styles.congratsSubtext2}>
+                            <Text allowFontScaling={false} style={styles.congratsSubtext2}>
                                 Amazing work! You're a learning champion! 🌟
                             </Text>
                         </Animated.View>
@@ -1559,10 +1559,10 @@ const DashboardScreen = ({ navigation }) => {
             <View>
                 {/* ⭐ Journey header ABOVE container */}
                 <View style={styles.journeyHeaderTop}>
-                    <Text style={styles.journeyNameTop}>
+                    <Text allowFontScaling={false} style={styles.journeyNameTop}>
                         {journeyData?.journey?.name || 'Journey'}
                     </Text>
-                    <Text style={styles.journeyDatesTop}>
+                    <Text allowFontScaling={false} style={styles.journeyDatesTop}>
                         Start: {journeyData?.journey?.startDate ? formatDate(journeyData.journey.startDate) : '-'}
                         {'  |  '}
                         End: {journeyData?.journey?.endDate ? formatDate(journeyData.journey.endDate) : '-'}
@@ -1586,12 +1586,12 @@ const DashboardScreen = ({ navigation }) => {
         >
             {/* Banner Section - Only visible in Leaderboard */}
             <View style={[styles.bannerSection, { marginHorizontal: 15, marginBottom: 20 }]}>
-                
+
                 <ScrollView
                     ref={bannerScrollRef}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                     scrollEnabled={false} 
+                    scrollEnabled={false}
                     onScrollBeginDrag={handleBannerScrollBeginDrag}
                     onScrollEndDrag={handleBannerScrollEndDrag}
                     onMomentumScrollEnd={handleBannerMomentumEnd}    // use the corrected function above
@@ -1615,12 +1615,12 @@ const DashboardScreen = ({ navigation }) => {
                                 end={{ x: 1, y: 0 }}
                             >
                                 <View style={styles.bannerTextContainer}>
-                                    <Text style={styles.bannerTitle}>{ad.title}</Text>
-                                    <Text style={styles.bannerSubtitle} numberOfLines={1} ellipsizeMode="tail">
+                                    <Text allowFontScaling={false} style={styles.bannerTitle}>{ad.title}</Text>
+                                    <Text allowFontScaling={false} style={styles.bannerSubtitle} numberOfLines={1} ellipsizeMode="tail">
                                         {ad.subtitle}
                                     </Text>
 
-                                    <Text style={styles.readMoreText}>Read more ...</Text>
+                                    <Text allowFontScaling={false} style={styles.readMoreText}>Read more ...</Text>
 
                                 </View>
                                 <Ionicons name="arrow-forward-circle" size={32} color="#fff" />
@@ -1645,7 +1645,7 @@ const DashboardScreen = ({ navigation }) => {
             <View style={[styles.podiumContainer, { marginTop: 30 }]}>
                 {!leaderboardData || leaderboardData.length < 3 ? (
                     <View style={styles.emptyContainer}>
-                        <Text style={styles.emptyText}>Leaderboard data not available</Text>
+                        <Text allowFontScaling={false} style={styles.emptyText}>Leaderboard data not available</Text>
                     </View>
                 ) : (
                     <>
@@ -1664,13 +1664,13 @@ const DashboardScreen = ({ navigation }) => {
                                 },
                             ]}
                         >
-                            <Text style={styles.podiumName}>{leaderboardData[1].name}</Text>
-                            <Text style={styles.podiumPoints}>{leaderboardData[1].points}</Text>
+                            <Text allowFontScaling={false} style={styles.podiumName}>{leaderboardData[1].name}</Text>
+                            <Text allowFontScaling={false} style={styles.podiumPoints}>{leaderboardData[1].points}</Text>
                             <LinearGradient
                                 colors={leaderboardData[1].color}
                                 style={[styles.podiumBase, { height: 80 }]}
                             >
-                                <Text style={styles.podiumMedal}>{leaderboardData[1].medal}</Text>
+                                <Text allowFontScaling={false} style={styles.podiumMedal}>{leaderboardData[1].medal}</Text>
                             </LinearGradient>
                         </Animated.View>
                         <Animated.View
@@ -1691,13 +1691,13 @@ const DashboardScreen = ({ navigation }) => {
                                 },
                             ]}
                         >
-                            <Text style={[styles.podiumName, styles.firstPlaceName]}>{leaderboardData[0].name}</Text>
-                            <Text style={styles.podiumPoints}>{leaderboardData[0].points}</Text>
+                            <Text allowFontScaling={false} style={[styles.podiumName, styles.firstPlaceName]}>{leaderboardData[0].name}</Text>
+                            <Text allowFontScaling={false} style={styles.podiumPoints}>{leaderboardData[0].points}</Text>
                             <LinearGradient
                                 colors={leaderboardData[0].color}
                                 style={[styles.podiumBase, { height: 100 }]}
                             >
-                                <Text style={styles.podiumMedal}>{leaderboardData[0].medal}</Text>
+                                <Text allowFontScaling={false} style={styles.podiumMedal}>{leaderboardData[0].medal}</Text>
                             </LinearGradient>
                         </Animated.View>
                         <Animated.View
@@ -1715,23 +1715,23 @@ const DashboardScreen = ({ navigation }) => {
                                 },
                             ]}
                         >
-                            <Text style={styles.podiumName}>{leaderboardData[2].name}</Text>
-                            <Text style={styles.podiumPoints}>{leaderboardData[2].points}</Text>
+                            <Text allowFontScaling={false} style={styles.podiumName}>{leaderboardData[2].name}</Text>
+                            <Text allowFontScaling={false} style={styles.podiumPoints}>{leaderboardData[2].points}</Text>
                             <LinearGradient
                                 colors={leaderboardData[2].color}
                                 style={[styles.podiumBase, { height: 60 }]}
                             >
-                                <Text style={styles.podiumMedal}>{leaderboardData[2].medal}</Text>
+                                <Text allowFontScaling={false} style={styles.podiumMedal}>{leaderboardData[2].medal}</Text>
                             </LinearGradient>
                         </Animated.View>
                     </>
                 )}
             </View>
-            <Text style={[styles.sectionTitle, { paddingHorizontal: 15, marginBottom: 10, marginTop: 0 }]}>🏅 Rankings</Text>
+            <Text allowFontScaling={false} style={[styles.sectionTitle, { paddingHorizontal: 15, marginBottom: 10, marginTop: 0 }]}>🏅 Rankings</Text>
             <View style={styles.leaderboardList}>
                 {!leaderboardData || leaderboardData.length <= 3 ? (
                     <View style={styles.emptyContainer}>
-                        <Text style={styles.emptyText}>No additional leaderboard entries available</Text>
+                        <Text allowFontScaling={false} style={styles.emptyText}>No additional leaderboard entries available</Text>
                     </View>
                 ) : (
                     <>
@@ -1784,9 +1784,9 @@ const DashboardScreen = ({ navigation }) => {
                                                         isCurrentUser && { backgroundColor: '#7B68EE' }
                                                     ]}
                                                 >
-                                                    <Text style={styles.rankCircleText}>{user.rank}</Text>
+                                                    <Text allowFontScaling={false} style={styles.rankCircleText}>{user.rank}</Text>
                                                 </View>
-                                                <Text
+                                                <Text allowFontScaling={false}
                                                     style={[
                                                         styles.leaderboardName,
                                                         isCurrentUser && { color: '#7B68EE', fontWeight: '800' }
@@ -1797,7 +1797,7 @@ const DashboardScreen = ({ navigation }) => {
                                                     {user.name}
                                                 </Text>
                                             </View>
-                                            <Text
+                                            <Text allowFontScaling={false}
                                                 style={[
                                                     styles.leaderboardPoints,
                                                     isCurrentUser && { color: '#fff' }
@@ -1814,7 +1814,7 @@ const DashboardScreen = ({ navigation }) => {
                         {dashboardData?.userRank && dashboardData.userRank > 10 && (
                             <>
                                 <View style={{ paddingHorizontal: 15, marginVertical: 15, alignItems: 'center' }}>
-                                    <Text style={{ color: '#a8b2d1', fontSize: 12 }}>• • •</Text>
+                                    <Text allowFontScaling={false} style={{ color: '#a8b2d1', fontSize: 12 }}>• • •</Text>
                                 </View>
                                 <View
                                     style={[
@@ -1840,9 +1840,9 @@ const DashboardScreen = ({ navigation }) => {
                                                         { backgroundColor: '#7B68EE' }
                                                     ]}
                                                 >
-                                                    <Text style={styles.rankCircleText}>{dashboardData.userRank}</Text>
+                                                    <Text allowFontScaling={false} style={styles.rankCircleText}>{dashboardData.userRank}</Text>
                                                 </View>
-                                                <Text
+                                                <Text allowFontScaling={false}
                                                     style={[
                                                         styles.leaderboardName,
                                                         { color: '#7B68EE', fontWeight: '800' }
@@ -1853,7 +1853,7 @@ const DashboardScreen = ({ navigation }) => {
                                                     {userName || 'You'}
                                                 </Text>
                                             </View>
-                                            <Text
+                                            <Text allowFontScaling={false}
                                                 style={[
                                                     styles.leaderboardPoints,
                                                     { color: '#fff' }
@@ -1881,13 +1881,13 @@ const DashboardScreen = ({ navigation }) => {
             {dashboardData?.pendingActions && dashboardData.pendingActions.length > 0 ? (
                 dashboardData.pendingActions.map((p) => (
                     <View key={p.id} style={styles.modalListItem}>
-                        <Text style={styles.modalItemTitle}>{p.title}  <Text style={{ fontSize: 12, color: '#a8b2d1' }}>({p.type})</Text></Text>
-                        <Text style={styles.modalItemSub}>Training: {new Date(p.trainingDate).toLocaleString()}</Text>
-                        <Text style={styles.modalItemSub}>Due: {new Date(p.dueDate).toLocaleString()}</Text>
+                        <Text allowFontScaling={false} style={styles.modalItemTitle}>{p.title}  <Text allowFontScaling={false} style={{ fontSize: 12, color: '#a8b2d1' }}>({p.type})</Text></Text>
+                        <Text allowFontScaling={false} style={styles.modalItemSub}>Training: {new Date(p.trainingDate).toLocaleString()}</Text>
+                        <Text allowFontScaling={false} style={styles.modalItemSub}>Due: {new Date(p.dueDate).toLocaleString()}</Text>
                     </View>
                 ))
             ) : (
-                <View style={styles.emptyContainer}><Text style={styles.emptyText}>No pending actions</Text></View>
+                <View style={styles.emptyContainer}><Text allowFontScaling={false} style={styles.emptyText}>No pending actions</Text></View>
             )}
             <View style={{ height: 40 }} />
         </ScrollView>
@@ -1898,7 +1898,7 @@ const DashboardScreen = ({ navigation }) => {
         outputRange: ['0deg', '360deg'],
     });
     return (
-        
+
         <>
             <View style={styles.container}>
                 <StatusBar barStyle="light-content" backgroundColor="#1a1a2e" />
@@ -1929,7 +1929,7 @@ const DashboardScreen = ({ navigation }) => {
                                 refreshing={isLoading}
                                 onRefresh={() => {
                                     const currentDate = new Date();
-                                    
+
 
 
 
@@ -2003,8 +2003,8 @@ const DashboardScreen = ({ navigation }) => {
                                             <View style={styles.statsIcon}>
                                                 <Ionicons name={stat.icon} size={28} color="#fff" />
                                             </View>
-                                            <Text style={styles.statsValue}>{stat.value}</Text>
-                                            <Text style={styles.statsLabel}>{stat.label}</Text>
+                                            <Text allowFontScaling={false} style={styles.statsValue}>{stat.value}</Text>
+                                            <Text allowFontScaling={false} style={styles.statsLabel}>{stat.label}</Text>
                                         </LinearGradient>
                                     </TouchableOpacity>
                                 </Animated.View>
@@ -2018,7 +2018,7 @@ const DashboardScreen = ({ navigation }) => {
                                 activeOpacity={0.90}
                             >
                                 <View style={styles.navTabGradient}>
-                                    <Text style={styles.navTabText}>Learning Journey</Text>
+                                    <Text allowFontScaling={false} style={styles.navTabText}>Learning Journey</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -2027,7 +2027,7 @@ const DashboardScreen = ({ navigation }) => {
                                 activeOpacity={0.90}
                             >
                                 <View style={styles.navTabGradient}>
-                                    <Text style={styles.navTabText}>Leaderboard</Text>
+                                    <Text allowFontScaling={false} style={styles.navTabText}>Leaderboard</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -2036,7 +2036,7 @@ const DashboardScreen = ({ navigation }) => {
                                 activeOpacity={0.90}
                             >
                                 <View style={styles.navTabGradient}>
-                                    <Text style={styles.navTabText}>Pending Actions</Text>
+                                    <Text allowFontScaling={false} style={styles.navTabText}>Pending Actions</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -2056,7 +2056,7 @@ const DashboardScreen = ({ navigation }) => {
                     </ScrollView>
                 </Animated.View>
 
-                  <NotificationModal />
+                <NotificationModal />
                 <BottomNavigation
                     selectedTab={selectedTab}
                     tabScaleAnims={tabScaleAnims}
@@ -2131,10 +2131,10 @@ const DashboardScreen = ({ navigation }) => {
                                 </View>
                                 <View style={styles.alertContent}>
                                     {alertConfig.title && (
-                                        <Text style={styles.alertTitle}>{alertConfig.title}</Text>
+                                        <Text allowFontScaling={false} style={styles.alertTitle}>{alertConfig.title}</Text>
                                     )}
                                     {alertConfig.message && (
-                                        <Text style={styles.alertMessage}>{alertConfig.message}</Text>
+                                        <Text allowFontScaling={false} style={styles.alertMessage}>{alertConfig.message}</Text>
                                     )}
                                 </View>
                                 <View style={styles.alertButtonContainer}>
@@ -2144,7 +2144,7 @@ const DashboardScreen = ({ navigation }) => {
                                             onPress={handleAlertCancel}
                                             activeOpacity={0.8}
                                         >
-                                            <Text style={styles.alertCancelButtonText}>No</Text>
+                                            <Text allowFontScaling={false} style={styles.alertCancelButtonText}>No</Text>
                                         </TouchableOpacity>
                                     )}
                                     <TouchableOpacity
@@ -2158,7 +2158,7 @@ const DashboardScreen = ({ navigation }) => {
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 0 }}
                                         >
-                                            <Text style={styles.alertConfirmButtonText}>Yes</Text>
+                                            <Text allowFontScaling={false} style={styles.alertConfirmButtonText}>Yes</Text>
                                         </LinearGradient>
                                     </TouchableOpacity>
                                 </View>
@@ -2244,33 +2244,39 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         gap: 10,
     },
-    navTab: {
-        flex: 1,
-        height: 44,
-        borderRadius: 20,
-        overflow: 'hidden',
-        borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.12)',
-        backgroundColor: 'transparent',
-    },
+  
     navTabActive: {
         borderColor: '#7B68EE',
         backgroundColor: 'rgba(123, 104, 238, 0.2)',
     },
-    navTabGradient: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: 8,
-    },
-    navTabText: {
-        color: '#fff',
-        fontSize: 13,
-        fontWeight: '600',
-        textAlign: 'center',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-    },
+   navTab: {
+  flex: 1,
+   minHeight: 44,
+  borderRadius: 20,
+  overflow: 'hidden',
+  borderWidth: 1,
+  borderColor: 'rgba(255,255,255,0.12)',
+  backgroundColor: 'transparent',
+},
+
+navTabGradient: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingVertical: 8,
+},
+
+navTabText: {
+  color: '#fff',
+  fontSize: 13,
+  fontWeight: '600',
+  textAlign: 'center',
+  paddingHorizontal: 12,
+  paddingVertical: 4, // a bit smaller so text has more room
+  flexWrap: 'wrap',   // allow multiline
+  includeFontPadding: false, // Android: reduce weird clipping
+},
+
     horizontalSectionContainer: {
         height: 1400,
         marginBottom: 20,
@@ -3054,4 +3060,3 @@ const styles = StyleSheet.create({
 
 });
 export default DashboardScreen;
-

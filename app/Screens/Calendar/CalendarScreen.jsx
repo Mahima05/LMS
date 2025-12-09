@@ -391,7 +391,7 @@ const CalendarScreen = ({ navigation }) => {
             colors={['rgba(123, 104, 238, 0.2)', 'rgba(123, 104, 238, 0.05)']}
             style={styles.greetingCard}
           >
-            <Text style={styles.greetingText}>
+            <Text allowFontScaling={false} style={styles.greetingText}>
               {getGreeting()}, {userName ? userName : "User"} ☀️
             </Text>
           </LinearGradient>
@@ -405,15 +405,15 @@ const CalendarScreen = ({ navigation }) => {
           <View style={styles.legendContainer}>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#A855F7' }]} />
-              <Text style={styles.legendText}>Classroom Training</Text>
+              <Text allowFontScaling={false} style={styles.legendText}>Classroom Training</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#FF6B6B' }]} />
-              <Text style={styles.legendText}>Virtual Training</Text>
+              <Text allowFontScaling={false} style={styles.legendText}>Virtual Training</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#667eea' }]} />
-              <Text style={styles.legendText}>Self Enroll</Text>
+              <Text allowFontScaling={false} style={styles.legendText}>Self Enroll</Text>
             </View>
           </View>
 
@@ -442,8 +442,8 @@ const CalendarScreen = ({ navigation }) => {
                   <Ionicons name="chevron-back" size={24} color="#7B68EE" />
                 </TouchableOpacity>
                 <View style={styles.monthTextContainer}>
-                  <Text style={styles.monthText}>{currentMonth}</Text>
-                  <Text style={styles.yearText}>🗓️ {currentYear}</Text>
+                  <Text allowFontScaling={false} style={styles.monthText}>{currentMonth}</Text>
+                  <Text allowFontScaling={false} style={styles.yearText}>🗓️ {currentYear}</Text>
                 </View>
                 <TouchableOpacity style={styles.monthButton} onPress={handleNextMonth}>
                   <Ionicons name="chevron-forward" size={24} color="#7B68EE" />
@@ -454,7 +454,7 @@ const CalendarScreen = ({ navigation }) => {
               <View style={styles.daysOfWeekRow}>
                 {daysOfWeek.map((day, index) => (
                   <View key={index} style={styles.dayOfWeekCell}>
-                    <Text style={styles.dayOfWeekText}>{day}</Text>
+                    <Text allowFontScaling={false} style={styles.dayOfWeekText}>{day}</Text>
                   </View>
                 ))}
               </View>
@@ -508,14 +508,14 @@ const CalendarScreen = ({ navigation }) => {
                           colors={['#7B68EE', '#9D7FEA']}
                           style={styles.selectedDay}
                         >
-                          <Text style={styles.selectedDayText}>{item.day}</Text>
+                          <Text allowFontScaling={false} style={styles.selectedDayText}>{item.day}</Text>
                           {item.hasEvent && (
                             <View style={[styles.eventDot, { backgroundColor: '#fff' }]} />
                           )}
                         </LinearGradient>
                       ) : (
                         <View style={styles.dayContent}>
-                          <Text
+                          <Text allowFontScaling={false}
                             style={[
                               styles.dayText,
                               !item.isCurrentMonth && styles.inactiveDayText,
@@ -537,7 +537,7 @@ const CalendarScreen = ({ navigation }) => {
 
           {/* Today's Tasks */}
           <View style={styles.tasksSection}>
-            <Text style={styles.tasksSectionTitle}>
+            <Text allowFontScaling={false} style={styles.tasksSectionTitle}>
               {(() => {
                 if (selectedDate === null) {
                   return "No date selected";
@@ -556,7 +556,7 @@ const CalendarScreen = ({ navigation }) => {
             </Text>
 
             {tasks.length === 0 ? (
-              <Text style={{ color: '#999', fontSize: 14, textAlign: 'center', marginTop: 10 }}>
+              <Text allowFontScaling={false} style={{ color: '#999', fontSize: 14, textAlign: 'center', marginTop: 10 }}>
                 No trainings scheduled for this date.
               </Text>
             ) : (
@@ -590,8 +590,8 @@ const CalendarScreen = ({ navigation }) => {
                       style={styles.taskGradient}
                     >
                       <View style={styles.taskLeft}>
-                        <Text style={styles.taskDate}>{dateObj.getDate()}</Text>
-                        <Text style={{ color: '#fff', fontSize: 10 }}>{currentMonth.slice(0, 3)}</Text>
+                        <Text allowFontScaling={false} style={styles.taskDate}>{dateObj.getDate()}</Text>
+                        <Text allowFontScaling={false} style={{ color: '#fff', fontSize: 10 }}>{currentMonth.slice(0, 3)}</Text>
                       </View>
 
                       <View style={styles.taskMiddle}>
@@ -602,10 +602,10 @@ const CalendarScreen = ({ navigation }) => {
                           style={styles.taskIcon}
                         />
                         <View style={styles.taskInfo}>
-                          <Text style={styles.taskTitle}>{task.title}</Text>
+                          <Text allowFontScaling={false} style={styles.taskTitle}>{task.title}</Text>
                           <View style={styles.taskMeta}>
                             <Ionicons name="calendar" size={12} color="rgba(255,255,255,0.9)" />
-                            <Text style={styles.taskMetaText}>{dateStr}</Text>
+                            <Text allowFontScaling={false} style={styles.taskMetaText}>{dateStr}</Text>
                           </View>
                         </View>
                       </View>
@@ -614,7 +614,7 @@ const CalendarScreen = ({ navigation }) => {
                         setSelectedTask(task);
                         setModalVisible(true);
                       }}>
-                        <Text style={styles.detailsBtnText}>Details</Text>
+                        <Text allowFontScaling={false} style={styles.detailsBtnText}>Details</Text>
                       </TouchableOpacity>
                     </LinearGradient>
                   </Animated.View>
@@ -638,8 +638,8 @@ const CalendarScreen = ({ navigation }) => {
           <View style={styles.modalContainer}>
             {selectedTask && (
               <>
-                <Text style={styles.modalTitle}>Training Session Details</Text>
-                <Text style={styles.modalSubTitle}>{selectedTask.title}</Text>
+                <Text allowFontScaling={false} style={styles.modalTitle}>Training Session Details</Text>
+                <Text allowFontScaling={false} style={styles.modalSubTitle}>{selectedTask.title}</Text>
 
                 {(() => {
                   const start = new Date(selectedTask.trainingDate);
@@ -657,12 +657,12 @@ const CalendarScreen = ({ navigation }) => {
 
                   return (
                     <>
-                      <Text style={styles.modalText}>
-                        <Text style={styles.modalLabel}>Start: </Text>
+                      <Text allowFontScaling={false} style={styles.modalText}>
+                        <Text allowFontScaling={false} style={styles.modalLabel}>Start: </Text>
                         {formatTime(start)}
                       </Text>
-                      <Text style={styles.modalText}>
-                        <Text style={styles.modalLabel}>End: </Text>
+                      <Text allowFontScaling={false} style={styles.modalText}>
+                        <Text allowFontScaling={false} style={styles.modalLabel}>End: </Text>
                         {formatTime(end)}
                       </Text>
                     </>
@@ -670,22 +670,22 @@ const CalendarScreen = ({ navigation }) => {
                 })()}
 
                 {selectedTask.trainerName && (
-                  <Text style={styles.modalText}>
-                    <Text style={styles.modalLabel}>Trainer: </Text>
+                  <Text allowFontScaling={false} style={styles.modalText}>
+                    <Text allowFontScaling={false} style={styles.modalLabel}>Trainer: </Text>
                     {selectedTask.trainerName}
                   </Text>
                 )}
 
                 {selectedTask.location && (
-                  <Text style={styles.modalText}>
-                    <Text style={styles.modalLabel}>Location: </Text>
+                  <Text allowFontScaling={false} style={styles.modalText}>
+                    <Text allowFontScaling={false} style={styles.modalLabel}>Location: </Text>
                     {selectedTask.location.trim()}
                   </Text>
                 )}
 
                 {selectedTask.venue && (
-                  <Text style={styles.modalText}>
-                    <Text style={styles.modalLabel}>Venue: </Text>
+                  <Text allowFontScaling={false} style={styles.modalText}>
+                    <Text allowFontScaling={false} style={styles.modalLabel}>Venue: </Text>
                     {selectedTask.venue.trim()}
                   </Text>
                 )}
@@ -700,7 +700,7 @@ const CalendarScreen = ({ navigation }) => {
                       });
                     }}
                   >
-                    <Text style={styles.modalButtonText}>DETAILS</Text>
+                    <Text allowFontScaling={false} style={styles.modalButtonText}>DETAILS</Text>
                   </Pressable>
 
 
@@ -708,7 +708,7 @@ const CalendarScreen = ({ navigation }) => {
                     style={[styles.modalButton, { backgroundColor: '#ccc' }]}
                     onPress={() => setModalVisible(false)}
                   >
-                    <Text style={[styles.modalButtonText, { color: '#000' }]}>CLOSE</Text>
+                    <Text allowFontScaling={false} style={[styles.modalButtonText, { color: '#000' }]}>CLOSE</Text>
                   </Pressable>
                 </View>
               </>

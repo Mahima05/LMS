@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, Animated, StyleSheet, Dimensions, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Dimensions, Image, StyleSheet, View } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -107,7 +107,7 @@ export default function SplashScreen({ navigation, onFinish }) {
       </Animated.View>
 
       {/* Tagline */}
-      <Animated.Text style={[styles.tagline, { opacity: textOpacity }]}>
+      <Animated.Text allowFontScaling={false} style={[styles.tagline, { opacity: textOpacity }]}>
         Learn Today, Lead Tomorrow
       </Animated.Text>
 

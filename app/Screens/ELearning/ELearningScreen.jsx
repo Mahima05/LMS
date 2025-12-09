@@ -4,20 +4,20 @@ import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    Animated,
-    BackHandler,
-    Dimensions,
-    Modal,
-    Platform,
-    RefreshControl,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Animated,
+  BackHandler,
+  Dimensions,
+  Modal,
+  Platform,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 // ✅ Import the universal drawer components
 import { useNotification } from '@/app/Components/NotificationContext';
@@ -716,7 +716,7 @@ const ELearningScreen = ({ navigation }) => {
                           style={styles.filterTabGradient}
                         >
                           <Ionicons name={filter.icon} size={18} color="#fff" />
-                          <Text style={styles.filterTabTextActive}>
+                          <Text allowFontScaling={false} style={styles.filterTabTextActive}>
                             {filter.label === 'PENDING' ? `PENDING [${pendingCount}]` :
                               filter.label === 'COMPLETED' ? `COMPLETED [${completedCount}]` :
                                 'ALL'}
@@ -726,7 +726,7 @@ const ELearningScreen = ({ navigation }) => {
                       ) : (
                         <View style={styles.filterTabInactive}>
                           <Ionicons name={filter.icon} size={18} color="#7B68EE" />
-                          <Text style={styles.filterTabText}>
+                          <Text allowFontScaling={false} style={styles.filterTabText}>
                             {filter.label === 'PENDING' ? `PENDING [${pendingCount}]` :
                               filter.label === 'COMPLETED' ? `COMPLETED [${completedCount}]` :
                                 'ALL'}
@@ -763,10 +763,10 @@ const ELearningScreen = ({ navigation }) => {
                   end={{ x: 1, y: 0 }}
                   style={styles.tableHeaderGradient}
                 >
-                  <Text style={[styles.headerCell, styles.sNoColumn]}>SNo.</Text>
-                  <Text style={[styles.headerCell, styles.nameColumn]}>Name</Text>
-                  <Text style={[styles.headerCell, styles.contentColumn]}>Content name</Text>
-                  <Text style={[styles.headerCell, styles.actionColumn]}>Action</Text>
+                  <Text allowFontScaling={false} style={[styles.headerCell, styles.sNoColumn]}>SNo.</Text>
+                  <Text allowFontScaling={false} style={[styles.headerCell, styles.nameColumn]}>Name</Text>
+                  <Text allowFontScaling={false} style={[styles.headerCell, styles.contentColumn]}>Content name</Text>
+                  <Text allowFontScaling={false} style={[styles.headerCell, styles.actionColumn]}>Action</Text>
                 </LinearGradient>
               </Animated.View>
 
@@ -781,7 +781,7 @@ const ELearningScreen = ({ navigation }) => {
               {error && !loading && (
                 <View style={styles.emptyState}>
                   <Ionicons name="alert-circle-outline" size={48} color="#8B7AA3" />
-                  <Text style={styles.emptyText}>Error: {error}</Text>
+                  <Text allowFontScaling={false} style={styles.emptyText}>Error: {error}</Text>
                 </View>
               )}
 
@@ -817,19 +817,19 @@ const ELearningScreen = ({ navigation }) => {
                       style={styles.rowContent}
                     >
 
-                      <Text style={[styles.rowCell, styles.sNoColumn, styles.sNoText]}>
+                      <Text allowFontScaling={false} style={[styles.rowCell, styles.sNoColumn, styles.sNoText]}>
                         {course.sNo}.
                       </Text>
-                      <Text style={[styles.rowCell, styles.nameColumn, styles.nameText]}>
+                      <Text allowFontScaling={false} style={[styles.rowCell, styles.nameColumn, styles.nameText]}>
                         {course.name}
                       </Text>
-                      <Text style={[styles.rowCell, styles.contentColumn, styles.contentText]}>
+                      <Text allowFontScaling={false} style={[styles.rowCell, styles.contentColumn, styles.contentText]}>
                         {course.contentName}
                       </Text>
                       <View style={[styles.actionColumn, { alignItems: 'center' }]}>
                         {course.status === 'EXPIRED' ? (
                           <TouchableOpacity onPress={() => setExpiredCourse(course)}>
-                            <Text style={{ color: '#FF7070', fontWeight: '600' }}>Expired</Text>
+                            <Text allowFontScaling={false} style={{ color: '#FF7070', fontWeight: '600' }}>Expired</Text>
                           </TouchableOpacity>
                         ) : course.canView && (
 
@@ -861,7 +861,7 @@ const ELearningScreen = ({ navigation }) => {
               {!loading && !error && filteredCourses.length === 0 && (
                 <View style={styles.emptyState}>
                   <Ionicons name="search-outline" size={48} color="#8B7AA3" />
-                  <Text style={styles.emptyText}>No courses found</Text>
+                  <Text allowFontScaling={false} style={styles.emptyText}>No courses found</Text>
                 </View>
               )}
             </View>
@@ -889,35 +889,35 @@ const ELearningScreen = ({ navigation }) => {
               padding: 20
             }}
           >
-            <Text style={{ color: '#fff', fontSize: 18, fontWeight: '700', marginBottom: 12 }}>
+            <Text allowFontScaling={false} style={{ color: '#fff', fontSize: 18, fontWeight: '700', marginBottom: 12 }}>
               Course Expired
             </Text>
 
-            <Text style={{ color: '#fff', fontSize: 15, marginBottom: 6 }}>
-              <Text style={{ fontWeight: '700' }}>Course: </Text>{expiredCourse.raw?.courseName ?? expiredCourse.name}
+            <Text allowFontScaling={false} style={{ color: '#fff', fontSize: 15, marginBottom: 6 }}>
+              <Text allowFontScaling={false} style={{ fontWeight: '700' }}>Course: </Text>{expiredCourse.raw?.courseName ?? expiredCourse.name}
             </Text>
 
-            <Text style={{ color: '#fff', fontSize: 15, marginBottom: 6 }}>
-              <Text style={{ fontWeight: '700' }}>Content: </Text>{expiredCourse.raw?.contentName ?? expiredCourse.contentName}
+            <Text allowFontScaling={false} style={{ color: '#fff', fontSize: 15, marginBottom: 6 }}>
+              <Text allowFontScaling={false} style={{ fontWeight: '700' }}>Content: </Text>{expiredCourse.raw?.contentName ?? expiredCourse.contentName}
             </Text>
 
-            <Text style={{ color: '#fff', fontSize: 15, marginBottom: 6 }}>
-              <Text style={{ fontWeight: '700' }}>Start Date: </Text>
+            <Text allowFontScaling={false} style={{ color: '#fff', fontSize: 15, marginBottom: 6 }}>
+              <Text allowFontScaling={false} style={{ fontWeight: '700' }}>Start Date: </Text>
               {expiredCourse.raw?.startDate?.split('T')[0] ?? '-'}
             </Text>
 
-            <Text style={{ color: '#fff', fontSize: 15, marginBottom: 6 }}>
-              <Text style={{ fontWeight: '700' }}>End Date: </Text>
+            <Text allowFontScaling={false} style={{ color: '#fff', fontSize: 15, marginBottom: 6 }}>
+              <Text allowFontScaling={false} style={{ fontWeight: '700' }}>End Date: </Text>
               {expiredCourse.raw?.endDate?.split('T')[0] ?? '-'}
             </Text>
 
-            <Text style={{ color: '#fff', fontSize: 15, marginBottom: 6 }}>
-              <Text style={{ fontWeight: '700' }}>Program: </Text>
+            <Text allowFontScaling={false} style={{ color: '#fff', fontSize: 15, marginBottom: 6 }}>
+              <Text allowFontScaling={false} style={{ fontWeight: '700' }}>Program: </Text>
               {expiredCourse.raw?.programName ?? '-'}
             </Text>
 
-            <Text style={{ color: '#fff', fontSize: 15, marginBottom: 20 }}>
-              <Text style={{ fontWeight: '700' }}>Created By: </Text>
+            <Text allowFontScaling={false} style={{ color: '#fff', fontSize: 15, marginBottom: 20 }}>
+              <Text allowFontScaling={false} style={{ fontWeight: '700' }}>Created By: </Text>
               {expiredCourse.raw?.createdByName ?? '-'}
             </Text>
 
@@ -929,7 +929,7 @@ const ELearningScreen = ({ navigation }) => {
                 borderRadius: 10
               }}
             >
-              <Text style={{ textAlign: 'center', color: '#1a1a2e', fontWeight: '600' }}>
+              <Text allowFontScaling={false} style={{ textAlign: 'center', color: '#1a1a2e', fontWeight: '600' }}>
                 Close
               </Text>
             </TouchableOpacity>
@@ -946,14 +946,14 @@ const ELearningScreen = ({ navigation }) => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.filterModal}>
-            <Text style={styles.modalTitle}>Filters</Text>
+            <Text allowFontScaling={false} style={styles.modalTitle}>Filters</Text>
 
             {/* SAME 2×5 GRID LIKE COURSE SCREEN */}
             <View style={styles.filterGrid}>
 
               {/* Completion Criteria */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Completion Criteria</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Completion Criteria</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={[
@@ -973,7 +973,7 @@ const ELearningScreen = ({ navigation }) => {
 
               {/* Created By */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Created By</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Created By</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={createdByList}
@@ -990,12 +990,12 @@ const ELearningScreen = ({ navigation }) => {
 
               {/* Start Date */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Start Date</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Start Date</Text>
                 <TouchableOpacity
                   style={styles.dateInput}
                   onPress={() => setShowStartPicker(true)}
                 >
-                  <Text style={{ color: startDate ? "#000" : "#888" }}>
+                  <Text allowFontScaling={false} style={{ color: startDate ? "#000" : "#888" }}>
                     {startDate || "Select Start Date"}
                   </Text>
                 </TouchableOpacity>
@@ -1003,12 +1003,12 @@ const ELearningScreen = ({ navigation }) => {
 
               {/* End Date */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>End Date</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>End Date</Text>
                 <TouchableOpacity
                   style={styles.dateInput}
                   onPress={() => setShowEndPicker(true)}
                 >
-                  <Text style={{ color: endDate ? "#000" : "#888" }}>
+                  <Text allowFontScaling={false} style={{ color: endDate ? "#000" : "#888" }}>
                     {endDate || "Select End Date"}
                   </Text>
                 </TouchableOpacity>
@@ -1019,10 +1019,10 @@ const ELearningScreen = ({ navigation }) => {
             {/* BUTTONS ROW EXACT SAME */}
             <View style={styles.filterButtonsRow}>
               <TouchableOpacity style={styles.resetButton} onPress={resetFilters}>
-                <Text style={{ color: "#7B68EE", fontWeight: "600" }}>Reset</Text>
+                <Text allowFontScaling={false} style={{ color: "#7B68EE", fontWeight: "600" }}>Reset</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
-                <Text style={{ color: "#fff", fontWeight: "600" }}>Apply Filters</Text>
+                <Text allowFontScaling={false} style={{ color: "#fff", fontWeight: "600" }}>Apply Filters</Text>
               </TouchableOpacity>
             </View>
 

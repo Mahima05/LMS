@@ -129,7 +129,7 @@ const EFeedbackScreen = ({ navigation, route }) => {
       <LinearGradient colors={['#4A3B7C', '#2D1B69', '#1a1a2e']} style={{ flex: 1 }}>
         <Header title="Training Feedback" showBackButton onBackPress={() => navigation.goBack()} />
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: '#fff', fontSize: 16 }}>Loading course details...</Text>
+          <Text allowFontScaling={false} style={{ color: '#fff', fontSize: 16 }}>Loading course details...</Text>
         </View>
       </LinearGradient>
     );
@@ -143,31 +143,31 @@ const EFeedbackScreen = ({ navigation, route }) => {
 
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}>
-            <Text style={styles.bold}>Course:</Text> {details?.title || "N/A"}
+          <Text allowFontScaling={false} style={styles.infoText}>
+            <Text allowFontScaling={false} style={styles.bold}>Course:</Text> {details?.title || "N/A"}
           </Text>
-          <Text style={styles.infoText}>
-            <Text style={styles.bold}>Date:</Text> {
+          <Text allowFontScaling={false} style={styles.infoText}>
+            <Text allowFontScaling={false} style={styles.bold}>Date:</Text> {
               (details && details.trainingBatches && details.trainingBatches.trainingDate)
                 ? new Date(details.trainingBatches.trainingDate).toLocaleString()
                 : "N/A"
             }
           </Text>
-          <Text style={styles.infoText}>
-            <Text style={styles.bold}>Trainer:</Text> {
+          <Text allowFontScaling={false} style={styles.infoText}>
+            <Text allowFontScaling={false} style={styles.bold}>Trainer:</Text> {
               (details && details.trainingBatches && details.trainingBatches.trainerName)
                 ? details.trainingBatches.trainerName
                 : "N/A"
             }
           </Text>
-          <Text style={styles.infoText}>
-            <Text style={styles.bold}>Name:</Text> {userInfo?.name || "N/A"}
+          <Text allowFontScaling={false} style={styles.infoText}>
+            <Text allowFontScaling={false} style={styles.bold}>Name:</Text> {userInfo?.name || "N/A"}
           </Text>
-          <Text style={styles.infoText}>
-            <Text style={styles.bold}>SAP ID:</Text> {userInfo?.sapid || "N/A"}
+          <Text allowFontScaling={false} style={styles.infoText}>
+            <Text allowFontScaling={false} style={styles.bold}>SAP ID:</Text> {userInfo?.sapid || "N/A"}
           </Text>
-          <Text style={styles.infoText}>
-            <Text style={styles.bold}>Venue:</Text> {
+          <Text allowFontScaling={false} style={styles.infoText}>
+            <Text allowFontScaling={false} style={styles.bold}>Venue:</Text> {
               (details && details.trainingBatches && details.trainingBatches.venueName)
                 ? details.trainingBatches.venueName
                 : "N/A"
@@ -179,7 +179,7 @@ const EFeedbackScreen = ({ navigation, route }) => {
 
         {QUESTIONS.map((q, i) => (
           <View key={i} style={styles.qBlock}>
-            <Text style={styles.qText}>{i + 1}. {q}</Text>
+            <Text allowFontScaling={false} style={styles.qText}>{i + 1}. {q}</Text>
 
 
             <View style={styles.emojiRow}>
@@ -190,8 +190,8 @@ const EFeedbackScreen = ({ navigation, route }) => {
                     ratings[i] === opt.value && styles.selectedBox,
                     { transform: [{ scale: animatedValues[i][eIndex] }] }
                   ]}>
-                    <Text style={styles.emoji}>{opt.emoji}</Text>
-                    <Text style={styles.emojiLabel}>{opt.label}</Text>
+                    <Text allowFontScaling={false} style={styles.emoji}>{opt.emoji}</Text>
+                    <Text allowFontScaling={false} style={styles.emojiLabel}>{opt.label}</Text>
                   </Animated.View>
                 </TouchableWithoutFeedback>
               ))}
@@ -200,7 +200,7 @@ const EFeedbackScreen = ({ navigation, route }) => {
         ))}
 
 
-        <Text style={styles.sectionHeading}>What aspects of the training did you like the most?</Text>
+        <Text allowFontScaling={false} style={styles.sectionHeading}>What aspects of the training did you like the most?</Text>
         <TextInput
           placeholder="Write your response..."
           placeholderTextColor="#888"
@@ -211,7 +211,7 @@ const EFeedbackScreen = ({ navigation, route }) => {
         />
 
 
-        <Text style={styles.sectionHeading}>What would you like to see improved in this training to make it more useful?</Text>
+        <Text allowFontScaling={false} style={styles.sectionHeading}>What would you like to see improved in this training to make it more useful?</Text>
         <TextInput
           placeholder="Write your suggestions..."
           placeholderTextColor="#888"
@@ -224,7 +224,7 @@ const EFeedbackScreen = ({ navigation, route }) => {
 
         <TouchableWithoutFeedback onPress={onSubmit} disabled={loading}>
           <LinearGradient colors={['#6B7FD7', '#5A4D8F']} style={styles.submitGrad}>
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitText}>Submit Feedback</Text>}
+            {loading ? <ActivityIndicator color="#fff" /> : <Text allowFontScaling={false} style={styles.submitText}>Submit Feedback</Text>}
           </LinearGradient>
         </TouchableWithoutFeedback>
 

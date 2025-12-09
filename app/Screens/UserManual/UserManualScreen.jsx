@@ -4,14 +4,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as FileSystem from 'expo-file-system/legacy';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator, Animated,
-    BackHandler,
-    Dimensions,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    View
+  ActivityIndicator, Animated,
+  BackHandler,
+  Dimensions,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 // ✅ Import universal components
 import { useNotification } from '@/app/Components/NotificationContext';
@@ -172,12 +172,12 @@ const UserManualScreen = ({ navigation }) => {
               {pdfLoading ? (
   <View style={styles.loadingContainer}>
     <ActivityIndicator size="large" color="#7B68EE" />
-    <Text style={styles.loadingText}>Loading User Manual...</Text>
+    <Text allowFontScaling={false} style={styles.loadingText}>Loading User Manual...</Text>
   </View>
 ) : pdfError ? (
   <View style={styles.errorContainer}>
     <Ionicons name="alert-circle-outline" size={64} color="#ff4757" />
-    <Text style={styles.errorText}>{pdfError}</Text>
+    <Text allowFontScaling={false} style={styles.errorText}>{pdfError}</Text>
   </View>
 ) : (
   <Pdf

@@ -362,10 +362,10 @@ export default function LoginScreen() {
                     color={rememberMe ? "#280137" : "#999"}
                     style={styles.checkbox}
                   />
-                  <Text style={styles.rememberMeText}>Remember me</Text>
+                  <Text allowFontScaling={false} style={styles.rememberMeText}>Remember me</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleForgotPassword}>
-                  <Text style={styles.forgotText}>Forgot password?</Text>
+                  <Text allowFontScaling={false} style={styles.forgotText}>Forgot password?</Text>
                 </TouchableOpacity>
 
               </View>
@@ -380,7 +380,7 @@ export default function LoginScreen() {
                   {loading ? (
                     <ActivityIndicator color="#fff" />
                   ) : (
-                    <Text style={styles.loginButtonText}>Login</Text>
+                    <Text allowFontScaling={false} style={styles.loginButtonText}>Login</Text>
                   )}
                 </LinearGradient>
               </TouchableOpacity>
@@ -451,10 +451,10 @@ export default function LoginScreen() {
                 {/* Alert Content */}
                 <View style={styles.alertContent}>
                   {alertConfig.title && (
-                    <Text style={styles.alertTitle}>{alertConfig.title}</Text>
+                    <Text allowFontScaling={false} style={styles.alertTitle}>{alertConfig.title}</Text>
                   )}
                   {alertConfig.message && (
-                    <Text style={styles.alertMessage}>{alertConfig.message}</Text>
+                    <Text allowFontScaling={false} style={styles.alertMessage}>{alertConfig.message}</Text>
                   )}
                 </View>
 
@@ -466,7 +466,7 @@ export default function LoginScreen() {
                       onPress={handleAlertCancel}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.alertCancelButtonText}>Cancel</Text>
+                      <Text allowFontScaling={false} style={styles.alertCancelButtonText}>Cancel</Text>
                     </TouchableOpacity>
                   )}
                   <TouchableOpacity
@@ -480,7 +480,7 @@ export default function LoginScreen() {
                       start={{ x: 0, y: 0 }}
                       end={{ x: 1, y: 0 }}
                     >
-                      <Text style={styles.alertConfirmButtonText}>OK</Text>
+                      <Text allowFontScaling={false} style={styles.alertConfirmButtonText}>OK</Text>
                     </LinearGradient>
                   </TouchableOpacity>
                 </View>

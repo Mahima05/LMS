@@ -194,7 +194,7 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
 if (!journeyName && totalAssigned === 0) {
   return (
     <View style={styles.noJourneyFullBox}>
-      <Text style={styles.noJourneyText}>No journey allotted</Text>
+      <Text allowFontScaling={false} style={styles.noJourneyText}>No journey allotted</Text>
     </View>
   );
 }
@@ -265,7 +265,7 @@ if (!journeyName && totalAssigned === 0) {
                 borderColor: button.isCompleted ? '#4A90E2' : "#fff",
               }
             ]}>
-              <Text style={[
+              <Text allowFontScaling={false} style={[
                 styles.buttonText,
                 { fontSize: button.size > 28 ? 12 : 10 }
               ]}>
@@ -298,7 +298,7 @@ if (!journeyName && totalAssigned === 0) {
               },
             ]}
           >
-            <Text style={styles.dateBadgeText}>{formatDate(journeyStartDate)}</Text>
+            <Text allowFontScaling={false} style={styles.dateBadgeText}>{formatDate(journeyStartDate)}</Text>
           </View>
         )}
         {lastButton && journeyEndDate && (
@@ -311,7 +311,7 @@ if (!journeyName && totalAssigned === 0) {
               },
             ]}
           >
-            <Text style={styles.dateBadgeText}>{formatDate(journeyEndDate)}</Text>
+            <Text allowFontScaling={false} style={styles.dateBadgeText}>{formatDate(journeyEndDate)}</Text>
           </View>
         )}
 

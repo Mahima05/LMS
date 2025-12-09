@@ -5,18 +5,18 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Sharing from 'expo-sharing';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    Animated,
-    BackHandler,
-    Dimensions,
-    Image,
-    Modal,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Animated,
+  BackHandler,
+  Dimensions,
+  Image,
+  Modal,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Pdf from 'react-native-pdf';
 // ✅ Import universal components
@@ -262,7 +262,7 @@ const ExploreMoreScreen = ({ navigation }) => {
             ]}
           >
 
-            <Text style={styles.categoryTitle}>{category}</Text>
+            <Text allowFontScaling={false} style={styles.categoryTitle}>{category}</Text>
           </Animated.View>
         </View>
 
@@ -283,8 +283,8 @@ const ExploreMoreScreen = ({ navigation }) => {
                     style={styles.courseImage}
                     resizeMode="cover"
                   />
-                  <Text style={styles.courseName}>{course.name}</Text>
-                  <Text style={styles.courseObjective}>{course.objective}</Text>
+                  <Text allowFontScaling={false} style={styles.courseName}>{course.name}</Text>
+                  <Text allowFontScaling={false} style={styles.courseObjective}>{course.objective}</Text>
 
                   <TouchableOpacity
                     onPress={() => toggleExpand(course.id)}
@@ -294,7 +294,7 @@ const ExploreMoreScreen = ({ navigation }) => {
                       colors={['#7B68EE', '#9D7FEA']}
                       style={styles.readMoreGradient}
                     >
-                      <Text style={styles.readMoreText}>
+                      <Text allowFontScaling={false} style={styles.readMoreText}>
                         {isExpanded ? 'Hide Details' : 'Read More'}
                       </Text>
                     </LinearGradient>
@@ -303,31 +303,31 @@ const ExploreMoreScreen = ({ navigation }) => {
                   {isExpanded && (
                     <View style={styles.detailsContainer}>
                       <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Published By:</Text>
-                        <Text style={styles.detailValue}>{course.publishedBy}</Text>
+                        <Text allowFontScaling={false} style={styles.detailLabel}>Published By:</Text>
+                        <Text allowFontScaling={false} style={styles.detailValue}>{course.publishedBy}</Text>
                       </View>
                       <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Published On:</Text>
-                        <Text style={styles.detailValue}>
+                        <Text allowFontScaling={false} style={styles.detailLabel}>Published On:</Text>
+                        <Text allowFontScaling={false} style={styles.detailValue}>
                           {new Date(course.publishedOn).toLocaleDateString()}
                         </Text>
                       </View>
                       <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Last Updated:</Text>
-                        <Text style={styles.detailValue}>
+                        <Text allowFontScaling={false} style={styles.detailLabel}>Last Updated:</Text>
+                        <Text allowFontScaling={false} style={styles.detailValue}>
                           {new Date(course.lastUpdatedOn).toLocaleDateString()}
                         </Text>
                       </View>
                       <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Duration:</Text>
-                        <Text style={styles.detailValue}>{course.duration} mins</Text>
+                        <Text allowFontScaling={false} style={styles.detailLabel}>Duration:</Text>
+                        <Text allowFontScaling={false} style={styles.detailValue}>{course.duration} mins</Text>
                       </View>
 
                       {course.courseContent?.length > 0 ? (
                         course.courseContent.map((content, idx) => (
                           <View key={idx} style={styles.contentCard}>
-                            <Text style={styles.contentTitle}>{content.title}</Text>
-                            <Text style={styles.contentDescription}>
+                            <Text allowFontScaling={false} style={styles.contentTitle}>{content.title}</Text>
+                            <Text allowFontScaling={false} style={styles.contentDescription}>
                               {content.description}
                             </Text>
 
@@ -341,7 +341,7 @@ const ExploreMoreScreen = ({ navigation }) => {
                                   style={styles.downloadButton}
                                 >
                                   <Ionicons name="eye-outline" size={18} color="#fff" />
-                                  <Text style={styles.downloadText}>View</Text>
+                                  <Text allowFontScaling={false} style={styles.downloadText}>View</Text>
                                 </LinearGradient>
                               </TouchableOpacity>
 
@@ -350,7 +350,7 @@ const ExploreMoreScreen = ({ navigation }) => {
                           </View>
                         ))
                       ) : (
-                        <Text style={styles.noContentText}>
+                        <Text allowFontScaling={false} style={styles.noContentText}>
                           No additional content available.
                         </Text>
                       )}
@@ -432,7 +432,7 @@ const ExploreMoreScreen = ({ navigation }) => {
           style={styles.modalCloseButton}
           onPress={() => setViewerOpen(false)}
         >
-          <Text style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
+          <Text allowFontScaling={false} style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
             Close
           </Text>
         </TouchableOpacity>
@@ -669,4 +669,3 @@ const styles = StyleSheet.create({
 });
 
 export default ExploreMoreScreen;
-

@@ -4,20 +4,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    Animated,
-    BackHandler,
-    Dimensions,
-    Modal,
-    Platform,
-    RefreshControl,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Animated,
+  BackHandler,
+  Dimensions,
+  Modal,
+  Platform,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 // ✅ Import universal components
 import { useNotification } from '@/app/Components/NotificationContext';
@@ -466,29 +466,29 @@ const CoursesScreen = ({ navigation }) => {
 
             <View style={styles.tableContainer}>
               <View style={styles.tableHeader}>
-                <Text style={[styles.headerCell, styles.sNoColumn]}>SNo.</Text>
-                <Text style={[styles.headerCell, styles.courseNameColumn]}>Course Name</Text>
-                <Text style={[styles.headerCell, styles.statusColumn]}>Status</Text>
-                <Text style={[styles.headerCell, styles.actionColumn]}>Action</Text>
+                <Text allowFontScaling={false} style={[styles.headerCell, styles.sNoColumn]}>SNo.</Text>
+                <Text allowFontScaling={false} style={[styles.headerCell, styles.courseNameColumn]}>Course Name</Text>
+                <Text allowFontScaling={false} style={[styles.headerCell, styles.statusColumn]}>Status</Text>
+                <Text allowFontScaling={false} style={[styles.headerCell, styles.actionColumn]}>Action</Text>
               </View>
 
               {loading ? (
                 <View style={{ paddingVertical: 40, alignItems: 'center' }}>
                   <ActivityIndicator size="large" color="#7B68EE" />
-                  <Text style={{ color: '#555', marginTop: 10 }}>Loading courses...</Text>
+                  <Text allowFontScaling={false} style={{ color: '#555', marginTop: 10 }}>Loading courses...</Text>
                 </View>
               ) : courses.length === 0 ? (
-                <Text style={{ color: '#333', textAlign: 'center', marginVertical: 20 }}>
+                <Text allowFontScaling={false} style={{ color: '#333', textAlign: 'center', marginVertical: 20 }}>
                   No courses available.
                 </Text>
               ) : (
                 courses.map((course, index) => (
                   <View key={course.id} style={styles.tableRow}>
-                    <Text style={[styles.rowCell, styles.sNoColumn, styles.sNoText]}>{index + 1}.</Text>
-                    <Text style={[styles.rowCell, styles.courseNameColumn, styles.courseNameText]}>{course.name}</Text>
+                    <Text allowFontScaling={false} style={[styles.rowCell, styles.sNoColumn, styles.sNoText]}>{index + 1}.</Text>
+                    <Text allowFontScaling={false} style={[styles.rowCell, styles.courseNameColumn, styles.courseNameText]}>{course.name}</Text>
                     <View style={[styles.statusColumn, { alignItems: 'center' }]}>
                       <View style={[styles.statusBadge, { backgroundColor: statusBadgeColor(course.status) }]}>
-                        <Text style={styles.statusText}>{course.status || 'N/A'}</Text>
+                        <Text allowFontScaling={false} style={styles.statusText}>{course.status || 'N/A'}</Text>
                       </View>
                     </View>
                     <View style={[styles.actionColumn, { alignItems: 'center' }]}>
@@ -538,14 +538,14 @@ const CoursesScreen = ({ navigation }) => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.filterModal}>
-            <Text style={styles.modalTitle}>Filters</Text>
+            <Text allowFontScaling={false} style={styles.modalTitle}>Filters</Text>
 
             {/* Grid: 2 columns x 5 rows (10 elements) */}
             <View style={styles.filterGrid}>
 
               {/* Category */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Category</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Category</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={CATEGORY_DATA}
@@ -562,7 +562,7 @@ const CoursesScreen = ({ navigation }) => {
 
               {/* Level */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Level</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Level</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={LEVEL_DATA}
@@ -579,7 +579,7 @@ const CoursesScreen = ({ navigation }) => {
 
               {/* Status */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Status</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Status</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={STATUS_DATA}
@@ -596,7 +596,7 @@ const CoursesScreen = ({ navigation }) => {
 
               {/* Global Category */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Global Category</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Global Category</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={GLOBAL_CATEGORY_DATA}
@@ -613,7 +613,7 @@ const CoursesScreen = ({ navigation }) => {
 
               {/* Program */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Program</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Program</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={programs.map((p) => ({ label: p.name, value: String(p.id) }))}
@@ -630,7 +630,7 @@ const CoursesScreen = ({ navigation }) => {
 
               {/* Created By */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Created By</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Created By</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={createdByList.map((c) => ({ label: c.name, value: String(c.id) }))}
@@ -647,12 +647,12 @@ const CoursesScreen = ({ navigation }) => {
 
               {/* From Date */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Start Date</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Start Date</Text>
                 <TouchableOpacity
                   style={styles.dateInput}
                   onPress={() => setShowFromDatePicker(true)}
                 >
-                  <Text style={{ color: fromDate ? '#000' : '#888' }}>
+                  <Text allowFontScaling={false} style={{ color: fromDate ? '#000' : '#888' }}>
                     {fromDate ? formatDate(fromDate) : 'Select date'}
                   </Text>
                 </TouchableOpacity>
@@ -671,12 +671,12 @@ const CoursesScreen = ({ navigation }) => {
 
               {/* To Date */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>End Date</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>End Date</Text>
                 <TouchableOpacity
                   style={styles.dateInput}
                   onPress={() => setShowToDatePicker(true)}
                 >
-                  <Text style={{ color: toDate ? '#000' : '#888' }}>
+                  <Text allowFontScaling={false} style={{ color: toDate ? '#000' : '#888' }}>
                     {toDate ? formatDate(toDate) : 'Select date'}
                   </Text>
                 </TouchableOpacity>
@@ -700,10 +700,10 @@ const CoursesScreen = ({ navigation }) => {
             {/* Buttons */}
             <View style={styles.filterButtonsRow}>
               <TouchableOpacity style={styles.resetButton} onPress={resetFilters}>
-                <Text style={{ color: '#7B68EE', fontWeight: '600' }}>Reset</Text>
+                <Text allowFontScaling={false} style={{ color: '#7B68EE', fontWeight: '600' }}>Reset</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
-                <Text style={{ color: '#fff', fontWeight: '600' }}>Apply Filters</Text>
+                <Text allowFontScaling={false} style={{ color: '#fff', fontWeight: '600' }}>Apply Filters</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -719,38 +719,38 @@ const CoursesScreen = ({ navigation }) => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.sortModal}>
-            <Text style={styles.modalTitle}>Sort By</Text>
+            <Text allowFontScaling={false} style={styles.modalTitle}>Sort By</Text>
 
             <TouchableOpacity style={styles.sortOption} onPress={() => applySort('CreatedDate')}>
               <View style={styles.sortBullet} />
-              <Text style={styles.sortText}>Created Date</Text>
+              <Text allowFontScaling={false} style={styles.sortText}>Created Date</Text>
               {sortBy === 'CreatedDate' && <Ionicons name="checkmark" size={18} color="#7B68EE" />}
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.sortOption} onPress={() => applySort('PublishedDate')}>
               <View style={styles.sortBullet} />
-              <Text style={styles.sortText}>Published Date</Text>
+              <Text allowFontScaling={false} style={styles.sortText}>Published Date</Text>
               {sortBy === 'PublishedDate' && <Ionicons name="checkmark" size={18} color="#7B68EE" />}
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.sortOption} onPress={() => applySort('NameAsc')}>
               <View style={styles.sortBullet} />
-              <Text style={styles.sortText}>Name Ascending</Text>
+              <Text allowFontScaling={false} style={styles.sortText}>Name Ascending</Text>
               {sortBy === 'NameAsc' && <Ionicons name="checkmark" size={18} color="#7B68EE" />}
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.sortOption} onPress={() => applySort('NameDesc')}>
               <View style={styles.sortBullet} />
-              <Text style={styles.sortText}>Name Descending</Text>
+              <Text allowFontScaling={false} style={styles.sortText}>Name Descending</Text>
               {sortBy === 'NameDesc' && <Ionicons name="checkmark" size={18} color="#7B68EE" />}
             </TouchableOpacity>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
               <TouchableOpacity style={styles.resetButton} onPress={resetSort}>
-                <Text style={{ color: '#7B68EE', fontWeight: '600' }}>Reset</Text>
+                <Text allowFontScaling={false} style={{ color: '#7B68EE', fontWeight: '600' }}>Reset</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.applyButton} onPress={() => setSortModalVisible(false)}>
-                <Text style={{ color: '#fff', fontWeight: '600' }}>Close</Text>
+                <Text allowFontScaling={false} style={{ color: '#fff', fontWeight: '600' }}>Close</Text>
               </TouchableOpacity>
             </View>
           </View>

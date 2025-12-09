@@ -4,21 +4,21 @@ import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    Animated,
-    BackHandler,
-    Dimensions,
-    Modal,
-    Platform,
-    RefreshControl,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Alert,
+  Animated,
+  BackHandler,
+  Dimensions,
+  Modal,
+  Platform,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 // ✅ Import universal components
@@ -576,7 +576,7 @@ const TrainingSessionScreen = ({ navigation }) => {
                           isSelected && { backgroundColor: '#6B7FD7' } // keep your style; previously colors were provided by filters array
                         ]}
                       >
-                        <Text style={[
+                        <Text allowFontScaling={false} style={[
                           styles.filterButtonText,
                           isSelected && styles.filterButtonTextActive
                         ]}>
@@ -643,7 +643,7 @@ const TrainingSessionScreen = ({ navigation }) => {
 
             {error && (
               <View style={{ marginTop: 20, alignItems: 'center' }}>
-                <Text style={{ color: 'white' }}>{error}</Text>
+                <Text allowFontScaling={false} style={{ color: 'white' }}>{error}</Text>
               </View>
             )}
 
@@ -652,7 +652,7 @@ const TrainingSessionScreen = ({ navigation }) => {
               {(!loading && filteredSessions.length === 0) && (
                 <View style={styles.emptyState}>
                   <Ionicons name="calendar-outline" size={48} color="#8B7AA3" />
-                  <Text style={styles.emptyText}>No sessions found</Text>
+                  <Text allowFontScaling={false} style={styles.emptyText}>No sessions found</Text>
                 </View>
               )}
 
@@ -674,33 +674,33 @@ const TrainingSessionScreen = ({ navigation }) => {
                     ]}
                   >
                     <LinearGradient colors={['#6B7FD7', '#7B68A6']} style={styles.cardHeader}>
-                      <Text style={styles.cardHeaderText}>Training Name:</Text>
-                      <Text style={styles.cardTitle}>{session.name}</Text>
+                      <Text allowFontScaling={false} style={styles.cardHeaderText}>Training Name:</Text>
+                      <Text allowFontScaling={false} style={styles.cardTitle}>{session.name}</Text>
                     </LinearGradient>
 
                     <View style={styles.cardBody}>
                       <View style={styles.cardRow}>
-                        <Text style={styles.cardLabel}>Training Date:</Text>
-                        <Text style={styles.cardValue}>{session.date}</Text>
+                        <Text allowFontScaling={false} style={styles.cardLabel}>Training Date:</Text>
+                        <Text allowFontScaling={false} style={styles.cardValue}>{session.date}</Text>
                       </View>
                       <View style={styles.cardDivider} />
 
                       <View style={styles.cardRow}>
-                        <Text style={styles.cardLabel}>Training Mode:</Text>
-                        <Text style={styles.cardValue}>{session.mode}</Text>
+                        <Text allowFontScaling={false} style={styles.cardLabel}>Training Mode:</Text>
+                        <Text allowFontScaling={false} style={styles.cardValue}>{session.mode}</Text>
                       </View>
                       <View style={styles.cardDivider} />
 
                       <View style={styles.cardRow}>
-                        <Text style={styles.cardLabel}>Training Time:</Text>
-                        <Text style={styles.cardValue}>{session.time}</Text>
+                        <Text allowFontScaling={false} style={styles.cardLabel}>Training Time:</Text>
+                        <Text allowFontScaling={false} style={styles.cardValue}>{session.time}</Text>
                       </View>
 
                       <TouchableOpacity
                         style={styles.detailsButton}
                         onPress={() => handleShowDetails(session)}
                       >
-                        <Text style={styles.detailsButtonText}>Show Details</Text>
+                        <Text allowFontScaling={false} style={styles.detailsButtonText}>Show Details</Text>
                       </TouchableOpacity>
                     </View>
                   </Animated.View>
@@ -722,13 +722,13 @@ const TrainingSessionScreen = ({ navigation }) => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.filterModal}>
-            <Text style={styles.modalTitle}>Filters</Text>
+            <Text allowFontScaling={false} style={styles.modalTitle}>Filters</Text>
 
             <View style={styles.filterGrid}>
 
               {/* Type */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Type</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Type</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={[{ label: 'Online', value: 'Online' }, { label: 'Classroom', value: 'Classroom' }]}
@@ -745,7 +745,7 @@ const TrainingSessionScreen = ({ navigation }) => {
 
               {/* User Type */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>User Type</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>User Type</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={[{ label: 'user', value: 'user' }, { label: 'trainer', value: 'trainer' }]}
@@ -762,7 +762,7 @@ const TrainingSessionScreen = ({ navigation }) => {
 
               {/* Status */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Status</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Status</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={[
@@ -785,7 +785,7 @@ const TrainingSessionScreen = ({ navigation }) => {
 
               {/* Course */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Course</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Course</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={coursesList.map(c => ({ label: c.name, value: String(c.id) }))}
@@ -802,7 +802,7 @@ const TrainingSessionScreen = ({ navigation }) => {
 
               {/* Trainer */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Trainer</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Trainer</Text>
                 <View style={styles.pickerWrap}>
                   <Dropdown
                     data={trainersList.map(t => ({ label: t.name, value: String(t.id) }))}
@@ -819,9 +819,9 @@ const TrainingSessionScreen = ({ navigation }) => {
 
               {/* Created From */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Created Start Date</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Created Start Date</Text>
                 <TouchableOpacity style={styles.dateInput} onPress={() => setShowCreatedFromPicker(true)}>
-                  <Text style={{ color: createdFrom ? '#000' : '#888' }}>{createdFrom ? formatDate(createdFrom) : 'Select date'}</Text>
+                  <Text allowFontScaling={false} style={{ color: createdFrom ? '#000' : '#888' }}>{createdFrom ? formatDate(createdFrom) : 'Select date'}</Text>
                 </TouchableOpacity>
                 {showCreatedFromPicker && (
                   <DateTimePicker
@@ -838,9 +838,9 @@ const TrainingSessionScreen = ({ navigation }) => {
 
               {/* Created To */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Created End Date</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Created End Date</Text>
                 <TouchableOpacity style={styles.dateInput} onPress={() => setShowCreatedToPicker(true)}>
-                  <Text style={{ color: createdTo ? '#000' : '#888' }}>{createdTo ? formatDate(createdTo) : 'Select date'}</Text>
+                  <Text allowFontScaling={false} style={{ color: createdTo ? '#000' : '#888' }}>{createdTo ? formatDate(createdTo) : 'Select date'}</Text>
                 </TouchableOpacity>
                 {showCreatedToPicker && (
                   <DateTimePicker
@@ -857,9 +857,9 @@ const TrainingSessionScreen = ({ navigation }) => {
 
               {/* Training Start */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Training Start</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Training Start</Text>
                 <TouchableOpacity style={styles.dateInput} onPress={() => setShowTrainingStartPicker(true)}>
-                  <Text style={{ color: trainingStart ? '#000' : '#888' }}>{trainingStart ? formatDate(trainingStart) : 'Select date'}</Text>
+                  <Text allowFontScaling={false} style={{ color: trainingStart ? '#000' : '#888' }}>{trainingStart ? formatDate(trainingStart) : 'Select date'}</Text>
                 </TouchableOpacity>
                 {showTrainingStartPicker && (
                   <DateTimePicker
@@ -876,9 +876,9 @@ const TrainingSessionScreen = ({ navigation }) => {
 
               {/* Training End */}
               <View style={styles.filterCell}>
-                <Text style={styles.filterLabel}>Training End</Text>
+                <Text allowFontScaling={false} style={styles.filterLabel}>Training End</Text>
                 <TouchableOpacity style={styles.dateInput} onPress={() => setShowTrainingEndPicker(true)}>
-                  <Text style={{ color: trainingEnd ? '#000' : '#888' }}>{trainingEnd ? formatDate(trainingEnd) : 'Select date'}</Text>
+                  <Text allowFontScaling={false} style={{ color: trainingEnd ? '#000' : '#888' }}>{trainingEnd ? formatDate(trainingEnd) : 'Select date'}</Text>
                 </TouchableOpacity>
                 {showTrainingEndPicker && (
                   <DateTimePicker
@@ -897,10 +897,10 @@ const TrainingSessionScreen = ({ navigation }) => {
 
             <View style={styles.filterButtonsRow}>
               <TouchableOpacity style={styles.resetButton} onPress={resetFilters}>
-                <Text style={{ color: '#7B68EE', fontWeight: '600' }}>Reset</Text>
+                <Text allowFontScaling={false} style={{ color: '#7B68EE', fontWeight: '600' }}>Reset</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
-                <Text style={{ color: '#fff', fontWeight: '600' }}>Apply Filters</Text>
+                <Text allowFontScaling={false} style={{ color: '#fff', fontWeight: '600' }}>Apply Filters</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -915,44 +915,44 @@ const TrainingSessionScreen = ({ navigation }) => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.sortModal}>
-            <Text style={styles.modalTitle}>Sort By</Text>
+            <Text allowFontScaling={false} style={styles.modalTitle}>Sort By</Text>
 
             <TouchableOpacity style={styles.sortOption} onPress={() => applySort('CreatedDate')}>
               <View style={styles.sortBullet} />
-              <Text style={styles.sortText}>Created Date</Text>
+              <Text allowFontScaling={false} style={styles.sortText}>Created Date</Text>
               {sortBy === 'CreatedDate' && <Ionicons name="checkmark" size={18} color="#7B68EE" />}
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.sortOption} onPress={() => applySort('PublishedDate')}>
               <View style={styles.sortBullet} />
-              <Text style={styles.sortText}>Published Date</Text>
+              <Text allowFontScaling={false} style={styles.sortText}>Published Date</Text>
               {sortBy === 'PublishedDate' && <Ionicons name="checkmark" size={18} color="#7B68EE" />}
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.sortOption} onPress={() => applySort('NameAsc')}>
               <View style={styles.sortBullet} />
-              <Text style={styles.sortText}>Name Ascending</Text>
+              <Text allowFontScaling={false} style={styles.sortText}>Name Ascending</Text>
               {sortBy === 'NameAsc' && <Ionicons name="checkmark" size={18} color="#7B68EE" />}
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.sortOption} onPress={() => applySort('NameDesc')}>
               <View style={styles.sortBullet} />
-              <Text style={styles.sortText}>Name Descending</Text>
+              <Text allowFontScaling={false} style={styles.sortText}>Name Descending</Text>
               {sortBy === 'NameDesc' && <Ionicons name="checkmark" size={18} color="#7B68EE" />}
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.sortOption} onPress={() => applySort('TrainingDate')}>
               <View style={styles.sortBullet} />
-              <Text style={styles.sortText}>Training Date</Text>
+              <Text allowFontScaling={false} style={styles.sortText}>Training Date</Text>
               {sortBy === 'TrainingDate' && <Ionicons name="checkmark" size={18} color="#7B68EE" />}
             </TouchableOpacity>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
               <TouchableOpacity style={styles.resetButton} onPress={resetSort}>
-                <Text style={{ color: '#7B68EE', fontWeight: '600' }}>Reset</Text>
+                <Text allowFontScaling={false} style={{ color: '#7B68EE', fontWeight: '600' }}>Reset</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.applyButton} onPress={() => setSortModalVisible(false)}>
-                <Text style={{ color: '#fff', fontWeight: '600' }}>Close</Text>
+                <Text allowFontScaling={false} style={{ color: '#fff', fontWeight: '600' }}>Close</Text>
               </TouchableOpacity>
             </View>
           </View>

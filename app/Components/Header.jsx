@@ -374,7 +374,7 @@ const Header = ({
               <Ionicons name="menu" size={30} color="#fff" />
             </TouchableOpacity>
           )}
-          <Text style={styles.headerTitle}>{title}</Text>
+          <Text allowFontScaling={false} style={styles.headerTitle}>{title}</Text>
         </View>
         <View style={styles.headerRight}>
           {showSpinner && (
@@ -412,7 +412,7 @@ const Header = ({
     <Ionicons name="notifications-outline" size={24} color="#fff" />
     {unreadCount > 0 && (
       <View style={styles.notificationBadge}>
-        <Text style={styles.notificationBadgeText}>
+        <Text allowFontScaling={false} style={styles.notificationBadgeText}>
           {unreadCount > 99 ? '99+' : unreadCount}
         </Text>
       </View>
@@ -438,7 +438,7 @@ const Header = ({
           >
             <LinearGradient colors={['#2D2438', '#1a1a2e']} style={styles.spinnerContent}>
               <View style={styles.spinnerHeader}>
-                <Text style={styles.spinnerTitle}>🎯 Spin & Win!</Text>
+                <Text  allowFontScaling={false} style={styles.spinnerTitle}>🎯 Spin & Win!</Text>
                 <TouchableOpacity onPress={closeSpinner} style={styles.closeButton}>
                   <Ionicons name="close-circle" size={30} color="#fff" />
                 </TouchableOpacity>
@@ -446,7 +446,7 @@ const Header = ({
 
               <View style={styles.wheelContainer}>
                 <View style={styles.wheelPointer}>
-                  <Text style={styles.pointerIcon}>▼</Text>
+                  <Text allowFontScaling={false} style={styles.pointerIcon}>▼</Text>
                 </View>
                 <Animated.View
                   style={[
@@ -488,7 +488,7 @@ const Header = ({
                   colors={isSpinning ? ['#666', '#888'] : ['#7B68EE', '#9D7FEA']}
                   style={styles.spinButtonGradient}
                 >
-                  <Text style={styles.spinButtonText}>
+                  <Text allowFontScaling={false} style={styles.spinButtonText}>
                     {isSpinning ? 'SPINNING...' : 'SPIN NOW'}
                   </Text>
                 </LinearGradient>
@@ -505,9 +505,9 @@ const Header = ({
                     colors={['#FFD700', '#FFA500']}
                     style={styles.celebrationGradient}
                   >
-                    <Text style={styles.celebrationIcon}>🎉</Text>
-                    <Text style={styles.celebrationTitle}>Congratulations!</Text>
-                    <Text style={styles.celebrationText}>You won {selectedReward.label}!</Text>
+                    <Text allowFontScaling={false} style={styles.celebrationIcon}>🎉</Text>
+                    <Text allowFontScaling={false} style={styles.celebrationTitle}>Congratulations!</Text>
+                    <Text allowFontScaling={false} style={styles.celebrationText}>You won {selectedReward.label}!</Text>
                     <TouchableOpacity
                       style={styles.claimButton}
                       onPress={() => {
@@ -518,7 +518,7 @@ const Header = ({
                         }
                       }}
                     >
-                      <Text style={styles.claimButtonText}>Claim Reward</Text>
+                      <Text allowFontScaling={false} style={styles.claimButtonText}>Claim Reward</Text>
                     </TouchableOpacity>
                   </LinearGradient>
                 </Animated.View>
@@ -572,13 +572,13 @@ const Header = ({
                     colors={['#7B68EE', '#9D7FEA']}
                     style={styles.iconGradient}
                   >
-                    <Text style={styles.modernAlertIcon}>✓</Text>
+                    <Text allowFontScaling={false} style={styles.modernAlertIcon}>✓</Text>
                   </LinearGradient>
                 </View>
 
-                <Text style={styles.modernAlertTitle}>Attempt Completed</Text>
+                <Text allowFontScaling={false} style={styles.modernAlertTitle}>Attempt Completed</Text>
 
-                <Text style={styles.modernAlertMessage}>
+                <Text allowFontScaling={false} style={styles.modernAlertMessage}>
                   You’ve already used today’s spin.
                 </Text>
 
@@ -586,7 +586,7 @@ const Header = ({
 
                 <View style={styles.infoContainer}>
                   <Ionicons name="time-outline" size={18} color="#9D7FEA" />
-                  <Text style={styles.infoText}>
+                  <Text allowFontScaling={false} style={styles.infoText}>
                     Come back tomorrow for another chance to win rewards!
                   </Text>
                 </View>
@@ -602,7 +602,7 @@ const Header = ({
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                   >
-                    <Text style={styles.modernAlertButtonText}>Got it</Text>
+                    <Text allowFontScaling={false} style={styles.modernAlertButtonText}>Got it</Text>
                     <Ionicons
                       name="arrow-forward"
                       size={18}

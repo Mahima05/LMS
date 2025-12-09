@@ -124,17 +124,17 @@ const FeedbackScreen = ({ navigation, route }) => {
 
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}><Text style={styles.bold}>Course:</Text> {details.title}</Text>
-          <Text style={styles.infoText}><Text style={styles.bold}>Date:</Text> {new Date(details.trainingBatches.trainingDate).toLocaleString()}</Text>
-          <Text style={styles.infoText}><Text style={styles.bold}>Trainer:</Text> {details.trainingBatches.trainerName}</Text>
-          <Text style={styles.infoText}><Text style={styles.bold}>Name:</Text> {userInfo.name}</Text>
-          <Text style={styles.infoText}><Text style={styles.bold}>SAP ID:</Text> {userInfo.sapid}</Text>
-          <Text style={styles.infoText}><Text style={styles.bold}>Venue:</Text> {details.trainingBatches.venueName}</Text>
+          <Text allowFontScaling={false} style={styles.infoText}><Text allowFontScaling={false} style={styles.bold}>Course:</Text> {details.title}</Text>
+          <Text allowFontScaling={false} style={styles.infoText}><Text allowFontScaling={false} style={styles.bold}>Date:</Text> {new Date(details.trainingBatches.trainingDate).toLocaleString()}</Text>
+          <Text allowFontScaling={false} style={styles.infoText}><Text allowFontScaling={false} style={styles.bold}>Trainer:</Text> {details.trainingBatches.trainerName}</Text>
+          <Text allowFontScaling={false} style={styles.infoText}><Text allowFontScaling={false} style={styles.bold}>Name:</Text> {userInfo.name}</Text>
+          <Text allowFontScaling={false} style={styles.infoText}><Text allowFontScaling={false} style={styles.bold}>SAP ID:</Text> {userInfo.sapid}</Text>
+          <Text allowFontScaling={false} style={styles.infoText}><Text allowFontScaling={false} style={styles.bold}>Venue:</Text> {details.trainingBatches.venueName}</Text>
         </View>
 
         {QUESTIONS.map((q, i) => (
           <View key={i} style={styles.qBlock}>
-            <Text style={styles.qText}>{i + 1}. {q}</Text>
+            <Text allowFontScaling={false} style={styles.qText}>{i + 1}. {q}</Text>
 
             <View style={styles.emojiRow}>
               {emojiOptions.map((opt, eIndex) => (
@@ -144,8 +144,8 @@ const FeedbackScreen = ({ navigation, route }) => {
                     ratings[i] === opt.value && styles.selectedBox,
                     { transform: [{ scale: animatedValues[i][eIndex] }] }
                   ]}>
-                    <Text style={styles.emoji}>{opt.emoji}</Text>
-                    <Text style={styles.emojiLabel}>{opt.label}</Text>
+                    <Text allowFontScaling={false} style={styles.emoji}>{opt.emoji}</Text>
+                    <Text allowFontScaling={false} style={styles.emojiLabel}>{opt.label}</Text>
                   </Animated.View>
                 </TouchableWithoutFeedback>
               ))}
@@ -153,7 +153,7 @@ const FeedbackScreen = ({ navigation, route }) => {
           </View>
         ))}
 
-        <Text style={styles.sectionHeading}>What aspects of the training did you like the most?</Text>
+        <Text allowFontScaling={false} style={styles.sectionHeading}>What aspects of the training did you like the most?</Text>
         <TextInput
           placeholder="Write your response..."
           placeholderTextColor="#888"
@@ -163,7 +163,7 @@ const FeedbackScreen = ({ navigation, route }) => {
           onChangeText={setLikedAspects}
         />
 
-        <Text style={styles.sectionHeading}>What would you like to see improved in this training to make it more useful?</Text>
+        <Text allowFontScaling={false} style={styles.sectionHeading}>What would you like to see improved in this training to make it more useful?</Text>
         <TextInput
           placeholder="Write your suggestions..."
           placeholderTextColor="#888"
@@ -175,7 +175,7 @@ const FeedbackScreen = ({ navigation, route }) => {
 
         <TouchableWithoutFeedback onPress={onSubmit} disabled={loading}>
           <LinearGradient colors={['#6B7FD7', '#5A4D8F']} style={styles.submitGrad}>
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitText}>Submit Feedback</Text>}
+            {loading ? <ActivityIndicator color="#fff" /> : <Text allowFontScaling={false} style={styles.submitText}>Submit Feedback</Text>}
           </LinearGradient>
         </TouchableWithoutFeedback>
 

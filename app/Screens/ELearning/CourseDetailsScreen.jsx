@@ -8,18 +8,18 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import * as Sharing from "expo-sharing";
 import React, { useEffect, useRef, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    Animated,
-    BackHandler,
-    Dimensions,
-    Modal,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Alert,
+  Animated,
+  BackHandler,
+  Dimensions,
+  Modal,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
 import { WebView } from "react-native-webview";
 import Header from '../../Components/Header';
@@ -464,7 +464,7 @@ const CourseDetailsScreen = ({ route, navigation }) => {
           />
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <ActivityIndicator size="large" color="#c8b9ff" />
-            <Text style={{ color: "#fff", marginTop: 12 }}>Loading course...</Text>
+            <Text allowFontScaling={false} style={{ color: "#fff", marginTop: 12 }}>Loading course...</Text>
           </View>
         </LinearGradient>
       </View>
@@ -487,37 +487,37 @@ const CourseDetailsScreen = ({ route, navigation }) => {
           <ScrollView style={styles.scrollContent} contentContainerStyle={{ padding: 16, paddingBottom: 80 }} showsVerticalScrollIndicator={false}>
             {/* === NEW COURSE INFORMATION CARD === */}
             <Animated.View style={[styles.infoCard, { opacity: cardAnim, transform: [{ translateY: cardAnim.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) }] }]}>
-              <Text style={{ fontSize: 18, fontWeight: "800", marginBottom: 10, color: "#111" }}>E-learning Course</Text>
+              <Text allowFontScaling={false} style={{ fontSize: 18, fontWeight: "800", marginBottom: 10, color: "#111" }}>E-learning Course</Text>
 
-              <Text style={{ color: "#444", marginBottom: 4 }}>
-                <Text style={{ fontWeight: "700" }}>Course: </Text>{course?.name ?? "-"}
+              <Text allowFontScaling={false} style={{ color: "#444", marginBottom: 4 }}>
+                <Text allowFontScaling={false} style={{ fontWeight: "700" }}>Course: </Text>{course?.name ?? "-"}
               </Text>
 
-              <Text style={{ color: "#444", marginBottom: 4 }}>
-                <Text style={{ fontWeight: "700" }}>Content: </Text>{course?.contentName ?? "-"}
+              <Text allowFontScaling={false} style={{ color: "#444", marginBottom: 4 }}>
+                <Text allowFontScaling={false} style={{ fontWeight: "700" }}>Content: </Text>{course?.contentName ?? "-"}
               </Text>
 
-              <Text style={{ color: "#444", marginBottom: 4 }}>
-                <Text style={{ fontWeight: "700" }}>Start Date: </Text>
+              <Text allowFontScaling={false} style={{ color: "#444", marginBottom: 4 }}>
+                <Text allowFontScaling={false} style={{ fontWeight: "700" }}>Start Date: </Text>
                 {course?.startDate ? course.startDate.split("T")[0] : "-"}
               </Text>
 
-              <Text style={{ color: "#444" }}>
-                <Text style={{ fontWeight: "700" }}>End Date: </Text>
+              <Text allowFontScaling={false} style={{ color: "#444" }}>
+                <Text allowFontScaling={false} style={{ fontWeight: "700" }}>End Date: </Text>
                 {course?.endDate ? course.endDate.split("T")[0] : "-"}
               </Text>
             </Animated.View>
 
             <Animated.View style={[styles.infoCard, { opacity: cardAnim, transform: [{ translateY: cardAnim.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) }] }]}>
               <View>
-                <Text style={{ color: "#111", marginBottom: 6 }}>Learning as: <Text style={{ fontWeight: "800" }}>{learner?.employeeName ?? "Unknown"}</Text></Text>
-                <Text style={{ color: "#444", marginBottom: 2 }}>{learner?.department ?? ""} • {learner?.designation ?? ""}</Text>
-                <Text style={{ color: "#444", marginBottom: 2 }}>Last accessed: {learner?.lastAccessedOn ?? "Not started"}</Text>
-                <Text style={{ color: "#444" }}>Course Status: {learner?.completed ? "Completed" : (learner?.timeSpent ? "In Progress" : "Not Started")}</Text>
+                <Text allowFontScaling={false} style={{ color: "#111", marginBottom: 6 }}>Learning as: <Text allowFontScaling={false} style={{ fontWeight: "800" }}>{learner?.employeeName ?? "Unknown"}</Text></Text>
+                <Text allowFontScaling={false} style={{ color: "#444", marginBottom: 2 }}>{learner?.department ?? ""} • {learner?.designation ?? ""}</Text>
+                <Text allowFontScaling={false} style={{ color: "#444", marginBottom: 2 }}>Last accessed: {learner?.lastAccessedOn ?? "Not started"}</Text>
+                <Text allowFontScaling={false} style={{ color: "#444" }}>Course Status: {learner?.completed ? "Completed" : (learner?.timeSpent ? "In Progress" : "Not Started")}</Text>
               </View>
             </Animated.View>
 
-            <Text style={styles.sectionTitle}>Learning Progress</Text>
+            <Text allowFontScaling={false} style={styles.sectionTitle}>Learning Progress</Text>
 
             {/* list items */}
             <View style={styles.progressList}>
@@ -546,22 +546,22 @@ const CourseDetailsScreen = ({ route, navigation }) => {
                     </View>
 
                     <View style={styles.stepBody}>
-                      <Text style={[styles.stepTitle, isActiveVisual ? styles.stepTitleActive : null]}>{s.title}</Text>
-                      <Text style={styles.stepSubtitle}>{s.subtitle}</Text>
+                      <Text allowFontScaling={false} style={[styles.stepTitle, isActiveVisual ? styles.stepTitleActive : null]}>{s.title}</Text>
+                      <Text allowFontScaling={false} style={styles.stepSubtitle}>{s.subtitle}</Text>
                     </View>
 
                     <View style={styles.stepRight}>
                       {s.completed ? (
-                        <Text style={styles.completedText}>Completed</Text>
+                        <Text allowFontScaling={false} style={styles.completedText}>Completed</Text>
                       ) : isActiveVisual ? (
-                        <Text style={styles.availableText}>Available</Text>
+                        <Text allowFontScaling={false} style={styles.availableText}>Available</Text>
                       ) : (
-                        <Text style={styles.lockText}>Locked</Text>
+                        <Text allowFontScaling={false} style={styles.lockText}>Locked</Text>
                       )}
 
                       {/* ✅ Show time spent only for video step */}
                       {s.key === "video" && timeSpent !== null && (
-                        <Text style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>
+                        <Text allowFontScaling={false} style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>
                           Time spent: {timeSpent} min
                         </Text>
                       )}
@@ -575,7 +575,7 @@ const CourseDetailsScreen = ({ route, navigation }) => {
             {/* helper note area */}
             <View style={styles.noteBox}>
               <FontAwesome name="info-circle" size={16} color="#6B4FD7" style={{ marginRight: 8 }} />
-              <Text style={styles.noteText}>
+              <Text allowFontScaling={false} style={styles.noteText}>
                 Steps activate in order. Complete earlier active steps to proceed. Tappable items are available to you.
               </Text>
             </View>
@@ -584,11 +584,11 @@ const CourseDetailsScreen = ({ route, navigation }) => {
             {course?.certificateStatus?.toLowerCase?.() === "active" && course?.certificateID && (
               <TouchableOpacity style={styles.certificateRow} onPress={downloadCertificate}>
                 <FontAwesome name="download" size={18} color="#6B7FD7" />
-                <Text style={{ marginLeft: 10, color: "#6B7FD7", fontWeight: "700" }}>Download Certificate</Text>
+                <Text allowFontScaling={false} style={{ marginLeft: 10, color: "#6B7FD7", fontWeight: "700" }}>Download Certificate</Text>
               </TouchableOpacity>
             )}
 
-            {error ? <Text style={{ color: "red", marginTop: 10 }}>{error}</Text> : null}
+            {error ? <Text allowFontScaling={false} style={{ color: "red", marginTop: 10 }}>{error}</Text> : null}
           </ScrollView>
         </View>
       </LinearGradient>
@@ -604,15 +604,15 @@ const CourseDetailsScreen = ({ route, navigation }) => {
         <View style={isFullscreen ? styles.webFullscreenWrapper : styles.webModalWrapper}>
           <View style={styles.webHeader}>
             <TouchableOpacity onPress={closeWebModal} style={{ padding: 8 }}>
-              <Text style={{ color: "#fff" }}>Close</Text>
+              <Text allowFontScaling={false} style={{ color: "#fff" }}>Close</Text>
             </TouchableOpacity>
 
-            <Text numberOfLines={1} style={{ color: "#fff", fontWeight: "700", flex: 1, textAlign: "center" }}>
+            <Text allowFontScaling={false} numberOfLines={1} style={{ color: "#fff", fontWeight: "700", flex: 1, textAlign: "center" }}>
               {course?.name ?? "Course Content"}
             </Text>
 
             <TouchableOpacity onPress={toggleFullscreen} style={{ padding: 8 }}>
-              <Text style={{ color: "#fff" }}>
+              <Text allowFontScaling={false} style={{ color: "#fff" }}>
                 {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
               </Text>
             </TouchableOpacity>
@@ -638,7 +638,7 @@ const CourseDetailsScreen = ({ route, navigation }) => {
             />
           ) : (
             <View style={styles.loader}>
-              <Text style={{ color: "#fff" }}>Preparing content...</Text>
+              <Text allowFontScaling={false} style={{ color: "#fff" }}>Preparing content...</Text>
             </View>
           )}
         </View>

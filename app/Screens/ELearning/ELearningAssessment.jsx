@@ -4,14 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    BackHandler,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Alert,
+  BackHandler,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Header from '../../Components/Header';
 
@@ -135,7 +135,7 @@ const EAssessmentScreen = ({ route, navigation }) => {
           setAnswersMap(prev => ({ ...prev, [qId]: optionText }));
         }}
       >
-        <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{optionText}</Text>
+        <Text allowFontScaling={false} style={[styles.optionText, selected && styles.optionTextSelected]}>{optionText}</Text>
       </TouchableOpacity>
     );
   };
@@ -241,7 +241,7 @@ const EAssessmentScreen = ({ route, navigation }) => {
           />
           <View style={styles.loadingWrap}>
             <ActivityIndicator size="large" />
-            <Text style={{ marginTop: 12, color: '#fff' }}>Loading assessment...</Text>
+            <Text allowFontScaling={false} style={{ marginTop: 12, color: '#fff' }}>Loading assessment...</Text>
           </View>
         </LinearGradient>
       </View>
@@ -266,15 +266,15 @@ const EAssessmentScreen = ({ route, navigation }) => {
             <View style={styles.headerRow}>
               <FontAwesome5 name="clipboard-list" size={28} color="#FF6B6B" />
               <View style={{ marginLeft: 12, flex: 1 }}>
-                <Text style={styles.title}>{assessmentData.name}</Text>
-                <Text style={styles.sub}>{assessmentData.description}</Text>
-                <Text style={styles.metaSmall}>Duration: {assessmentData.duration ?? 'N/A'} mins • Attempts left: {attemptsLeft === -1 ? 'N/A' : attemptsLeft}</Text>
+                <Text allowFontScaling={false} style={styles.title}>{assessmentData.name}</Text>
+                <Text allowFontScaling={false} style={styles.sub}>{assessmentData.description}</Text>
+                <Text allowFontScaling={false} style={styles.metaSmall}>Duration: {assessmentData.duration ?? 'N/A'} mins • Attempts left: {attemptsLeft === -1 ? 'N/A' : attemptsLeft}</Text>
               </View>
             </View>
 
             {(assessmentData.questions || []).map((q, idx) => (
               <View key={q.id} style={styles.questionBlock}>
-                <Text style={styles.questionText}>{idx + 1}. {q.questions}</Text>
+                <Text allowFontScaling={false} style={styles.questionText}>{idx + 1}. {q.questions}</Text>
                 <View style={{ marginTop: 8 }}>
                   {[q.option1, q.option2, q.option3, q.option4, q.option5].filter(Boolean).map(opt => renderOption(q, opt))}
                 </View>
@@ -291,12 +291,12 @@ const EAssessmentScreen = ({ route, navigation }) => {
                 disabled={submitLoading || hasSubmitted || disabledDueToAttempts}
               >
                 <LinearGradient colors={['#6B7FD7', '#5A4D8F']} style={styles.submitGradient}>
-                  <Text style={styles.submitText}>
+                  <Text allowFontScaling={false} style={styles.submitText}>
                     {disabledDueToAttempts ? 'No Attempts Left' : hasSubmitted ? 'Submitted' : (submitLoading ? 'Submitting...' : 'Submit Assessment')}
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>
-              {disabledDueToAttempts && <Text style={styles.attemptWarning}>You have 0 attempts left for this assessment.</Text>}
+              {disabledDueToAttempts && <Text allowFontScaling={false} style={styles.attemptWarning}>You have 0 attempts left for this assessment.</Text>}
             </View>
           </View>
         </ScrollView>
