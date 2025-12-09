@@ -3,15 +3,15 @@ import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef } from 'react';
 import {
-    Animated,
-    BackHandler,
-    Dimensions,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Animated,
+  BackHandler,
+  Dimensions,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 // ✅ Import universal components
 import { useNotification } from '@/app/Components/NotificationContext';
@@ -257,7 +257,7 @@ const LearningHubScreen = ({ navigation }) => {
                     style={styles.cardGradient}
                   >
                     {/* Background Pattern */}
-                    <Text style={styles.bgPattern}>{category.bgPattern}</Text>
+                    <Text allowFontScaling={false} style={styles.bgPattern}>{category.bgPattern}</Text>
 
                     {/* Card Content */}
                     <View style={styles.cardHeader}>
@@ -265,16 +265,16 @@ const LearningHubScreen = ({ navigation }) => {
                         <FontAwesome5 name={category.icon} size={24} color="#fff" />
                       </View>
                       <View style={styles.headerTextContainer}>
-                        <Text style={styles.cardTitle}>{category.title}</Text>
+                        <Text allowFontScaling={false} style={styles.cardTitle}>{category.title}</Text>
                       </View>
                     </View>
 
-                    <Text style={styles.cardSubtitle}>{category.subtitle}</Text>
+                    <Text allowFontScaling={false} style={styles.cardSubtitle}>{category.subtitle}</Text>
 
                     {/* Explore Button */}
                     <View style={styles.exploreButtonContainer}>
                       <View style={styles.exploreButton}>
-                        <Text style={styles.exploreButtonText}>Explore More</Text>
+                        <Text allowFontScaling={false} style={styles.exploreButtonText}>Explore More</Text>
                         <Ionicons name="arrow-forward" size={16} color="#fff" />
                       </View>
                     </View>

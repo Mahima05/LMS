@@ -22,7 +22,7 @@ import {
 import TextTicker from 'react-native-text-ticker';
 import BottomNavigation from '../../Components/BottomNavigation';
 import CustomDrawer from '../../Components/CustomDrawer';
-import { RFValue } from "../../Components/fontSize";
+
 import Header from '../../Components/Header';
 import NotificationModal from "../../Components/NotificationModal";
 import { useBottomNav } from '../../Components/useBottomNav';
@@ -1814,7 +1814,7 @@ const DashboardScreen = ({ navigation }) => {
                         {dashboardData?.userRank && dashboardData.userRank > 10 && (
                             <>
                                 <View style={{ paddingHorizontal: 15, marginVertical: 15, alignItems: 'center' }}>
-                                    <Text style={{ color: '#a8b2d1', fontSize: RFValue(12) }}>• • •</Text>
+                                    <Text style={{ color: '#a8b2d1', fontSize: 12 }}>• • •</Text>
                                 </View>
                                 <View
                                     style={[
@@ -1881,7 +1881,7 @@ const DashboardScreen = ({ navigation }) => {
             {dashboardData?.pendingActions && dashboardData.pendingActions.length > 0 ? (
                 dashboardData.pendingActions.map((p) => (
                     <View key={p.id} style={styles.modalListItem}>
-                        <Text style={styles.modalItemTitle}>{p.title}  <Text style={{ fontSize: RFValue(12), color: '#a8b2d1' }}>({p.type})</Text></Text>
+                        <Text style={styles.modalItemTitle}>{p.title}  <Text style={{ fontSize: 12, color: '#a8b2d1' }}>({p.type})</Text></Text>
                         <Text style={styles.modalItemSub}>Training: {new Date(p.trainingDate).toLocaleString()}</Text>
                         <Text style={styles.modalItemSub}>Due: {new Date(p.dueDate).toLocaleString()}</Text>
                     </View>
@@ -1905,15 +1905,16 @@ const DashboardScreen = ({ navigation }) => {
                 <Animated.View style={[styles.mainContent, { opacity: fadeAnim }]}>
                     <Header title="Dashboard" onMenuPress={toggleDrawer} onNotificationPress={openNotification} />
                     <Animated.View style={[styles.welcomeSection, { transform: [{ translateY: slideAnim }] }]}>
-                        <Text style={styles.welcomeText}>Hello {userName ? userName : 'User'}</Text>
+                        <Text allowFontScaling={false} style={styles.welcomeText}>Hello {userName ? userName : 'User'}</Text>
 
                         <TextTicker
-                            style={{ fontSize: RFValue(13), color: '#a8b2d1' }}
+                            style={{ fontSize: 13, color: '#a8b2d1' }}
                             duration={15000}
                             loop
                             bounce={false}
                             repeatSpacer={50}
                             marqueeDelay={1000}
+                            allowFontScaling={false}
                         >
                             M: Managing Change, IN: Fostering Innovation, D: Developing Others, S: Strategical/Analytical Thinking, E: Entrepreneurship Orientation, T: Digital Transformation
                         </TextTicker>
@@ -2182,13 +2183,13 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     welcomeText: {
-        fontSize: RFValue(26),
+        fontSize: 26,
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 5,
     },
     subText: {
-        fontSize: RFValue(14),
+        fontSize: 14,
         color: '#a8b2d1',
         fontStyle: 'italic',
     },
@@ -2225,14 +2226,14 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     statsValue: {
-        fontSize: RFValue(16),
+        fontSize: 16,
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 4,
         textAlign: 'center',
     },
     statsLabel: {
-        fontSize: RFValue(11),
+        fontSize: 11,
         color: 'rgba(255,255,255,0.9)',
         textAlign: 'center',
         lineHeight: 13,
@@ -2264,7 +2265,7 @@ const styles = StyleSheet.create({
     },
     navTabText: {
         color: '#fff',
-        fontSize: RFValue(13),
+        fontSize: 13,
         fontWeight: '600',
         textAlign: 'center',
         paddingHorizontal: 12,
@@ -2296,13 +2297,13 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     journeyNameTop: {
-        fontSize: RFValue(16),
+        fontSize: 16,
         fontWeight: '700',
         color: '#222',
         marginBottom: 4,
     },
     journeyDatesTop: {
-        fontSize: RFValue(12),
+        fontSize: 12,
         color: '#555',
     },
     ljmapContainer: {
@@ -2323,7 +2324,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     sectionTitle: {
-        fontSize: RFValue(18),
+        fontSize: 18,
         fontWeight: '700',
         color: '#fff',
         marginBottom: 15,
@@ -2361,13 +2362,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
     },
     bannerTitle: {
-        fontSize: RFValue(20),
+        fontSize: 20,
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 5,
     },
     bannerSubtitle: {
-        fontSize: RFValue(14),
+        fontSize: 14,
         color: 'rgba(255, 255, 255, 0.9)',
     },
     paginationContainer: {
@@ -2413,12 +2414,12 @@ const styles = StyleSheet.create({
     },
     periodText: {
         color: '#a8b2d1',
-        fontSize: RFValue(13),
+        fontSize: 13,
         fontWeight: '600',
     },
     periodTextActive: {
         color: '#fff',
-        fontSize: RFValue(13),
+        fontSize: 13,
         fontWeight: '700',
     },
     podiumContainer: {
@@ -2445,21 +2446,21 @@ const styles = StyleSheet.create({
     },
     rankNumber: {
         color: '#fff',
-        fontSize: RFValue(12),
+        fontSize: 12,
         fontWeight: 'bold',
     },
     podiumName: {
-        fontSize: RFValue(14),
+        fontSize: 14,
         fontWeight: '700',
         color: '#fff',
         marginBottom: 4,
         textAlign: "center"
     },
     firstPlaceName: {
-        fontSize: RFValue(16),
+        fontSize: 16,
     },
     podiumPoints: {
-        fontSize: RFValue(12),
+        fontSize: 12,
         color: '#a8b2d1',
         marginBottom: 10,
     },
@@ -2472,7 +2473,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     podiumMedal: {
-        fontSize: RFValue(32),
+        fontSize: 32,
     },
     leaderboardList: {
         paddingHorizontal: 0,
@@ -2515,18 +2516,18 @@ const styles = StyleSheet.create({
     },
     rankCircleText: {
         color: '#fff',
-        fontSize: RFValue(14),
+        fontSize: 14,
         fontWeight: 'bold',
     },
     leaderboardName: {
-        fontSize: RFValue(16),
+        fontSize: 16,
         fontWeight: '600',
         color: '#fff',
         flex: 1,
         flexShrink: 1,
     },
     leaderboardPoints: {
-        fontSize: RFValue(15),
+        fontSize: 15,
         fontWeight: '700',
         color: '#7B68EE',
         flexShrink: 0,
@@ -2539,7 +2540,7 @@ const styles = StyleSheet.create({
     },
     loadingText: {
         color: '#a8b2d1',
-        fontSize: RFValue(14),
+        fontSize: 14,
         textAlign: 'center',
     },
     emptyContainer: {
@@ -2551,7 +2552,7 @@ const styles = StyleSheet.create({
     },
     emptyText: {
         color: '#a8b2d1',
-        fontSize: RFValue(14),
+        fontSize: 14,
         textAlign: 'center',
     },
     modalListItem: {
@@ -2563,12 +2564,12 @@ const styles = StyleSheet.create({
     },
     modalItemTitle: {
         color: '#fff',
-        fontSize: RFValue(16),
+        fontSize: 16,
         fontWeight: '700',
     },
     modalItemSub: {
         color: '#a8b2d1',
-        fontSize: RFValue(13),
+        fontSize: 13,
         marginTop: 6,
     },
     alertOverlay: {
@@ -2628,14 +2629,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     alertTitle: {
-        fontSize: RFValue(24),
+        fontSize: 24,
         fontWeight: '700',
         color: '#333',
         marginBottom: 12,
         textAlign: 'center',
     },
     alertMessage: {
-        fontSize: RFValue(16),
+        fontSize: 16,
         color: '#666',
         textAlign: 'center',
         lineHeight: 24,
@@ -2657,7 +2658,7 @@ const styles = StyleSheet.create({
     },
     alertCancelButtonText: {
         color: '#666',
-        fontSize: RFValue(16),
+        fontSize: 16,
         fontWeight: '600',
     },
     alertConfirmButtonWrapper: {
@@ -2670,7 +2671,7 @@ const styles = StyleSheet.create({
     },
     alertConfirmButtonText: {
         color: '#FFFFFF',
-        fontSize: RFValue(16),
+        fontSize: 16,
         fontWeight: '600',
     },
     // Journey Map Styles
@@ -2682,18 +2683,18 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     errorIcon: {
-        fontSize: RFValue(64),
+        fontSize: 64,
         marginBottom: 16,
     },
     errorText: {
-        fontSize: RFValue(20),
+        fontSize: 20,
         color: '#fff',
         fontWeight: 'bold',
         marginBottom: 8,
         textAlign: 'center',
     },
     errorSubtext: {
-        fontSize: RFValue(14),
+        fontSize: 14,
         color: '#a0a0a0',
         textAlign: 'center',
         marginBottom: 24,
@@ -2706,17 +2707,17 @@ const styles = StyleSheet.create({
     },
     retryButtonText: {
         color: '#fff',
-        fontSize: RFValue(16),
+        fontSize: 16,
         fontWeight: '600',
     },
     journeyTitle: {
-        fontSize: RFValue(28),
+        fontSize: 28,
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 8,
     },
     dateText: {
-        fontSize: RFValue(13),
+        fontSize: 13,
         color: '#7a7a8e',
     },
     startContainer: {
@@ -2817,7 +2818,7 @@ const styles = StyleSheet.create({
     },
     sparkle: {
         position: 'absolute',
-        fontSize: RFValue(16),
+        fontSize: 16,
     },
     pulseRing: {
         position: 'absolute',
@@ -2847,17 +2848,17 @@ const styles = StyleSheet.create({
         borderStyle: 'dashed',
     },
     checkmark: {
-        fontSize: RFValue(32),
+        fontSize: 32,
         color: '#fff',
         fontWeight: 'bold',
     },
     stepNumber: {
-        fontSize: RFValue(24),
+        fontSize: 24,
         color: '#fff',
         fontWeight: 'bold',
     },
     stepNumberInactive: {
-        fontSize: RFValue(22),
+        fontSize: 22,
         color: '#5a5a6e',
         fontWeight: '600',
     },
@@ -2870,7 +2871,7 @@ const styles = StyleSheet.create({
         padding: 2,
     },
     lockIcon: {
-        fontSize: RFValue(16),
+        fontSize: 16,
     },
     stepInfo: {
         flex: 1,
@@ -2901,7 +2902,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     stepTitle: {
-        fontSize: RFValue(18),
+        fontSize: 18,
         color: '#fff',
         fontWeight: '700',
     },
@@ -2921,12 +2922,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(108, 92, 231, 0.2)',
     },
     statusText: {
-        fontSize: RFValue(11),
+        fontSize: 11,
         color: '#a0a0a0',
         fontWeight: '600',
     },
     stepDescription: {
-        fontSize: RFValue(13),
+        fontSize: 13,
         color: '#7a7a8e',
         marginBottom: 12,
         lineHeight: 18,
@@ -2982,7 +2983,7 @@ const styles = StyleSheet.create({
     },
     readMoreText: {
         color: '#fff',
-        fontSize: RFValue(12),
+        fontSize: 12,
         marginTop: -3
     },
     flagGradient: {
@@ -2993,12 +2994,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     flagText: {
-        fontSize: RFValue(20),
+        fontSize: 20,
         fontWeight: 'bold',
         color: '#0f0f23',
     },
     flagTextInactive: {
-        fontSize: RFValue(18),
+        fontSize: 18,
         fontWeight: '600',
         color: '#7a7a8e',
     },
@@ -3009,7 +3010,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     starburstText: {
-        fontSize: RFValue(80),
+        fontSize: 80,
     },
     confettiContainer: {
         position: 'absolute',
@@ -3019,7 +3020,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     confetti: {
-        fontSize: RFValue(24),
+        fontSize: 24,
         position: 'absolute',
     },
     celebration: {
@@ -3027,11 +3028,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     celebrationText: {
-        fontSize: RFValue(28),
+        fontSize: 28,
         marginBottom: 12,
     },
     congratsText: {
-        fontSize: RFValue(28),
+        fontSize: 28,
         fontWeight: 'bold',
         color: '#ffd700',
         marginBottom: 8,
@@ -3040,12 +3041,12 @@ const styles = StyleSheet.create({
         textShadowRadius: 10,
     },
     congratsSubtext: {
-        fontSize: RFValue(16),
+        fontSize: 16,
         color: '#a0a0a0',
         marginBottom: 4,
     },
     congratsSubtext2: {
-        fontSize: RFValue(14),
+        fontSize: 14,
         color: '#7a7a8e',
         fontStyle: 'italic',
     },
