@@ -220,6 +220,8 @@ const CourseDetailsScreen = ({ route, navigation }) => {
     }
   }, [courseId, employeeID, token]);
 
+  
+
   // compute step objects and availability
   const computeSteps = () => {
     const pre = getAssessmentForType("pre");
@@ -237,6 +239,8 @@ const CourseDetailsScreen = ({ route, navigation }) => {
     const feedbackActive = learner?.feedbackActive === true;
     const feedbackCompleted = !!learner?.feedbackCompletedOn;
 
+    const courseActive = learner?.courseActive === true;
+
     return [
       {
         key: "pre",
@@ -252,10 +256,10 @@ const CourseDetailsScreen = ({ route, navigation }) => {
         key: "video",
         title: "E-Learning Course",
         exists: videoExists,
-        active: preCompleted,   // Only active when pre completed
+       active: (courseActive || preCompleted),  // Only active when pre completed
         completed: videoCompleted,
-        available: preCompleted && videoExists,
-        subtitle: preCompleted ? "Available now" : "Complete Pre-Assessment first"
+        available: (courseActive || preCompleted) && videoExists,
+        subtitle: (courseActive || preCompleted) ? "Available now" : "Complete Pre-Assessment first"
       },
 
       {
@@ -470,6 +474,7 @@ const CourseDetailsScreen = ({ route, navigation }) => {
       </View>
     );
   }
+
 
   // Render main
   return (

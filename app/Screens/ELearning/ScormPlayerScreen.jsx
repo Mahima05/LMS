@@ -28,7 +28,7 @@ const SCORMPlayerScreen = ({ route, navigation }) => {
   const intervalRef = useRef(null);
   const latestStateRef = useRef({});
   const resumeDataRef = useRef(null);
-  const loggingIntervalRef = useRef(null); // 🔥 NEW: for 15s logging
+  const loggingIntervalRef = useRef(null); // 🔥 NEW: for 10s logging
 
   // === INIT: Load saved progress and setup SCORM resume ===
   useEffect(() => {
@@ -108,18 +108,18 @@ const SCORMPlayerScreen = ({ route, navigation }) => {
         totalTimeSpent.current = previousTimeSpent;
         setIsLoading(false);
 
-        // Start auto-save every 15 seconds
+        // Start auto-save every 10 seconds
         intervalRef.current = setInterval(() => {
-          totalTimeSpent.current += 15;
+          totalTimeSpent.current += 10;
           console.log("⏰ Auto-saving SCORM progress...");
           if (Object.keys(latestStateRef.current).length > 0) {
             saveProgressToServer(latestStateRef.current, totalTimeSpent.current);
           }
-        }, 15000);
+        }, 10000);
 
-        // 🔥 NEW — FORMATTED LOGGING EVERY 15 SECONDS
+        // 🔥 NEW — FORMATTED LOGGING EVERY 10 SECONDS
         loggingIntervalRef.current = setInterval(async () => {
-          console.group("🕒 15s GET + POST LOGGING CYCLE");
+          console.group("🕒 10s GET + POST LOGGING CYCLE");
 
           // --- GET LOG ---
           const getUrl = `${API_GET_PROGRESS}/${course.id}/${employeeID}`;
@@ -148,7 +148,7 @@ const SCORMPlayerScreen = ({ route, navigation }) => {
           console.groupEnd();
 
           console.groupEnd();
-        }, 15000);
+        }, 10000);
       } catch (e) {
         console.log("❌ Init error:", e);
         setIsLoading(false);

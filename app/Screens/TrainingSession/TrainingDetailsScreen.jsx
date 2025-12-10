@@ -1,4 +1,3 @@
-import { FontAwesome5 } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef, useState } from 'react';
@@ -8,6 +7,7 @@ import {
   Animated,
   BackHandler,
   Dimensions,
+  Image,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -15,6 +15,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+
+import training from "../../Images/training.jpg";
 
 import { useNotification } from '@/app/Components/NotificationContext';
 import * as FileSystem from 'expo-file-system/legacy';
@@ -263,20 +265,20 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
   }, [navigation, trainingSessionId, token, employeeID]);
 
   const downloadCertificate = async () => {
-  try {
-    const url = `https://lms-api-qa.abisaio.com/api/v1/CertificateTemplate/generatepdf?EmployeeId=${employeeID}&templateId=${details.certificateID}&TrainingSessionID=${trainingSessionId}`;
+    try {
+      const url = `https://lms-api-qa.abisaio.com/api/v1/CertificateTemplate/generatepdf?EmployeeId=${employeeID}&templateId=${details.certificateID}&TrainingSessionID=${trainingSessionId}`;
 
-    const fileUri = FileSystem.documentDirectory + `certificate_${trainingSessionId}.pdf`;
-    const result = await FileSystem.downloadAsync(url, fileUri, {
-      headers: { "Authorization": `Bearer ${token}` }
-    });
+      const fileUri = FileSystem.documentDirectory + `certificate_${trainingSessionId}.pdf`;
+      const result = await FileSystem.downloadAsync(url, fileUri, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
 
-    Alert.alert("Success", "Certificate downloaded successfully.");
-    Sharing.shareAsync(result.uri);
-  } catch (err) {
-    Alert.alert("Error", "Failed to download certificate.");
-  }
-};
+      Alert.alert("Success", "Certificate downloaded successfully.");
+      Sharing.shareAsync(result.uri);
+    } catch (err) {
+      Alert.alert("Error", "Failed to download certificate.");
+    }
+  };
 
 
   return (
@@ -292,13 +294,12 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
             onNotificationPress={openNotification}
           />
 
-          <ScrollView style={styles.scrollContent} contentContainerStyle={{ paddingBottom: 90 }}   showsVerticalScrollIndicator={false}>
+          <ScrollView style={styles.scrollContent} contentContainerStyle={{ paddingBottom: 90 }} showsVerticalScrollIndicator={false}>
             <Animated.View style={[styles.contentContainer, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
               <View style={styles.heroImageContainer}>
-                <View style={styles.bookImagePlaceholder}>
-                  <FontAwesome5 name="book-open" size={60} color="#FF6B6B" />
-                </View>
+                <Image source={training} style={styles.heroImage} resizeMode="cover" />
               </View>
+
 
               <Animated.View style={[styles.detailsCard, { opacity: cardAnim, transform: [{ translateY: cardAnim.interpolate({ inputRange: [0, 1], outputRange: [30, 0] }) }] }]}>
                 {loadingDetails && <ActivityIndicator size="small" />}
@@ -404,16 +405,16 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
                         <Text allowFontScaling={false} style={styles.feedbackText}>Fill Feedback</Text>
                       </LinearGradient>
                     </TouchableOpacity>
-{details.certificateStatus?.toLowerCase() === "active" && (
-  <TouchableOpacity
-    style={styles.feedbackButton}
-    onPress={downloadCertificate}
-  >
-    <LinearGradient colors={['#00BFA6', '#00796B']} style={styles.feedbackGradient}>
-      <Text allowFontScaling={false} style={styles.feedbackText}>Download Certificate</Text>
-    </LinearGradient>
-  </TouchableOpacity>
-)}
+                    {details.certificateStatus?.toLowerCase() === "active" && (
+                      <TouchableOpacity
+                        style={styles.feedbackButton}
+                        onPress={downloadCertificate}
+                      >
+                        <LinearGradient colors={['#00BFA6', '#00796B']} style={styles.feedbackGradient}>
+                          <Text allowFontScaling={false} style={styles.feedbackText}>Download Certificate</Text>
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    )}
 
 
 
@@ -523,7 +524,22 @@ const styles = StyleSheet.create({
 
   resultBox: { marginTop: 12, padding: 10, backgroundColor: '#fff', borderRadius: 8, borderWidth: 1, borderColor: '#e6e6e6' },
   resultText: { color: '#222', fontWeight: '700' },
-  resultSmall: { color: '#666', marginTop: 4, fontSize: 12 }
+  resultSmall: { color: '#666', marginTop: 4, fontSize: 12 },
+
+  heroImageContainer: {
+    width: '100%',
+    height: 200,
+    marginBottom: 20,
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+
+  heroImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 12,
+  },
+
 });
 
 export default TrainingDetailsScreen;

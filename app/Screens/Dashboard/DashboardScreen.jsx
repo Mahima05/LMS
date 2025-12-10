@@ -222,6 +222,8 @@ const DashboardScreen = ({ navigation }) => {
     };
     const [dashboardData, setDashboardData] = useState(null);
     const [loadingDashboard, setLoadingDashboard] = useState(true);
+
+    const [sapId, setSapId] = useState(null);
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
@@ -230,9 +232,11 @@ const DashboardScreen = ({ navigation }) => {
                 const employeeID = await AsyncStorage.getItem("employeeID");
                 const applicationProfile = await AsyncStorage.getItem("applicationProfile");
                 const token = await AsyncStorage.getItem("token");
+                 const sapid = await AsyncStorage.getItem("sapid");
                 if (!employeeID || !applicationProfile || !token) {
                     throw new Error("Required user data not found");
                 }
+                   setSapId(sapid); 
                 const currentDate = new Date();
                 const year = currentDate.getFullYear();
                 const month = currentDate.getMonth() + 1;
@@ -1736,80 +1740,83 @@ const DashboardScreen = ({ navigation }) => {
                 ) : (
                     <>
                         {leaderboardData.slice(3).map((user, index) => {
-                            const actualIndex = index + 3;
-                            const anim = leaderboardItemAnims[actualIndex];
-                            const scale = anim.interpolate({
-                                inputRange: [0, 1],
-                                outputRange: [0.9, 1],
-                            });
-                            const translateX = anim.interpolate({
-                                inputRange: [0, 1],
-                                outputRange: [50, 0],
-                            });
-                            const opacity = anim.interpolate({
-                                inputRange: [0, 1],
-                                outputRange: [0, 1],
-                            });
-                            // highlight current user
-                            const isCurrentUser = user.employeeId?.toString() === employeeID?.toString();
-                            return (
-                                <Animated.View
-                                    key={user.rank}
-                                    style={[
-                                        styles.leaderboardItem,
-                                        {
-                                            transform: [{ translateX }, { scale }],
-                                            opacity,
-                                            borderWidth: isCurrentUser ? 2 : 0,
-                                            borderColor: isCurrentUser ? '#7B68EE' : 'transparent',
-                                        },
-                                    ]}
-                                >
-                                    <View style={styles.leaderboardItemContent}>
-                                        <LinearGradient
-                                            colors={
-                                                isCurrentUser
-                                                    ? ['rgba(123,104,238,0.35)', 'rgba(123,104,238,0.15)']
-                                                    : ['rgba(123,104,238,0.1)', 'rgba(123,104,238,0.05)']
-                                            }
-                                            style={[
-                                                styles.leaderboardItemGradient,
-                                                isCurrentUser && { borderColor: '#7B68EE' }
-                                            ]}
-                                        >
-                                            <View style={styles.leaderboardLeft}>
-                                                <View
-                                                    style={[
-                                                        styles.rankCircle,
-                                                        isCurrentUser && { backgroundColor: '#7B68EE' }
-                                                    ]}
-                                                >
-                                                    <Text allowFontScaling={false} style={styles.rankCircleText}>{user.rank}</Text>
-                                                </View>
-                                                <Text allowFontScaling={false}
-                                                    style={[
-                                                        styles.leaderboardName,
-                                                        isCurrentUser && { color: '#7B68EE', fontWeight: '800' }
-                                                    ]}
-                                                    numberOfLines={2}
-                                                    ellipsizeMode="tail"
-                                                >
-                                                    {user.name}
-                                                </Text>
-                                            </View>
-                                            <Text allowFontScaling={false}
-                                                style={[
-                                                    styles.leaderboardPoints,
-                                                    isCurrentUser && { color: '#fff' }
-                                                ]}
-                                            >
-                                                {user.points}
-                                            </Text>
-                                        </LinearGradient>
-                                    </View>
-                                </Animated.View>
-                            );
-                        })}
+    const actualIndex = index + 3;
+    const anim = leaderboardItemAnims[actualIndex];
+    const scale = anim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0.9, 1],
+    });
+    const translateX = anim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [50, 0],
+    });
+    const opacity = anim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+    });
+    
+    // Match using employeeId from API with sapid from AsyncStorage
+    const isCurrentUser = user.employeeId?.toString() === sapId?.toString();
+    
+    return (
+        <Animated.View
+            key={user.rank}
+            style={[
+                styles.leaderboardItem,
+                {
+                    transform: [{ translateX }, { scale }],
+                    opacity,
+                    borderWidth: isCurrentUser ? 2 : 0,
+                    borderColor: isCurrentUser ? '#7B68EE' : 'transparent',
+                },
+            ]}
+        >
+            <View style={styles.leaderboardItemContent}>
+                <LinearGradient
+                    colors={
+                        isCurrentUser
+                            ? ['rgba(123,104,238,0.35)', 'rgba(123,104,238,0.15)']
+                            : ['rgba(123,104,238,0.1)', 'rgba(123,104,238,0.05)']
+                    }
+                    style={[
+                        styles.leaderboardItemGradient,
+                        isCurrentUser && { borderColor: '#7B68EE' }
+                    ]}
+                >
+                    <View style={styles.leaderboardLeft}>
+                        <View
+                            style={[
+                                styles.rankCircle,
+                                isCurrentUser && { backgroundColor: '#7B68EE' }
+                            ]}
+                        >
+                            <Text allowFontScaling={false} style={styles.rankCircleText}>{user.rank}</Text>
+                        </View>
+                        <Text allowFontScaling={false}
+                            style={[
+                                styles.leaderboardName,
+                                isCurrentUser && { color: '#7B68EE', fontWeight: '800' }
+                            ]}
+                            numberOfLines={2}
+                            ellipsizeMode="tail"
+                        >
+                            {user.name}
+                        </Text>
+                    </View>
+                    <Text allowFontScaling={false}
+                        style={[
+                            styles.leaderboardPoints,
+                            isCurrentUser && { color: '#fff' }
+                        ]}
+                    >
+                        {user.points}
+                    </Text>
+                </LinearGradient>
+            </View>
+        </Animated.View>
+    );
+})}
+
                         {/* Display current user's rank if not in top 10 */}
                         {dashboardData?.userRank && dashboardData.userRank > 10 && (
                             <>

@@ -58,6 +58,10 @@ const CalendarScreen = ({ navigation }) => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Monthly = Admin, My Trainings = User
+const [trainingMode, setTrainingMode] = useState("Monthly"); // "Monthly" | "My"
+
+
  useEffect(() => {
   const fetchCalendarData = async () => {
     try {
@@ -72,7 +76,9 @@ const CalendarScreen = ({ navigation }) => {
       const profileType = applicationProfile || 'Admin';
 
       const res = await fetch(
-        `https://lms-api-qa.abisaio.com/api/v1/Calendar/GetCalendarData?UserID=${userID}&type=Admin`
+       `https://lms-api-qa.abisaio.com/api/v1/Calendar/GetCalendarData?UserID=${userID}&type=${
+  trainingMode === "Monthly" ? "Admin" : "User"
+}`
       );
       const json = await res.json();
 
@@ -108,7 +114,7 @@ const CalendarScreen = ({ navigation }) => {
   };
 
   fetchCalendarData();
-}, []);
+}, [trainingMode]);
 
 
   const months = [
@@ -396,6 +402,48 @@ const CalendarScreen = ({ navigation }) => {
             </Text>
           </LinearGradient>
         </Animated.View>
+
+        {/* Training Mode Toggle */}
+<View style={styles.trainingToggleContainer}>
+  {/* Monthly Trainings Button */}
+  <TouchableOpacity
+    style={[
+      styles.trainingToggleBtn,
+      trainingMode === "Monthly" && styles.trainingToggleBtnActive
+    ]}
+    onPress={() => setTrainingMode("Monthly")}
+  >
+    <Text
+      allowFontScaling={false}
+      style={[
+        styles.trainingToggleText,
+        trainingMode === "Monthly" && styles.trainingToggleTextActive
+      ]}
+    >
+      Monthly Trainings
+    </Text>
+  </TouchableOpacity>
+
+  {/* My Trainings Button */}
+  <TouchableOpacity
+    style={[
+      styles.trainingToggleBtn,
+      trainingMode === "My" && styles.trainingToggleBtnActive
+    ]}
+    onPress={() => setTrainingMode("My")}
+  >
+    <Text
+      allowFontScaling={false}
+      style={[
+        styles.trainingToggleText,
+        trainingMode === "My" && styles.trainingToggleTextActive
+      ]}
+    >
+      My Trainings
+    </Text>
+  </TouchableOpacity>
+</View>
+
 
         <ScrollView
           style={styles.scrollContent}
@@ -764,6 +812,43 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
   },
+  trainingToggleContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginHorizontal: 20,
+  marginBottom: 20,
+  backgroundColor: 'rgba(255,255,255,0.05)',
+  padding: 6,
+  borderRadius: 14,
+  borderWidth: 1,
+  borderColor: 'rgba(123, 104, 238, 0.3)',
+},
+
+trainingToggleBtn: {
+  flex: 1,
+  paddingVertical: 10,
+  marginHorizontal: 4,
+  borderRadius: 12,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
+trainingToggleBtnActive: {
+  backgroundColor: '#7B68EE',
+  elevation: 3,
+},
+
+trainingToggleText: {
+  fontSize: 13,
+  color: '#a8b2d1',
+  fontWeight: '600',
+},
+
+trainingToggleTextActive: {
+  color: '#fff',
+  fontWeight: '700',
+},
+
   scrollContent: {
     flex: 1,
   },
