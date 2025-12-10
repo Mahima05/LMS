@@ -187,7 +187,7 @@ export default function Ljmap({ containerBackgroundColor = '#fff' }) {
   if (loading) {
     return (
       <View style={[containerStyle, { justifyContent: 'center' }]}>
-        <ActivityIndicator size="large" color="#4A90E2" />
+        <ActivityIndicator size="large" color="#4fed67ff" />
       </View>
     );
   }
@@ -260,9 +260,9 @@ if (!journeyName && totalAssigned === 0) {
               {
                 width: button.size,
                 height: button.size,
-                backgroundColor: button.isCompleted ? '#4A90E2' : "#fff",
-                shadowColor: button.isCompleted ? '#4A90E2' : "#fff",
-                borderColor: button.isCompleted ? '#4A90E2' : "#fff",
+                backgroundColor: button.isCompleted ? '#4fed67ff' : "#fff",
+                shadowColor: button.isCompleted ? '#4fed67ff' : "#fff",
+                borderColor: button.isCompleted ? '#4fed67ff' : "#fff",
               }
             ]}>
               <Text allowFontScaling={false} style={[
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#4fed67ff',
     marginBottom: 6,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
