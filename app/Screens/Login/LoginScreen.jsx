@@ -485,7 +485,7 @@ export default function LoginScreen() {
                 <Ionicons name="person-outline" size={20} color="#9B7EBD" style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
-                  placeholder="User ID"
+                  placeholder="Employee ID"
                   placeholderTextColor="#999"
                   value={username}
                   onChangeText={setUsername}
@@ -496,7 +496,7 @@ export default function LoginScreen() {
                 <Ionicons name="lock-closed-outline" size={20} color="#9B7EBD" style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
-                  placeholder="Password"
+                  placeholder="MyIB Password"
                   placeholderTextColor="#999"
                   secureTextEntry={!showPassword}
                   value={password}
@@ -806,66 +806,67 @@ export default function LoginScreen() {
 
               {/* Quiz Footer Actions */}
               <View style={styles.quizFooter}>
-                <View style={styles.quizNavigationContainer}>
-                  {/* Previous Button */}
-                  {currentQuestionIndex > 0 && (
-                    <TouchableOpacity
-                      style={styles.quizNavButton}
-                      onPress={() => setCurrentQuestionIndex(prev => prev - 1)}
-                      activeOpacity={0.8}
-                    >
-                      <Ionicons name="chevron-back" size={20} color="#280137" />
-                      <Text allowFontScaling={false} style={styles.quizNavButtonText}>Previous</Text>
-                    </TouchableOpacity>
-                  )}
+  <View style={styles.quizNavigationContainer}>
+    {/* Previous Button */}
+    {currentQuestionIndex > 0 && (
+      <TouchableOpacity
+        style={styles.quizNavButton}
+        onPress={() => setCurrentQuestionIndex(prev => prev - 1)}
+        activeOpacity={0.8}
+      >
+        <Ionicons name="chevron-back" size={20} color="#280137" />
+        <Text allowFontScaling={false} style={styles.quizNavButtonText}>Previous</Text>
+      </TouchableOpacity>
+    )}
 
-                  {/* Skip Button */}
-                  <TouchableOpacity
-                    style={styles.quizSkipButtonNew}
-                    onPress={handleQuizSkip}
-                    activeOpacity={0.8}
-                    disabled={quizLoading}
-                  >
-                    <Ionicons name="close-circle-outline" size={18} color="#ff9800" />
-                    <Text allowFontScaling={false} style={styles.quizSkipButtonTextNew}>Skip</Text>
-                  </TouchableOpacity>
+    {/* Skip Button */}
+    <TouchableOpacity
+      style={styles.quizSkipButtonNew}
+      onPress={handleQuizSkip}
+      activeOpacity={0.8}
+      disabled={quizLoading}
+    >
+      <Ionicons name="close-circle-outline" size={18} color="#ff9800" />
+      <Text allowFontScaling={false} style={styles.quizSkipButtonTextNew}>Skip</Text>
+    </TouchableOpacity>
 
-                  {/* Next or Submit Button */}
-                  {currentQuestionIndex < quizData.length - 1 ? (
-                    <TouchableOpacity
-                      style={styles.quizNavButton}
-                      onPress={() => setCurrentQuestionIndex(prev => prev + 1)}
-                      activeOpacity={0.8}
-                    >
-                      <Text allowFontScaling={false} style={styles.quizNavButtonText}>Next</Text>
-                      <Ionicons name="chevron-forward" size={20} color="#280137" />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      style={styles.quizSubmitButtonWrapper}
-                      onPress={handleQuizSubmit}
-                      activeOpacity={0.8}
-                      disabled={quizLoading}
-                    >
-                      <LinearGradient
-                        colors={['#9B7EBD', '#280137']}
-                        style={styles.quizSubmitButton}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 0 }}
-                      >
-                        {quizLoading ? (
-                          <ActivityIndicator color="#fff" />
-                        ) : (
-                          <>
-                            <Text allowFontScaling={false} style={styles.quizSubmitButtonText}>Submit</Text>
-                            <Ionicons name="checkmark-circle" size={20} color="#FFFFFF" />
-                          </>
-                        )}
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  )}
-                </View>
-              </View>
+    {/* Next or Submit Button */}
+    {currentQuestionIndex < quizData.length - 1 ? (
+      <TouchableOpacity
+        style={styles.quizNavButton}
+        onPress={() => setCurrentQuestionIndex(prev => prev + 1)}
+        activeOpacity={0.8}
+      >
+        <Text allowFontScaling={false} style={styles.quizNavButtonText}>Next</Text>
+        <Ionicons name="chevron-forward" size={20} color="#280137" />
+      </TouchableOpacity>
+    ) : (
+      <TouchableOpacity
+        style={styles.quizSubmitButtonWrapper}
+        onPress={handleQuizSubmit}
+        activeOpacity={0.8}
+        disabled={quizLoading}
+      >
+        <LinearGradient
+          colors={['#9B7EBD', '#280137']}
+          style={styles.quizSubmitButton}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+        >
+          {quizLoading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <>
+              <Text allowFontScaling={false} style={styles.quizSubmitButtonText}>Submit</Text>
+              <Ionicons name="checkmark-circle" size={20} color="#FFFFFF" />
+            </>
+          )}
+        </LinearGradient>
+      </TouchableOpacity>
+    )}
+  </View>
+</View>
+
 
             </View>
           )}
@@ -1260,61 +1261,71 @@ const styles = StyleSheet.create({
   },
 
   quizNavigationContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 10,
-  },
-  quizNavButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 25,
-    backgroundColor: '#F5F5F5',
-    borderWidth: 2,
-    borderColor: '#E0E0E0',
-    gap: 5,
-  },
-  quizSkipButtonNew: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 25,
-    backgroundColor: '#FFF3E0',
-    borderWidth: 2,
-    borderColor: '#ff9800',
-    gap: 5,
-  },
-  quizSkipButtonTextNew: {
-    fontSize: 14,
-    color: '#ff9800',
-    fontWeight: '600',
-  },
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: 10,
+  minHeight: 48, // Ensures consistent height across all buttons
+},
+quizNavButton: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingVertical: 12,
+  paddingHorizontal: 20,
+  borderRadius: 25,
+  backgroundColor: '#F5F5F5',
+  borderWidth: 2,
+  borderColor: '#E0E0E0',
+  gap: 5,
+  flexShrink: 0, // Prevents wrapping
+  minHeight: 48, // Consistent height
+},
+quizSkipButtonNew: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingVertical: 12,
+  paddingHorizontal: 20,
+  borderRadius: 25,
+  backgroundColor: '#FFF3E0',
+  borderWidth: 2,
+  borderColor: '#ff9800',
+  gap: 5,
+  flexShrink: 0, // Prevents wrapping
+  minHeight: 48, // Consistent height
+},
+quizSkipButtonTextNew: {
+  fontSize: 14,
+  color: '#ff9800',
+  fontWeight: '600',
+  flexShrink: 0, // Prevents text wrapping
+},
   quizSubmitButtonWrapper: {
-    flex: 1,
-    maxWidth: 150,
-  },
-  quizSubmitButton: {
-    flexDirection: 'row',
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  quizSubmitButtonText: {
-    fontSize: 14,
-    color: '#FFFFFF',
-    fontWeight: '600',
-  },
-  quizNavButtonText: {
-    fontSize: 14,
-    color: '#280137',
-    fontWeight: '600',
-  },
+  flexShrink: 0, // Prevents wrapping
+  minWidth: 120, // Minimum width instead of maxWidth
+},
+quizSubmitButton: {
+  flexDirection: 'row',
+  paddingVertical: 12, // Match other buttons
+  paddingHorizontal: 20,
+  borderRadius: 25,
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 8,
+  minHeight: 48, // Consistent height
+  flexShrink: 0, // Prevents wrapping
+},
+quizSubmitButtonText: {
+  fontSize: 14, // Match other button text sizes
+  color: '#FFFFFF',
+  fontWeight: '600',
+  flexShrink: 0, // Prevents text wrapping
+},
+ quizNavButtonText: {
+  fontSize: 14,
+  color: '#280137',
+  fontWeight: '600',
+  flexShrink: 0, // Prevents text wrapping
+},
   quizSubmitButtonWrapper: {
     flex: 1,
     marginLeft: 'auto',

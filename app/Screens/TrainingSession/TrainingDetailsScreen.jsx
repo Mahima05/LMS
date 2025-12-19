@@ -8,6 +8,7 @@ import {
   BackHandler,
   Dimensions,
   Image,
+  Linking,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -133,6 +134,21 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
     if (!details || !Array.isArray(details.assessments)) return null;
     return details.assessments.find(a => (a.assessmentType || '').toLowerCase() === (type || '').toLowerCase()) || null;
   };
+
+  const openMeetingLink = async (url) => {
+  if (!url) {
+    Alert.alert('Error', 'Meeting link not available');
+    return;
+  }
+
+  const supported = await Linking.canOpenURL(url);
+  if (supported) {
+    await Linking.openURL(url);
+  } else {
+    Alert.alert('Error', 'Unable to open meeting link');
+  }
+};
+
 
   const isAssessmentActive = (assObj) => {
     if (!assObj) return false;
@@ -334,6 +350,50 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
                       <Text allowFontScaling={false} style={styles.detailValue}>{details.type ?? ''}</Text>
                     </View>
 
+                    {details.type?.toLowerCase() === 'virtual' && (
+  <>
+    {/* Meeting Link */}
+    <View style={styles.detailRow}>
+      <Text allowFontScaling={false} style={styles.detailLabel}>
+        Meeting Link:
+      </Text>
+
+      <TouchableOpacity
+        onPress={() => openMeetingLink(details.virtualSessionUrl)}
+        activeOpacity={0.7}
+      >
+        <Text
+          allowFontScaling={false}
+          style={styles.linkText}
+          numberOfLines={1}
+        >
+          {details.virtualSessionUrl || 'N/A'}
+        </Text>
+      </TouchableOpacity>
+    </View>
+
+    {/* Meeting ID */}
+    <View style={styles.detailRow}>
+      <Text allowFontScaling={false} style={styles.detailLabel}>
+        Meeting ID:
+      </Text>
+      <Text allowFontScaling={false} style={styles.detailValue}>
+        {details.virtualMeetingID || 'N/A'}
+      </Text>
+    </View>
+
+    {/* Meeting Password */}
+    <View style={styles.detailRow}>
+      <Text allowFontScaling={false} style={styles.detailLabel}>
+        Meeting Password:
+      </Text>
+      <Text allowFontScaling={false} style={styles.detailValue}>
+        {details.virtualMeetingPassword || 'N/A'}
+      </Text>
+    </View>
+  </>
+)}
+
                     <View style={styles.detailRow}>
                       <Text allowFontScaling={false} style={styles.detailLabel}>Venue:</Text>
                       <Text allowFontScaling={false} style={styles.detailValueBlue}>{details.trainingBatches?.venueName ?? 'N/A'}</Text>
@@ -459,6 +519,15 @@ const TrainingDetailsScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  linkText: {
+  fontSize: 14,
+  color: '#1E90FF',
+  fontWeight: '600',
+  textAlign: 'right',
+  textDecorationLine: 'underline',
+  maxWidth: width * 0.55
+},
+
   // re-used styles from your provided screen; kept design same
   container: { flex: 1 },
   gradientBg: { flex: 1 },

@@ -672,7 +672,7 @@ const styles = StyleSheet.create({
     borderColor: "#ecebf8"
   },
 
-  sectionTitle: { fontSize: 18, fontWeight: "700", color: "#111827", marginTop: 18, marginBottom: 10 },
+  sectionTitle: { fontSize: 18, fontWeight: "700", color: "#ffffffff", marginTop: 18, marginBottom: 10 },
 
   progressList: { marginTop: 6 },
 

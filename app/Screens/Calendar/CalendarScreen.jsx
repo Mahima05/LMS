@@ -59,62 +59,61 @@ const CalendarScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
   // Monthly = Admin, My Trainings = User
-const [trainingMode, setTrainingMode] = useState("Monthly"); // "Monthly" | "My"
+  const [trainingMode, setTrainingMode] = useState("Monthly"); // "Monthly" | "My"
 
 
- useEffect(() => {
-  const fetchCalendarData = async () => {
-    try {
-      const [userID, applicationProfile] = await Promise.all([
-        AsyncStorage.getItem('employeeID'),
-        AsyncStorage.getItem('applicationProfile'),
-      ]);
+  useEffect(() => {
+    const fetchCalendarData = async () => {
+      try {
+        const [userID, applicationProfile] = await Promise.all([
+          AsyncStorage.getItem('employeeID'),
+          AsyncStorage.getItem('applicationProfile'),
+        ]);
 
-      if (!userID) return;
+        if (!userID) return;
 
-      // Fallback to 'User' if somehow missing
-      const profileType = applicationProfile || 'Admin';
+        // Fallback to 'User' if somehow missing
+        const profileType = applicationProfile || 'Admin';
 
-      const res = await fetch(
-       `https://lms-api-qa.abisaio.com/api/v1/Calendar/GetCalendarData?UserID=${userID}&type=${
-  trainingMode === "Monthly" ? "Admin" : "User"
-}`
-      );
-      const json = await res.json();
+        const res = await fetch(
+          `https://lms-api-qa.abisaio.com/api/v1/Calendar/GetCalendarData?UserID=${userID}&type=${trainingMode === "Monthly" ? "Admin" : "User"
+          }`
+        );
+        const json = await res.json();
 
-      if (json?.succeeded && Array.isArray(json.data)) {
-        setCalendarData(json.data);
+        if (json?.succeeded && Array.isArray(json.data)) {
+          setCalendarData(json.data);
 
-        const today = new Date();
-        const todayDate = today.getDate();
-        const todayMonth = today.getMonth();
-        const todayYear = today.getFullYear();
+          const today = new Date();
+          const todayDate = today.getDate();
+          const todayMonth = today.getMonth();
+          const todayYear = today.getFullYear();
 
-        const todayTasks = json.data.filter(item => {
-          const d = normalizeDate(item.trainingDate);
-          return (
-            d.getDate() === todayDate &&
-            d.getMonth() === todayMonth &&
-            d.getFullYear() === todayYear
-          );
-        });
+          const todayTasks = json.data.filter(item => {
+            const d = normalizeDate(item.trainingDate);
+            return (
+              d.getDate() === todayDate &&
+              d.getMonth() === todayMonth &&
+              d.getFullYear() === todayYear
+            );
+          });
 
-        setTasks(todayTasks);
-        setTaskAnims(todayTasks.map(() => new Animated.Value(0)));
+          setTasks(todayTasks);
+          setTaskAnims(todayTasks.map(() => new Animated.Value(0)));
 
-        setSelectedDate(todayDate);
-        setCurrentMonth(today.toLocaleString('default', { month: 'long' }));
-        setCurrentYear(todayYear);
+          setSelectedDate(todayDate);
+          setCurrentMonth(today.toLocaleString('default', { month: 'long' }));
+          setCurrentYear(todayYear);
+        }
+      } catch (err) {
+        console.error('Error fetching calendar data:', err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error('Error fetching calendar data:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  fetchCalendarData();
-}, [trainingMode]);
+    fetchCalendarData();
+  }, [trainingMode]);
 
 
   const months = [
@@ -378,6 +377,7 @@ const [trainingMode, setTrainingMode] = useState("Monthly"); // "Monthly" | "My"
     return "Good Evening";
   };
 
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#1a1a2e" />
@@ -404,45 +404,45 @@ const [trainingMode, setTrainingMode] = useState("Monthly"); // "Monthly" | "My"
         </Animated.View>
 
         {/* Training Mode Toggle */}
-<View style={styles.trainingToggleContainer}>
-  {/* Monthly Trainings Button */}
-  <TouchableOpacity
-    style={[
-      styles.trainingToggleBtn,
-      trainingMode === "Monthly" && styles.trainingToggleBtnActive
-    ]}
-    onPress={() => setTrainingMode("Monthly")}
-  >
-    <Text
-      allowFontScaling={false}
-      style={[
-        styles.trainingToggleText,
-        trainingMode === "Monthly" && styles.trainingToggleTextActive
-      ]}
-    >
-      Monthly Trainings
-    </Text>
-  </TouchableOpacity>
+        <View style={styles.trainingToggleContainer}>
+          {/* Monthly Trainings Button */}
+          <TouchableOpacity
+            style={[
+              styles.trainingToggleBtn,
+              trainingMode === "Monthly" && styles.trainingToggleBtnActive
+            ]}
+            onPress={() => setTrainingMode("Monthly")}
+          >
+            <Text
+              allowFontScaling={false}
+              style={[
+                styles.trainingToggleText,
+                trainingMode === "Monthly" && styles.trainingToggleTextActive
+              ]}
+            >
+              Monthly Trainings
+            </Text>
+          </TouchableOpacity>
 
-  {/* My Trainings Button */}
-  <TouchableOpacity
-    style={[
-      styles.trainingToggleBtn,
-      trainingMode === "My" && styles.trainingToggleBtnActive
-    ]}
-    onPress={() => setTrainingMode("My")}
-  >
-    <Text
-      allowFontScaling={false}
-      style={[
-        styles.trainingToggleText,
-        trainingMode === "My" && styles.trainingToggleTextActive
-      ]}
-    >
-      My Trainings
-    </Text>
-  </TouchableOpacity>
-</View>
+          {/* My Trainings Button */}
+          <TouchableOpacity
+            style={[
+              styles.trainingToggleBtn,
+              trainingMode === "My" && styles.trainingToggleBtnActive
+            ]}
+            onPress={() => setTrainingMode("My")}
+          >
+            <Text
+              allowFontScaling={false}
+              style={[
+                styles.trainingToggleText,
+                trainingMode === "My" && styles.trainingToggleTextActive
+              ]}
+            >
+              My Trainings
+            </Text>
+          </TouchableOpacity>
+        </View>
 
 
         <ScrollView
@@ -511,6 +511,29 @@ const [trainingMode, setTrainingMode] = useState("Monthly"); // "Monthly" | "My"
               <View style={styles.calendarGrid}>
                 {calendarDays.map((item, index) => {
                   const isSelected = item.day === selectedDate && item.isCurrentMonth;
+
+                  const isMyTrainingDay =
+                    trainingMode === "My" &&
+                    item.hasEvent &&
+                    item.isCurrentMonth &&
+                    !isSelected;
+
+                  const today = new Date();
+
+                  const isToday =
+                    item.day === today.getDate() &&
+                    item.isCurrentMonth &&
+                    months.indexOf(currentMonth) === today.getMonth() &&
+                    currentYear === today.getFullYear();
+                  const selectedColors =
+                    trainingMode === "My"
+                      ? item.hasEvent
+                        ? [getEventColor(item.eventType), getEventColor(item.eventType)]
+                        : ['#22C55E', '#16A34A'] // ✅ green only when NO event
+                      : ['#7B68EE', '#9D7FEA'];
+
+
+
                   return (
                     <TouchableOpacity
                       key={index}
@@ -553,17 +576,31 @@ const [trainingMode, setTrainingMode] = useState("Monthly"); // "Monthly" | "My"
                     >
                       {isSelected ? (
                         <LinearGradient
-                          colors={['#7B68EE', '#9D7FEA']}
-                          style={styles.selectedDay}
+                          colors={selectedColors}
+                          style={[
+                            styles.selectedDay,
+                            trainingMode === "My" && styles.selectedDayCircle
+                          ]}
                         >
                           <Text allowFontScaling={false} style={styles.selectedDayText}>{item.day}</Text>
                           {item.hasEvent && (
                             <View style={[styles.eventDot, { backgroundColor: '#fff' }]} />
                           )}
                         </LinearGradient>
+                      ) : isMyTrainingDay ? (
+                        /* ✅ MY TRAINING DAY — solid color box */
+                        <View
+                          style={[
+                            styles.myTrainingDay,
+                            { backgroundColor: getEventColor(item.eventType) }
+                          ]}
+                        >
+                          <Text style={styles.myTrainingDayText}>{item.day}</Text>
+                        </View>
                       ) : (
+                        /* ✅ Normal day */
                         <View style={styles.dayContent}>
-                          <Text allowFontScaling={false}
+                          <Text
                             style={[
                               styles.dayText,
                               !item.isCurrentMonth && styles.inactiveDayText,
@@ -571,9 +608,18 @@ const [trainingMode, setTrainingMode] = useState("Monthly"); // "Monthly" | "My"
                           >
                             {item.day}
                           </Text>
-                          {item.hasEvent && item.isCurrentMonth && (
-                            <View style={[styles.eventDot, { backgroundColor: getEventColor(item.eventType) }]} />
-                          )}
+
+                          {/* Dot ONLY for Monthly mode */}
+                          {trainingMode === "Monthly" &&
+                            item.hasEvent &&
+                            item.isCurrentMonth && (
+                              <View
+                                style={[
+                                  styles.eventDot,
+                                  { backgroundColor: getEventColor(item.eventType) }
+                                ]}
+                              />
+                            )}
                         </View>
                       )}
                     </TouchableOpacity>
@@ -790,6 +836,10 @@ const [trainingMode, setTrainingMode] = useState("Monthly"); // "Monthly" | "My"
 };
 
 const styles = StyleSheet.create({
+  selectedDayCircle: {
+    borderRadius: 999,   // perfect circle
+  },
+
   container: {
     flex: 1,
     backgroundColor: '#1a1a2e',
@@ -813,41 +863,41 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   trainingToggleContainer: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  marginHorizontal: 20,
-  marginBottom: 20,
-  backgroundColor: 'rgba(255,255,255,0.05)',
-  padding: 6,
-  borderRadius: 14,
-  borderWidth: 1,
-  borderColor: 'rgba(123, 104, 238, 0.3)',
-},
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    marginBottom: 20,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    padding: 6,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(123, 104, 238, 0.3)',
+  },
 
-trainingToggleBtn: {
-  flex: 1,
-  paddingVertical: 10,
-  marginHorizontal: 4,
-  borderRadius: 12,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
+  trainingToggleBtn: {
+    flex: 1,
+    paddingVertical: 10,
+    marginHorizontal: 4,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
-trainingToggleBtnActive: {
-  backgroundColor: '#7B68EE',
-  elevation: 3,
-},
+  trainingToggleBtnActive: {
+    backgroundColor: '#7B68EE',
+    elevation: 3,
+  },
 
-trainingToggleText: {
-  fontSize: 13,
-  color: '#a8b2d1',
-  fontWeight: '600',
-},
+  trainingToggleText: {
+    fontSize: 13,
+    color: '#a8b2d1',
+    fontWeight: '600',
+  },
 
-trainingToggleTextActive: {
-  color: '#fff',
-  fontWeight: '700',
-},
+  trainingToggleTextActive: {
+    color: '#fff',
+    fontWeight: '700',
+  },
 
   scrollContent: {
     flex: 1,
@@ -1102,6 +1152,20 @@ trainingToggleTextActive: {
     fontWeight: 'bold',
     fontSize: 14,
   },
+  myTrainingDay: {
+    flex: 1,
+    borderRadius: 999,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+  },
+
+  myTrainingDayText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+
 });
 
 export default CalendarScreen;

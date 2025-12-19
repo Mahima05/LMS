@@ -322,8 +322,7 @@ const ELearningScreen = ({ navigation }) => {
       // fetch trainers for CreatedBy dropdown (if token required it will use token state)
       await fetchCreatedByList();
 
-      fetchCounts();
-      // fetch list
+     
       await fetchCoursesFromApi({ tab: initialFilter, search: initialSearch, page: 1, rowsPerPage });
     } catch (err) {
       setError(String(err));
@@ -358,6 +357,12 @@ const ELearningScreen = ({ navigation }) => {
       console.log("count fetch error:", err);
     }
   };
+  useEffect(() => {
+  if (employeeID) {
+    fetchCounts();
+  }
+}, [employeeID]);
+
 
 
   // initial run on mount
@@ -702,7 +707,7 @@ const ELearningScreen = ({ navigation }) => {
                   <Animated.View
                     key={filter.label}
                     style={[
-                      { transform: [{ scale }], flex: 1 }
+                      { transform: [{ scale }] }
                     ]}
                   >
                     <TouchableOpacity
@@ -716,7 +721,7 @@ const ELearningScreen = ({ navigation }) => {
                           style={styles.filterTabGradient}
                         >
                           <Ionicons name={filter.icon} size={18} color="#fff" />
-                          <Text allowFontScaling={false} style={styles.filterTabTextActive}>
+                          <Text allowFontScaling={false}   numberOfLines={1} style={styles.filterTabTextActive}>
                             {filter.label === 'PENDING' ? `PENDING [${pendingCount}]` :
                               filter.label === 'COMPLETED' ? `COMPLETED [${completedCount}]` :
                                 'ALL'}
@@ -726,7 +731,7 @@ const ELearningScreen = ({ navigation }) => {
                       ) : (
                         <View style={styles.filterTabInactive}>
                           <Ionicons name={filter.icon} size={18} color="#7B68EE" />
-                          <Text allowFontScaling={false} style={styles.filterTabText}>
+                          <Text allowFontScaling={false}   numberOfLines={1} style={styles.filterTabText}>
                             {filter.label === 'PENDING' ? `PENDING [${pendingCount}]` :
                               filter.label === 'COMPLETED' ? `COMPLETED [${completedCount}]` :
                                 'ALL'}
@@ -1183,46 +1188,52 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  filterTabsContainer: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 20,
-  },
-  filterTab: {
-    flex: 1,
-    borderRadius: 12,
-    overflow: 'hidden',
-  },
-  filterTabGradient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  filterTabInactive: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: 'rgba(123, 104, 238, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(123, 104, 238, 0.3)',
-    borderRadius: 12,
-  },
-  filterTabTextActive: {
-    color: '#fff',
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  filterTabText: {
-    color: '#7B68EE',
-    fontSize: 13,
-    fontWeight: '600',
-  },
+filterTabsContainer: {
+  flexDirection: 'row',
+  gap: 10,
+  marginBottom: 20,
+  justifyContent: 'center',  // Add this to center the buttons
+},
+filterTab: {
+  borderRadius: 12,
+  overflow: 'hidden',
+  // Remove flex: 1 if present here
+},
+filterTabGradient: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 6,
+  paddingVertical: 12,
+  paddingHorizontal: 16,
+  minHeight: 44,  // Add consistent minimum height
+},
+filterTabInactive: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 6,
+  paddingVertical: 12,
+  paddingHorizontal: 16,
+  backgroundColor: 'rgba(123, 104, 238, 0.1)',
+  borderWidth: 1,
+  borderColor: 'rgba(123, 104, 238, 0.3)',
+  borderRadius: 12,
+  minHeight: 44,  // Add consistent minimum height
+},
+filterTabTextActive: {
+  color: '#fff',
+  fontSize: 13,
+  fontWeight: '600',
+  numberOfLines: 1,  // This won't work in stylesheet, see below
+},
+filterTabText: {
+  color: '#7B68EE',
+  fontSize: 13,
+  fontWeight: '600',
+  numberOfLines: 1,  // This won't work in stylesheet, see below
+},
+
   tableContainer: {
     flex: 1,
     backgroundColor: '#fff',
