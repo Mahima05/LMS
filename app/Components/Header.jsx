@@ -14,11 +14,8 @@ import {
   View,
 } from 'react-native';
 import Svg, { Circle, G, Path, Text as SvgText } from 'react-native-svg';
+import { TourGuideZone, useTourGuideController } from 'rn-tourguide';
 import { useNotification } from './NotificationContext';
-
-import { TourGuideZone } from 'rn-tourguide';
-
-
 const { width, height } = Dimensions.get('window');
 
 const Header = ({
@@ -35,19 +32,34 @@ const Header = ({
 }) => {
 
 
-  
+  // Add useTourGuideController hook
+  const { start, canStart } = useTourGuideController();
+  const hasStartedRef = useRef(false);
 
-const { start, canStart } = useTourGuideController();
+  // Add state to track if tutorial should be shown
+  const [shouldShowTutorial, setShouldShowTutorial] = useState(false);
 
-// Update the useEffect to properly start tutorial:
-useEffect(() => {
-  if (canStart) {
-    const timer = setTimeout(() => {
-      start();
-    }, 1500);
-    return () => clearTimeout(timer);
-  }
-}, [canStart, start]);
+  // Modified useEffect for starting tour
+  useEffect(() => {
+    const checkAndStartTutorial = async () => {
+      try {
+        const tutorialCompleted = await AsyncStorage.getItem('tutorialCompleted');
+        
+        if (!tutorialCompleted && canStart && !hasStartedRef.current) {
+          setShouldShowTutorial(true);
+          const timer = setTimeout(() => {
+            start();
+            hasStartedRef.current = true;
+          }, 1500);
+          return () => clearTimeout(timer);
+        }
+      } catch (error) {
+        console.log('Error checking tutorial status:', error);
+      }
+    };
+
+    checkAndStartTutorial();
+  }, [canStart, start]);
 
 
 
@@ -365,8 +377,6 @@ useEffect(() => {
       );
     });
   };
-
-
   useEffect(() => {
     if (showSpinner) {
       spinnerRotation.setValue(0);
@@ -382,9 +392,6 @@ useEffect(() => {
 
     return () => spinnerRotation.stopAnimation();
   }, [showSpinner]);
-
-
-
   return (
     <>
       <View style={styles.header}>
@@ -396,15 +403,16 @@ useEffect(() => {
           ) : (
             <TourGuideZone
               zone={1}
-              text="Tap here to open the drawer menu 📱"
+              order={1}
+              text="Access the menu by tapping this icon to navigate through different sections of the app."
               shape="circle"
-              borderRadius={22}
+              tooltipBottomOffset={10}
+              maskOffset={6}
             >
-              <TouchableOpacity onPress={onMenuPress} style={styles.menuButton}>
-                <Ionicons name={showBackButton ? 'arrow-back' : 'menu'} size={30} color="#fff" />
+              <TouchableOpacity style={styles.menuButton} onPress={onMenuPress}>
+                <Ionicons name="menu" size={30} color="#fff" />
               </TouchableOpacity>
             </TourGuideZone>
-
           )}
           <Text allowFontScaling={false} style={styles.headerTitle}>{title}</Text>
         </View>
@@ -412,9 +420,11 @@ useEffect(() => {
           {showSpinner && (
             <TourGuideZone
               zone={2}
-              text="Spin the wheel daily to earn points and rewards 🎰"
+              order={2}
+              text="Spin the wheel daily to earn bonus points and exciting rewards!"
               shape="circle"
-              borderRadius={20}
+              tooltipBottomOffset={12}
+              maskOffset={6}
             >
               <TouchableOpacity
                 style={styles.spinnerButton}
@@ -447,9 +457,11 @@ useEffect(() => {
           {showNotification && (
             <TourGuideZone
               zone={3}
-              text="Check your notifications and updates here 🔔"
+              order={3}
+              text="Check your notifications here to stay updated with important alerts and messages."
               shape="circle"
-              borderRadius={20}
+              tooltipBottomOffset={12}
+              maskOffset={6}
             >
 
               <TouchableOpacity
@@ -544,8 +556,6 @@ useEffect(() => {
                   </LinearGradient>
                 </TouchableOpacity>
               )}
-
-
               {selectedReward && showConfetti && (
                 <Animated.View
                   style={[
