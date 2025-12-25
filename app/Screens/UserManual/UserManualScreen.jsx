@@ -165,6 +165,34 @@ const UserManualScreen = ({ navigation }) => {
     }
   });
 
+  // Pause or stop video when screen loses focus (e.g., navigate away)
+  useFocusEffect(
+    React.useCallback(() => {
+      // On focus: resume playback if available
+      try {
+        if (player) {
+          player.play && player.play();
+        }
+      } catch (e) {
+        console.log('Error resuming video on focus:', e);
+      }
+
+      // Cleanup runs on blur/unmount: pause/stop audio/video
+      return () => {
+        try {
+          if (player) {
+            // prefer pause, also attempt stop/unload if available
+            player.pause && player.pause();
+            player.stop && player.stop();
+            player.unload && player.unload();
+          }
+        } catch (e) {
+          console.log('Error pausing/stopping video on blur:', e);
+        }
+      };
+    }, [player])
+  );
+
   const handleVideoLoadEnd = () => {
     setIsLoading(false);
     setIsError(false);

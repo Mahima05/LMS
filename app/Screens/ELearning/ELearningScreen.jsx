@@ -123,6 +123,17 @@ const ELearningScreen = ({ navigation }) => {
     return `${yyyy}-${mm}-${dd}`;
   };
 
+  // Helper: format JS Date or ISO string to DD-MM-YYYY
+  const formatToDDMMYYYY = (d) => {
+    if (!d) return '-';
+    const dateObj = (d instanceof Date) ? d : new Date(d);
+    if (isNaN(dateObj.getTime())) return '-';
+    const dd = String(dateObj.getDate()).padStart(2, '0');
+    const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const yyyy = dateObj.getFullYear();
+    return `${dd}-${mm}-${yyyy}`;
+  };
+
   // Updated buildUrl to include FromDate, ToDate, CreatedBy and Criteria
   const buildUrl = ({ userId, page = 1, rowsPerPage = 200, tabStatus = '', search = '', fromDate = '', toDate = '', createdBy = '0', criteriaParam = '' } = {}) => {
     const params = new URLSearchParams();
@@ -770,7 +781,7 @@ const ELearningScreen = ({ navigation }) => {
                 >
                   <Text allowFontScaling={false} style={[styles.headerCell, styles.sNoColumn]}>SNo.</Text>
                   <Text allowFontScaling={false} style={[styles.headerCell, styles.nameColumn]}>Name</Text>
-                  <Text allowFontScaling={false} style={[styles.headerCell, styles.contentColumn]}>Content name</Text>
+                  <Text allowFontScaling={false} style={[styles.headerCell, styles.contentColumn]}>End Date</Text>
                   <Text allowFontScaling={false} style={[styles.headerCell, styles.actionColumn]}>Action</Text>
                 </LinearGradient>
               </Animated.View>
@@ -829,7 +840,7 @@ const ELearningScreen = ({ navigation }) => {
                         {course.name}
                       </Text>
                       <Text allowFontScaling={false} style={[styles.rowCell, styles.contentColumn, styles.contentText]}>
-                        {course.contentName}
+                        {formatToDDMMYYYY(course.raw?.endDate)}
                       </Text>
                       <View style={[styles.actionColumn, { alignItems: 'center' }]}>
                         {course.status === 'EXPIRED' ? (

@@ -347,7 +347,7 @@ const CertificateScreen = ({ navigation }) => {
                         </View>
 
                         <View style={styles.actionButtons}>
-                          <TouchableOpacity style={[styles.actionButton, { marginRight: 10 }]}>
+                          {/* <TouchableOpacity style={[styles.actionButton, { marginRight: 10 }]}>
                             <LinearGradient
                               colors={colors.gradient}
                               style={styles.downloadButton}
@@ -355,7 +355,7 @@ const CertificateScreen = ({ navigation }) => {
                               <FontAwesome5 name="download" size={14} color="#fff" />
                               <Text allowFontScaling={false} style={styles.downloadText}>Download</Text>
                             </LinearGradient>
-                          </TouchableOpacity>
+                          </TouchableOpacity>*/}
 
                           <TouchableOpacity style={[styles.actionButton, { marginLeft: 10 }]}>
                             <LinearGradient
